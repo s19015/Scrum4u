@@ -10,11 +10,13 @@ namespace Scrum4u
     /// </summary>
     public class Strona : System.Web.UI.Page
     {
-        public Strona()
+        public class Uzytkownik
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            public int UzytkownikID { get; set; }
+            public string UzytkownikImie { get; set; }
+            public string UzytkownikNazwisko { get; set; }
+            public string UzytkownikEmail { get; set; }
+            public string UzytkownikHaslo { get; set; }
         }
     }
 }
