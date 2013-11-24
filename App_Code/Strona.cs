@@ -12,6 +12,7 @@ namespace Scrum4u
     {
         public class Uzytkownik
         {
+			// komentarz BB
             public int UzytkownikID { get; set; }
             public string UzytkownikImie { get; set; }
             public string UzytkownikNazwisko { get; set; }
