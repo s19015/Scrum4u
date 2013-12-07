@@ -1,0 +1,477 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2013-12-02, 19:35:47
+    Author     : Bart
+*/
+
+.container{
+   color: #ffffff;
+   background: #232323;
+   width: 100%;
+   height: 100%;
+}
+
+.header{
+   background: #0866C6;
+   /*height: 110px;*/
+}
+
+.logo{
+   /*padding-top: 40px;*/
+   text-align: center;
+}
+
+.news{
+   padding-left: 0px;
+}
+
+.leftpanel{
+   /*width: 260px;*/
+   padding: 0;
+}
+
+.rightpanel{
+   background: #F5F5F5;
+   color: #232323;
+   padding: 0;
+}
+
+@media (min-width: 992px){ 
+   .pc{
+      background: #269abc;
+   }
+}
+
+@media (min-width: 768px){ 
+   .pc{
+      background: #269abc;
+   }
+}
+
+.news ul{
+   list-style: none outside none;
+   padding: 0px;
+}
+
+.news li:first-child {
+   border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.news li {
+   border-right: 1px solid rgba(255, 255, 255, 0.15);
+   display: inline-block;
+   float: left;
+   font-size: 14px;
+   position: relative;
+}
+
+.news li a {
+   color: #FFFFFF;
+   cursor: pointer;
+   display: block;
+   min-width: 110px;
+   padding: 25px 20px 9px;
+   position: relative;
+   text-decoration: none;
+}
+
+.news li a .count {
+   opacity: 0.5;
+   position: absolute;
+   right: 10px;
+   top: 5px;
+}
+
+.news li a .head-icon {
+   display: block;
+   height: 50px;
+   margin: auto;
+   opacity: 0.5;
+   width: 50px;
+   font-size: 36px;
+   text-align: center;
+}
+
+.news li a .headmenu-label{
+   display: block;
+   margin: 2px 0 3px;
+   opacity: 0.5;
+   text-align: center;
+}
+
+.news li a:hover .count, .news li a:hover .head-icon, .news li a:hover .headmenu-label{
+    opacity: 1;
+}
+
+.news li a .count, .news li a .head-icon, .news li a .headmenu-label{
+    transition: all 0.2s ease-out 0s;
+}
+
+.news li.odd{
+   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.userinfo .userimg{
+   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+    float: left;
+    height: 88px;
+    margin-top: 12px;
+    padding: 3px;
+    width: 91px;
+}
+
+.user{
+   float: left;
+   margin-left: 10px;
+}
+
+.user small {
+    color: #FFFFFF;
+    font-family: sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.6;
+}
+
+.user ul {
+    list-style: none outside none;
+    margin-top: 5px;
+    padding: 0;
+}
+
+.user ul li {
+    display: block;
+    font-size: 11px;
+    line-height: normal;
+    margin-bottom: 1px;
+}
+
+.user ul li a {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    display: block;
+    line-height: normal;
+    padding: 4px 5px 3px;
+}
+
+.user ul li a{
+   transition: all 0.2s ease-out 0s;
+}
+
+.user ul li a:hover{
+   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    }
+    
+.LeftPanelTitle{
+   background: none repeat scroll 0 0 #232323;
+   border-bottom: 1px solid #222222;
+   font-size: 11px;
+   font-weight: normal;
+   padding: 5px 20px;
+   text-shadow: none;
+   text-transform: uppercase;
+   color: #999999;
+}
+    
+/* ********************************** menu menu */
+
+#cssmenu,
+#cssmenu ul,
+#cssmenu li,
+#cssmenu a {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	list-style: none;
+	text-decoration: none;
+	position: relative;
+}
+
+#cssmenu {
+   background-color: #282828;
+}
+
+#cssmenu > ul > li > a {
+   -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #232323;
+    border-image: none;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+   
+    color: #999999;
+    font-size: 14px;
+    padding: 10px 20px;
+	display: block;
+   
+   transition: all 0.2s ease-out 0s;
+}
+#cssmenu > ul > li > a > span {
+	display: block;
+}
+#cssmenu > ul > li > a:hover {
+    background-color: #2C2C2C;
+    border-bottom-color: #232323;
+    color: #FFFFFF;
+	text-decoration: none;
+}
+#cssmenu > ul > li.active {
+	border-bottom: none;
+}
+#cssmenu > ul > li.has-sub > a span {
+	background: url(../images/menuarrow.png) 96% center no-repeat;
+}
+#cssmenu > ul > li.has-sub.active > a span {
+	background: url(../images/menuarrowdown.png) 96% center no-repeat;
+}
+
+#cssmenu > ul > li.active > a{
+   background-color: #0866C6;
+   border-bottom-color: rgba(0, 0, 0, 0.2);
+   color: #FFFFFF;
+}
+
+#cssmenu > ul > li.active > a:hover{
+   background-color: #0866C6;
+   color: #FFFFFF;
+}
+
+/* Sub menu */
+#cssmenu ul ul {
+	display: none;
+	background: none repeat scroll 0 0 #EEEEEE;
+}
+#cssmenu ul ul li {
+   border-bottom: 1px solid #DDDDDD;
+   border-right: 1px solid #DDDDDD;
+	padding: 0;
+	border-bottom: 1px solid #DDDDDD;
+}
+#cssmenu ul ul li:last-child {
+	border-bottom: none;
+}
+#cssmenu ul ul a {
+   background-image: url("../images/liarrow.png");
+   background-position: 25px 12px;
+   background-repeat: no-repeat;
+   color: #333333;
+   display: block;
+   font-size: 13px;
+   padding: 7px 10px 7px 50px;
+   transition: all 0.2s ease-out 0s;
+}
+#cssmenu ul ul a:hover {
+   background-color: #FFFFFF;
+   text-decoration: none;
+}
+
+/* ********************** koniec menu menu */
+
+.breadcrumbs {
+   background: none repeat scroll 0 0 #DDDDDD;
+   border-bottom: 1px solid #CCCCCC;
+   height: 25px;
+   list-style: none outside none;
+   padding: 4px 0 4px 10px;
+   position: relative;
+   margin: 0;
+}
+
+.breadcrumbs > li {
+   color: #666666;
+   display: inline-block;
+   float: left;
+   font-size: 11px;
+   margin-right: 5px;
+}
+
+.breadcrumbs > li span.separator {
+    background: url("../images/bcarrow.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: inline-block;
+    height: 9px;
+    margin-left: 2px;
+    vertical-align: middle;
+    width: 5px;
+}
+
+.pageheader {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-bottom: 1px solid #DDDDDD;
+    min-height: 68px;
+    padding: 20px;
+    position: relative;
+    margin: 0px;
+}
+
+.searchbar {
+   /*
+    position: absolute;
+    right: 20px;
+    top: 33%;
+    */
+}
+
+.searchbar input{
+   width: 250px;
+}
+
+.pageicon {
+    border: 3px solid #0866C6;
+    border-radius: 50px;
+    color: #0866C6;
+    display: inline-block;
+    float: left;
+    font-size: 42px;
+    padding: 10px;
+    text-align: center;
+    width: 85px;
+}
+
+.pagetitle {
+   margin-left: 105px;
+    padding-top: 0;
+    height: 78px;
+}
+
+.pagetitle h5 {
+    color: #999999;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.pagetitle h1 {
+    color: #0866C6;
+    font-size: 32px;
+    margin-left: -2px;
+   margin: 0;
+}
+
+.maincontent {
+    float: left;
+    width: 100%;
+}
+
+.maincontentinner {
+    padding: 20px;
+    min-height: 400px;
+}
+
+.footer {
+    border-top: 1px solid #DDDDDD;
+    clear: both;
+    color: #666666;
+    font-size: 11px;
+    margin-top: 40px;
+    overflow: hidden;
+    padding-top: 15px;
+}
+
+.footer .footer-left {
+    float: left;
+}
+
+.footer .footer-right {
+    float: right;
+}
+
+.subtitle {
+    color: #999999;
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.table {
+    margin-bottom: 0px;
+}
+
+.row-fluid .tablewidget{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: -moz-use-text-color #0866C6 #0866C6;
+    border-image: none;
+    border-right: 2px solid #0866C6;
+    border-style: none solid solid;
+    border-width: 0 2px;
+    border-bottom: 2px solid #0866C6;
+      margin-bottom: 20px;
+}
+
+.row-fluid table thead{
+   background: #0866C6;
+   color: #ffffff;
+}
+
+.widget {
+   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.widgettitle {
+   background: none repeat scroll 0 0 #0866C6;
+   color: #FFFFFF;
+   font-size: 14px;
+   padding: 12px 15px;
+   margin: 0;
+}
+
+.widgetcontent {
+   -moz-border-bottom-colors: none;
+   -moz-border-left-colors: none;
+   -moz-border-right-colors: none;
+   -moz-border-top-colors: none;
+   background: none repeat scroll 0 0 #FFFFFF;
+   border-color: -moz-use-text-color #0866C6 #0866C6;
+   border-image: none;
+   border-right: 2px solid #0866C6;
+   border-style: none solid solid;
+   border-width: 0 2px 2px;
+   margin-bottom: 20px;
+   padding: 15px 12px;
+}
+
+.btn-primary, .btn-primary:link, .btn-default, .btn-default:link {
+   background: none repeat scroll 0 0 #0866C6;
+   border-color: #0A6BCE;
+   color: #FFFFFF;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled],
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .btn-default.disabled, .btn-default[disabled]{
+   background-color: #0044CC;
+   color: #FFFFFF;     
+}
+
+.btn{
+   border-color: #BBBBBB;
+}
+
+.title-danger {
+    background-color: #DD0000 !important;
+}
+
+.title-warning {
+    background-color: #FCB904 !important;
+}
+
+.title-success {
+    background-color: #86D628 !important;
+}
+
+.title-info {
+    background-color: #71B8EE !important;
+}
+
+.title-inverse {
+    background-color: #333333 !important;
+}
