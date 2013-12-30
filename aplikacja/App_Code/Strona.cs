@@ -10,14 +10,6 @@ namespace Scrum4u
     /// </summary>
     public class Strona : System.Web.UI.Page
     {
-        public class Uzytkownik
-        {
-			// komentarz BB
-            public int UzytkownikID { get; set; }
-            public string UzytkownikImie { get; set; }
-            public string UzytkownikNazwisko { get; set; }
-            public string UzytkownikEmail { get; set; }
-            public string UzytkownikHaslo { get; set; }
-        }
+
     }
 }
