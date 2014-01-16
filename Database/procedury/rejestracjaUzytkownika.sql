@@ -1,0 +1,3 @@
+create procedure rejestracjaUzytkownika
+begin
+end
