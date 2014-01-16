@@ -4,6 +4,11 @@ delimiter //
 create procedure rejestracjaUzytkownika( in uzytkownikEmail varchar(50), in imie varchar(50), in nazwisko varchar(50), in haslo varchar(256), in dataRejestracji timestamp )
 begin
 
+/*
+1. Dodaj użytkownika do bazy
+2. Utworz token rejestracyjny
+*/
+
 insert into Uzytkownik( uzytkownikEmail, imie, nazwisko, haslo, rowDate )
 values ( uzytkownikEmail, imie, nazwisko, haslo, dataRejestracji );
 
@@ -23,17 +28,25 @@ values (uzytkownikEmail, cast(md5(rand()) as char(40) ));
 end//
 delimiter ;
 
+drop function if exists czyKontoAktywneFunc;
+delimiter //
+create function czyKontoAktywneFunc( inUzytkownikEmail varchar(50) ) returns bool
+begin
+	return (select kontoAktywne from Uzytkownik where uzytkownikEmail = inUzytkownikEmail);
+end//
+delimiter ;
+
 drop procedure if exists czyKontoAktywne;
 delimiter //
 create procedure czyKontoAktywne( in inEmailUzytkownika varchar(50) )
 begin
-	select kontoAktywne from Uzytkownik where uzytkownikEmail = uzytkownikEmail;
+	select czyKontoAktywneFunc(inEmailUzytkownika) as kontoAktywne;
 end//
 delimiter ;
 
 drop procedure if exists aktywacjaKonta;
 delimiter //
-create procedure aktywacjaKonta( uzytkownikEmail varchar(50), token char(40) )
+create procedure aktywacjaKonta( inUzytkownikEmail varchar(50), token char(40) )
 begin
 /*
 1. sprawdzenie czy konto aktywne
@@ -44,13 +57,13 @@ begin
 
 declare czyAktywne bool default 0; #domyslnie zakladamy ze konto jest aktywne
 declare tokenPoprawny bool default 0; #domyslnie niepoprawny token
-set czyAktywne = czyKontoAktywne(uzytkownikEmail);
+set czyAktywne = czyKontoAktywneFunc(inUzytkownikEmail);
 if czyAktywne = 0 then #konto nieaktywne
 	begin
-		set tokenPoprawny = ( select count(*) from RejestracjaTokeny where uzytkownikEmail = uzytkownikEmail and token = token );
+		set tokenPoprawny = ( select count(*) from RejestracjaTokeny where uzytkownikEmail = inUzytkownikEmail and token = token );
 		if tokenPoprawny then #token prawidlowy
 			begin
-				update Uzytkownik set kontoAktywne = 1 where uzytkownikEmail = uzytkownikEmail;
+				update Uzytkownik set kontoAktywne = 1 where uzytkownikEmail = inUzytkownikEmail;
 			end;
 		else #token nieprawidlowy
 			begin
@@ -62,7 +75,121 @@ else #uzytkownik już aktywny lub niepoprawny email
 	
 	end;
 end if;
-call czyKontoAktywne( uzytkownikEmail );
+call czyKontoAktywne( inUzytkownikEmail );
+end//
+delimiter ;
+
+drop procedure if exists utworzGrupeRobocza;
+delimiter //
+create procedure utworzGrupeRobocza(in inUzytkownikEmail varchar(50), in inNazwaGrupy varchar(50))
+begin
+	insert into GrupyRobocze (uzytkownikEmail, nazwaGrupy)
+	values ( inUzytkownikEmail, inNazwaGrupy );
+end//
+delimiter ;
+
+drop procedure if exists listaGrupRoboczych;
+delimiter //
+create procedure listaGrupRoboczych( in inUzytkownikEmail varchar(50)) # zwraca listę grup roboczych uzytkownika
+begin
+	select idGrupyRobocze, nazwaGrupy from GrupyRobocze where uzytkownikEmail = inUzytkownikEmail order by rowDate;
+end//
+delimiter ;
+
+drop procedure if exists logowanie;
+delimiter //
+create procedure logowanie( in inUzytkownikEmail varchar(50), in inHaslo varchar(256))
+begin
+select count(*) as statusLogowania from Uzytkownik where uzytkownikEmail = inUzytkownikEmail and haslo = inHaslo;
+end//
+delimiter ;
+
+drop procedure if exists pobierzProfil;
+delimiter //
+create procedure pobierzProfil( in inUzytkownikEmail varchar(50) )
+begin
+select uzytkownikEmail, imie, nazwisko from Uzytkownik where uzytkownikEmail = inUzytkownikEmail;
+end//
+delimiter ;
+
+drop procedure if exists utworzProjekt;
+delimiter //
+create procedure utworzProjekt( in inUzytkownikEmail varchar(50), in inIdGrupyRoboczej int unsigned, in inNazwaProjektu varchar(50), in inScrumMaster varchar(50))
+begin
+insert into Projekty ( uzytkownikEmail, idGrupyRobocze, nazwaProjektu, scrumMaster )
+values ( inUzytkownikEmail, inIdGrupyRoboczej, inNazwaProjektu, inScrumMaster );
+end//
+delimiter ;
+
+drop procedure if exists listaProjektow;
+delimiter //
+create procedure listaProjektow ( in inUzytkownikEmail varchar(50) )
+begin
+	select idProjekty, nazwaProjektu, scrumMaster 
+	from Projekty 
+	where uzytkownikEmail = inUzytkownikEmail and status = 0
+	order by nazwaProjektu;
+end//
+delimiter ;
+
+drop procedure if exists utworzGrupeUzytkownikow;
+delimiter //
+create procedure utworzGrupeUzytkownikow( in inUzytkownikEmail varchar(50), in inIdProjektu int unsigned, in inNazwaGrupy varchar(50), in inStatusGrupy bool )
+begin
+/*
+1. Sprawdzenie czy projekt należy do użytkownika
+2. Dodanie grupy
+3. Zwrocenie id nowej grupy
+*/
+
+declare wlascicielProjektu varchar(50);
+declare returnIdGrupy int unsigned;
+
+set wlascicielProjektu = ( select uzytkownikEmail from Projekty where idProjekty = inIdProjektu );
+
+if wlascicielProjektu = inUzytkownikEmail then #uzytkownik poprawny
+	begin
+		insert into ProjektyGrupyUzytkownikow (idProjekty, nazwaGrupy, statusGrupy)
+		values ( inIdProjektu, inNazwaGrupy, inStatusGrupy );
+		set returnIdGrupy = last_insert_id();
+	end;
+else # nie udalo sie utworzyc grupy
+	begin
+		set returnIdGrupy = null;
+	end;
+end if;
+select returnIdGrupy as idProjektyGrupyUzytkownikow;
+end//
+delimiter ;
+
+drop procedure if exists zaproszenieDoProjektu;
+delimiter //
+create procedure zaproszenieDoProjektu( in inUzytkownikEmail varchar(50), in inUzytkownikZapraszany varchar(50), in inIdProjektu int unsigned )
+begin
+/*
+1. Sprawdzenie czy projekt nalezy do zapraszajacego
+2. Utworzenie zaproszenia i tokenu
+3. Zwrocenie tokenu
+*/
+
+declare wlascicielProjektu varchar(50);
+declare returnToken char(40);
+
+set wlascicielProjektu = ( select uzytkownikEmail from Projekty where idProjekty = inIdProjektu );
+
+if wlascicielProjektu = inUzytkownikEmail then # email poprawny
+	begin
+		insert into ProjektyZaproszenia (uzytkownikEmail, idProjekty, Token)
+		values ( inUzytkownikZapraszany, inIdProjektu, cast( md5( rand() ) as char(40) ) );
+		
+		set returnToken = ( select token from ProjektyZaproszenia where uzytkownikEmail = inUzytkownikZapraszany and idProjekty = inIdProjektu );
+	end;
+else # email niepoprawny
+	begin
+		set returnToken = null;
+	end;
+end if;
+select returnToken as token;
 end//
 delimiter ;
 
@@ -72,8 +199,22 @@ delimiter ;
 
 SET SQL_SAFE_UPDATES=0;
 truncate table RejestracjaTokeny;
+truncate table ProjektyUzytkownicyGrupy;
+truncate table ProjektyZaproszenia;
+truncate table GrupyRobocze;
+truncate table Projekty;
 truncate table Uzytkownik;
 SET SQL_SAFE_UPDATES=1;
+
 call rejestracjaUzytkownika( 'jtestowy@test.pl', 'Jan', 'Testowy', '20cf0e0caf95a5464ae77ae124829a7a3df03d141d82f532ab75ce6aa17cbe8c', CURRENT_TIMESTAMP );
 call aktywacjaKonta( 'jtestowy@test.pl', (select token from RejestracjaTokeny where uzytkownikEmail = 'jtestowy@test.pl') );
+#call logowanie( 'jtestowy@test.pl', (select haslo from Uzytkownik where uzytkownikEmail = 'jtestowy@tsest.pl' ) );
+#call pobierzProfil( 'jtestowy@test.pl' );
+call utworzGrupeRobocza( 'jtestowy@test.pl', 'jtestowyWG' );
+#call listaGrupRoboczych( 'jtestowy@test.pl' );
+call rejestracjaUzytkownika( 'smaster@test.pl', 'Scrum', 'Master', '63a0f5c4bf31cc31f135a62f6ad58abbd5ccb5c51ac032e69fcde034c6c50254', CURRENT_TIMESTAMP );
+call utworzProjekt( 'jtestowy@test.pl', ( select idGrupyRobocze from GrupyRobocze where uzytkownikEmail = 'jtestowy@test.pl' limit 1 ) ,'Projekt Testowy', 'smaster@test.pl' );
+#call listaProjektow( 'jtestowy@test.pl' );
+call utworzGrupeUzytkownikow( 'jtestoswy@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1), 'Grupa testowa', 0 );
+call zaproszenieDoProjektu( 'jtestowy@test.pl', 'smaster@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1));
 /* DANE TESTOWE */

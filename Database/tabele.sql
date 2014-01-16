@@ -8,29 +8,33 @@ USE `bb1511_scrum4u` ;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`Uzytkownik`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`Uzytkownik` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Uzytkownik` (
-  `UzytkownikEmail` VARCHAR(50) NOT NULL,
-  `Imie` VARCHAR(50) NOT NULL,
-  `Nazwisko` VARCHAR(50) NOT NULL,
-  `Haslo` CHAR(128) NOT NULL,
-  `KontoAktywne` TINYINT(1) NOT NULL DEFAULT 0,
-  `RowDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'DataRejestracji',
-  PRIMARY KEY (`UzytkownikEmail`))
+  `uzytkownikEmail` VARCHAR(50) NOT NULL,
+  `imie` VARCHAR(50) NOT NULL,
+  `nazwisko` VARCHAR(50) NOT NULL,
+  `haslo` VARCHAR(256) NOT NULL,
+  `kontoAktywne` TINYINT(1) NOT NULL DEFAULT 0,
+  `rowDate` TIMESTAMP NOT NULL COMMENT 'DataRejestracji',
+  PRIMARY KEY (`uzytkownikEmail`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`RejestracjaTokeny`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`RejestracjaTokeny` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`RejestracjaTokeny` (
-  `UzytkownikEmail` VARCHAR(50) NOT NULL,
-  `Token` CHAR(40) NOT NULL,
-  `RowDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`UzytkownikEmail`),
-  UNIQUE INDEX `EmailToken` (`UzytkownikEmail` ASC, `Token` ASC),
+  `uzytkownikEmail` VARCHAR(50) NOT NULL,
+  `token` CHAR(40) NOT NULL,
+  `rowDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`uzytkownikEmail`),
+  UNIQUE INDEX `EmailToken` (`uzytkownikEmail` ASC, `token` ASC),
   CONSTRAINT `UzytkownikEmail`
-    FOREIGN KEY (`UzytkownikEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    FOREIGN KEY (`uzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -39,17 +43,19 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`GrupyRobocze`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`GrupyRobocze` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`GrupyRobocze` (
   `idGrupyRobocze` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `UzytkownikEmail` VARCHAR(50) NOT NULL COMMENT 'UzytkownikEmail - właściciel grupy',
-  `NazwaGrupy` VARCHAR(50) NOT NULL COMMENT 'Nazwa grupy unikatowa dla użytkownika czyli uzt nie może mieć dwóch tak samo nazwanych grup',
-  `RowDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `uzytkownikEmail` VARCHAR(50) NOT NULL COMMENT 'UzytkownikEmail - właściciel grupy',
+  `nazwaGrupy` VARCHAR(50) NOT NULL COMMENT 'Nazwa grupy unikatowa dla użytkownika czyli uzt nie może mieć dwóch tak samo nazwanych grup',
+  `rowDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idGrupyRobocze`),
-  INDEX `UzytkownikEmail_idx` (`UzytkownikEmail` ASC),
-  UNIQUE INDEX `NazwaGrupu` (`UzytkownikEmail` ASC, `NazwaGrupy` ASC),
+  INDEX `UzytkownikEmail_idx` (`uzytkownikEmail` ASC),
+  UNIQUE INDEX `NazwaGrupu` (`uzytkownikEmail` ASC, `nazwaGrupy` ASC),
   CONSTRAINT `uzytkownikGrupyRoboczej`
-    FOREIGN KEY (`UzytkownikEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    FOREIGN KEY (`uzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
@@ -58,6 +64,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`Projekty`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`Projekty` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Projekty` (
   `idProjekty` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `UzytkownikEmail` VARCHAR(50) NOT NULL COMMENT 'ProjectManager',
@@ -73,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Projekty` (
   INDEX `ScrumMaster_idx` (`ScrumMaster` ASC),
   CONSTRAINT `ProjectManager`
     FOREIGN KEY (`UzytkownikEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT,
   CONSTRAINT `GrupaRobocza`
@@ -83,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Projekty` (
     ON UPDATE CASCADE,
   CONSTRAINT `ScrumMaster`
     FOREIGN KEY (`ScrumMaster`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB;
@@ -92,6 +100,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`ProjektyUzytkownicy`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicy` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicy` (
   `UzytkownicyEmail` VARCHAR(50) NOT NULL,
   `idProjekty` INT UNSIGNED NOT NULL,
@@ -99,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicy` (
   PRIMARY KEY (`UzytkownicyEmail`, `idProjekty`),
   CONSTRAINT `UzytkownicyEmail`
     FOREIGN KEY (`UzytkownicyEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT,
   CONSTRAINT `ProjektId`
@@ -113,6 +123,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`ProjektyZaproszenia`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`ProjektyZaproszenia` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyZaproszenia` (
   `UzytkownikEmail` VARCHAR(50) NOT NULL,
   `idProjekty` INT UNSIGNED NOT NULL,
@@ -124,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyZaproszenia` (
   PRIMARY KEY (`UzytkownikEmail`, `idProjekty`),
   CONSTRAINT `ZaproszonyUzytkownik`
     FOREIGN KEY (`UzytkownikEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `IdProjektu`
@@ -138,6 +150,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`ProjektyGrupyUzytkownikow`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`ProjektyGrupyUzytkownikow` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyGrupyUzytkownikow` (
   `idProjektyGrupyUzytkownikow` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idProjekty` INT UNSIGNED NOT NULL,
@@ -156,6 +170,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`ProjektyUzytkownicyGrupy`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicyGrupy` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicyGrupy` (
   `idProjektyGrupyUzytkownikow` INT UNSIGNED NOT NULL,
   `UzytkownikEmail` VARCHAR(50) NOT NULL,
@@ -168,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`ProjektyUzytkownicyGrupy` (
     ON UPDATE NO ACTION,
   CONSTRAINT `EmailUzytkownika`
     FOREIGN KEY (`UzytkownikEmail`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -177,6 +193,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`Sprinty`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`Sprinty` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Sprinty` (
   `idSprinty` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idProjekty` INT UNSIGNED NOT NULL,
@@ -196,6 +214,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `bb1511_scrum4u`.`Zadania`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `bb1511_scrum4u`.`Zadania` ;
+
 CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Zadania` (
   `idZadania` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idSprinty` INT UNSIGNED NOT NULL,
@@ -218,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Zadania` (
   INDEX `idSprtintu_idx` (`idSprinty` ASC),
   CONSTRAINT `PrzydzielonyUzytkownik`
     FOREIGN KEY (`idPrzydzielonyUzytkownik`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `PrzydzielonaGrupa`
@@ -238,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `bb1511_scrum4u`.`Zadania` (
     ON UPDATE NO ACTION,
   CONSTRAINT `Dodal`
     FOREIGN KEY (`Dodal`)
-    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`UzytkownikEmail`)
+    REFERENCES `bb1511_scrum4u`.`Uzytkownik` (`uzytkownikEmail`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
