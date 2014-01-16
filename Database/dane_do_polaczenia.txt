@@ -1,0 +1,4 @@
+Nazwa bazy:	bb1511_scrum4u
+Host do po³¹czenia:	http://s73.vdl.pl/
+User:	bb1511_scrum4u
+Has³o:	u4murcs
