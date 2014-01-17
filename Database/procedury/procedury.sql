@@ -176,7 +176,7 @@ declare wlascicielProjektu varchar(50);
 declare returnToken char(40);
 
 set wlascicielProjektu = ( select uzytkownikEmail from Projekty where idProjekty = inIdProjektu );
-
+select wlascicielProjektu;
 if wlascicielProjektu = inUzytkownikEmail then # email poprawny
 	begin
 		insert into ProjektyZaproszenia (uzytkownikEmail, idProjekty, Token)
@@ -193,6 +193,46 @@ select returnToken as token;
 end//
 delimiter ;
 
+drop procedure if exists przyjmijZaproszenieDoProjektu;
+delimiter //
+create procedure przyjmijZaproszenieDoProjektu( in inUzytkownikEmail varchar(50), in inToken char(40) )
+begin
+/*
+1. Sprawdzenie tokenu
+2. Jeżeli poprawny zaakceptuj zaproszenie.
+3. Dodaj użytkownika do projektu.
+*/
+
+declare idProjektu bool default 0; 
+
+set idProjektu = ( select idProjekty from ProjektyZaproszenia where uzytkownikEmail = inUzytkownikEmail and token = inToken and status = 0 );
+select idProjektu; /*
+
+if idProjektu is not null then #token poprawny
+	begin
+		update ProjektyZaproszenia set status = 1 where uzytkownikEmail = inUzytkownikEmail and token = inToken and status = 0;
+		call dodajUzytkownikaDoProjektu( inUzytkownikEmail, idProjektu );
+		
+	end;
+else
+	begin 
+		
+	end;
+end if;
+
+select status as statusAktywacji from ProjektyZaproszenia where uzytkownikEmail = inUzytkownikEmail and token = inToken;
+*/
+end//
+delimiter ;
+
+drop procedure if exists dodajUzytkownikaDoProjektu;
+delimiter //
+create procedure dodajUzytkownikaDoProjektu ( in inUzytkownikEmail varchar(50), in inIdProjektu int unsigned )
+begin
+	insert into ProjektyUzytkownicy ( uzytkownikEmail, idProjekty ) values ( inUzytkownikEmail, inIdProjektu );
+end//
+delimiter ;
+
 /* DEFINICJA PROCEDUR */
 
 /* DANE TESTOWE */
@@ -202,7 +242,9 @@ truncate table RejestracjaTokeny;
 truncate table ProjektyUzytkownicyGrupy;
 truncate table ProjektyZaproszenia;
 truncate table GrupyRobocze;
+truncate table ProjektyZaproszenia;
 truncate table Projekty;
+truncate table ProjektyUzytkownicy;
 truncate table Uzytkownik;
 SET SQL_SAFE_UPDATES=1;
 
@@ -217,4 +259,5 @@ call utworzProjekt( 'jtestowy@test.pl', ( select idGrupyRobocze from GrupyRobocz
 #call listaProjektow( 'jtestowy@test.pl' );
 call utworzGrupeUzytkownikow( 'jtestoswy@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1), 'Grupa testowa', 0 );
 call zaproszenieDoProjektu( 'jtestowy@test.pl', 'smaster@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1));
+call przyjmijZaproszenieDoProjektu( 'smaster@test.pl', (select token from ProjektyZaproszenia where uzytkownikEmail = 'smaster@test.pl') );
 /* DANE TESTOWE */
