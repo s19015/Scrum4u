@@ -233,6 +233,25 @@ begin
 end//
 delimiter ;
 
+drop procedure if exists dodajWpisDoDziennikaWydarzen;
+delimiter //
+create procedure dodajWpisDoDziennikaWydarzen( in inDziennikZrodlo varchar(200), in inDziennikOpis tinytext, in inDziennikStackTrace text)
+begin
+insert into DziennikWydarzen ( dziennikZrodlo, dziennikOpis, dziennikStackTrace )
+values ( inDziennikZrodlo, inDziennikOpis, inDziennikStackTrace );
+end//
+delimiter ;
+
+drop procedure if exists pobierzDziennikWydarzen;
+delimiter //
+create procedure pobierzDziennikWydarzen(  ) 
+begin
+
+select idDziennikWydarzen, dziennikData, dziennikZrodlo, dziennikOpis, dziennikStackTrace from DziennikWydarzen order by dziennikData desc limit 50;
+
+end//
+delimiter ;
+
 /* DEFINICJA PROCEDUR */
 
 /* DANE TESTOWE */
@@ -260,4 +279,6 @@ call utworzProjekt( 'jtestowy@test.pl', ( select idGrupyRobocze from GrupyRobocz
 call utworzGrupeUzytkownikow( 'jtestoswy@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1), 'Grupa testowa', 0 );
 call zaproszenieDoProjektu( 'jtestowy@test.pl', 'smaster@test.pl', (select idProjekty from Projekty where uzytkownikEmail = 'jtestowy@test.pl' limit 1));
 call przyjmijZaproszenieDoProjektu( 'smaster@test.pl', (select token from ProjektyZaproszenia where uzytkownikEmail = 'smaster@test.pl') );
+call dodajWpisDoDziennikaWydarzen( 'http://testowa.sciezka.pl', 'Testowy opis', 'Testowy StackTrace' );
+call pobierzDziennikWydarzen();
 /* DANE TESTOWE */
