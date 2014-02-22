@@ -9,7 +9,8 @@ and open the template in the editor.
 */
 
 body{
-   background: none;
+   /*background: none;*/
+   background: #F5F5F5;
 }
 
 .ImageBox { 
@@ -201,5 +202,17 @@ a.FrontForgotPassword{
 }
 
 .Register .FrontLogInForm{
-   width: 80%;
+   width: 50%;
+}
+
+
+.Register .FrontMainContent{
+   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+}
+
+.Register .FrontFooter{
+   position: absolute;
+   top: 100%;
+   left: 0;
+   right: 0;
 }
