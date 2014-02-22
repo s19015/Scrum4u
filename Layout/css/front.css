@@ -39,6 +39,8 @@ body{
    margin: 0 auto;
 }
 
+.f-nav{ z-index: 9999; position: fixed; left: 0; top: 0; width: 100%;} /* this make our menu fixed top */
+
 .FrontMenu{
    opacity: 1;
    background: #0866C6;
@@ -187,4 +189,17 @@ a.FrontForgotPassword{
 }
 .FrontHelloSingIn a{
    transition: all 0.2s ease-out 0s;
+}
+
+.Register .ImageBox{
+   height: 180px;
+}
+
+.Register .FrontHelloContent{
+   padding-top: 18px;
+   width: auto;
+}
+
+.Register .FrontLogInForm{
+   width: 80%;
 }

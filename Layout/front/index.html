@@ -10,9 +10,21 @@
       <script type="text/javascript" src ="../js/bootstrap.min.js"></script>
       <script type="text/javascript" src ="../js/script.js"></script>
       
-      <style>
+      <script type="text/javascript">
+         jQuery("document").ready(function($){
 
-      </style>
+             var nav = $('.FrontMenu');
+
+             $(window).scroll(function () {
+                 if ($(this).scrollTop() > 480) {
+                     nav.addClass("f-nav");
+                 } else {
+                     nav.removeClass("f-nav");
+                 }
+             });
+
+         });
+      </script>
       
    </head>
    <body>
@@ -45,7 +57,7 @@
                   </form>
                   
                   <div class="FrontHelloSingIn">
-                     <span>Nie masz konta?</span>&nbsp;<a href="#">Zarejestruj się!</a>
+                     <span>Nie masz konta?</span>&nbsp;<a href="register.html">Zarejestruj się!</a>
                   </div>
                   
                </div>
