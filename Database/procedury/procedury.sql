@@ -25,6 +25,10 @@ begin
 insert into RejestracjaTokeny (uzytkownikEmail, token)
 values (uzytkownikEmail, cast(md5(rand()) as char(40) ));
 
+SELECT LAST_INSERT_ID() as Token;
+
+/* PROCEDURA POWINNA ZWRÓCIĆ FALSE W PRZYPADKU BŁĘDU? */
+
 end//
 delimiter ;
 
@@ -206,13 +210,13 @@ begin
 declare idProjektu bool default 0; 
 
 set idProjektu = ( select idProjekty from ProjektyZaproszenia where uzytkownikEmail = inUzytkownikEmail and token = inToken and status = 0 );
-select idProjektu; /*
+
 
 if idProjektu is not null then #token poprawny
 	begin
-		update ProjektyZaproszenia set status = 1 where uzytkownikEmail = inUzytkownikEmail and token = inToken and status = 0;
-		call dodajUzytkownikaDoProjektu( inUzytkownikEmail, idProjektu );
-		
+		#update ProjektyZaproszenia set status = 1 where uzytkownikEmail = inUzytkownikEmail and token = inToken and status = 0;
+		#call dodajUzytkownikaDoProjektu( inUzytkownikEmail, idProjektu );
+		select idProjektu;
 	end;
 else
 	begin 
@@ -221,7 +225,7 @@ else
 end if;
 
 select status as statusAktywacji from ProjektyZaproszenia where uzytkownikEmail = inUzytkownikEmail and token = inToken;
-*/
+
 end//
 delimiter ;
 
@@ -252,6 +256,26 @@ select idDziennikWydarzen, dziennikData, dziennikZrodlo, dziennikOpis, dziennikS
 end//
 delimiter ;
 
+drop procedure if exists dodajDoKolejkiMaili;
+delimiter //
+create procedure dodajDoKolejkiMaili( in inEmailOd varchar(50), in inEmailDo varchar(50), in inEmailTemat varchar(150), in inEmailTresc text, in inEmailWersja varchar(10), in inEmailWyslany bool, in inEmailDataKolejki timestamp, in inEmailDataWyslania timestamp)
+begin
+insert into KolejkaEmaili ( emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailWyslany, emailDataKolejki, emailDataWyslania )
+values ( inEmailOd, inEmailDo, inEmailTemat, inEmailTresc, inEmailWersja, inEmailWyslany, inEmailDataKolejki, inEmailDataWyslania );
+end//
+delimiter ;
+
+drop procedure if exists pobierzNiewyslaneMaileZKolejki;
+delimiter //
+ 
+create procedure pobierzNiewyslaneMaileZKolejki(in inDataOd timestamp)
+begin
+select idKolejkaEmaili, emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailWyslany, emailDataKolejki, emailDataWyslania
+from KolejkaEmaili
+where emailDataKolejki >= inDataOd;
+end//
+delimiter ;
+
 /* DEFINICJA PROCEDUR */
 
 /* DANE TESTOWE */
@@ -265,6 +289,7 @@ truncate table ProjektyZaproszenia;
 truncate table Projekty;
 truncate table ProjektyUzytkownicy;
 truncate table Uzytkownik;
+truncate table KolejkaEmaili;
 SET SQL_SAFE_UPDATES=1;
 
 call rejestracjaUzytkownika( 'jtestowy@test.pl', 'Jan', 'Testowy', '20cf0e0caf95a5464ae77ae124829a7a3df03d141d82f532ab75ce6aa17cbe8c', CURRENT_TIMESTAMP );
@@ -281,4 +306,6 @@ call zaproszenieDoProjektu( 'jtestowy@test.pl', 'smaster@test.pl', (select idPro
 call przyjmijZaproszenieDoProjektu( 'smaster@test.pl', (select token from ProjektyZaproszenia where uzytkownikEmail = 'smaster@test.pl') );
 call dodajWpisDoDziennikaWydarzen( 'http://testowa.sciezka.pl', 'Testowy opis', 'Testowy StackTrace' );
 call pobierzDziennikWydarzen();
+call dodajDoKolejkiMaili( 'testOd@test.pl', 'testDo@test.pl', 'test temat', 'test treść', 'html', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP );
+call pobierzNiewyslaneMaileZKolejki( '2014-01-01' );
 /* DANE TESTOWE */
