@@ -258,16 +258,15 @@ delimiter ;
 
 drop procedure if exists dodajDoKolejkiMaili;
 delimiter //
-create procedure dodajDoKolejkiMaili( in inEmailOd varchar(50), in inEmailDo varchar(50), in inEmailTemat varchar(150), in inEmailTresc text, in inEmailWersja varchar(10), in inEmailWyslany bool, in inEmailDataKolejki timestamp, in inEmailDataWyslania timestamp)
+create procedure dodajDoKolejkiMaili( in inEmailOd varchar(50), in inEmailDo varchar(50), in inEmailTemat varchar(150), in inEmailTresc text, in inEmailWersja varchar(10), in inEmailDataKolejki timestamp)
 begin
-insert into KolejkaEmaili ( emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailWyslany, emailDataKolejki, emailDataWyslania )
-values ( inEmailOd, inEmailDo, inEmailTemat, inEmailTresc, inEmailWersja, inEmailWyslany, inEmailDataKolejki, inEmailDataWyslania );
+insert into KolejkaEmaili ( emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailDataKolejki )
+values ( inEmailOd, inEmailDo, inEmailTemat, inEmailTresc, inEmailWersja, inEmailDataKolejki );
 end//
 delimiter ;
 
 drop procedure if exists pobierzNiewyslaneMaileZKolejki;
 delimiter //
- 
 create procedure pobierzNiewyslaneMaileZKolejki(in inDataOd timestamp)
 begin
 select idKolejkaEmaili, emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailWyslany, emailDataKolejki, emailDataWyslania
@@ -275,6 +274,24 @@ from KolejkaEmaili
 where emailDataKolejki >= inDataOd;
 end//
 delimiter ;
+
+drop procedure if exists potwierdzWyslanieEmailaZKolejki;
+delimiter //
+create procedure potwierdzWyslanieEmailaZKolejki( in inIdKolejkaEmaili int unsigned)
+begin
+update KolejkaEmaili set emailWyslany = 1, emailDataWyslania = CURRENT_TIMESTAMP
+where idKolejkaEmaili = inIdKolejkaEmaili;
+end//
+delimiter ;
+
+drop procedure if exists czyUzytkownikIstnieje;
+delimiter //
+create procedure czyUzytkownikIstnieje( in inEmailUzytkownika varchar(50))
+begin
+select count(*) as czyUzytkownikIstnieje from Uzytkownik where uzytkownikEmail = trim(inEmailUzytkownika);
+end//
+delimiter ;
+
 
 /* DEFINICJA PROCEDUR */
 
@@ -306,6 +323,8 @@ call zaproszenieDoProjektu( 'jtestowy@test.pl', 'smaster@test.pl', (select idPro
 call przyjmijZaproszenieDoProjektu( 'smaster@test.pl', (select token from ProjektyZaproszenia where uzytkownikEmail = 'smaster@test.pl') );
 call dodajWpisDoDziennikaWydarzen( 'http://testowa.sciezka.pl', 'Testowy opis', 'Testowy StackTrace' );
 call pobierzDziennikWydarzen();
-call dodajDoKolejkiMaili( 'testOd@test.pl', 'testDo@test.pl', 'test temat', 'test treść', 'html', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP );
+call dodajDoKolejkiMaili( 'testOd@test.pl', 'testDo@test.pl', 'test temat', 'test treść', 'html', CURRENT_TIMESTAMP );
 call pobierzNiewyslaneMaileZKolejki( '2014-01-01' );
+call czyUzytkownikIstnieje( 'jtestowy@test.pl' );
+call potwierdzWyslanieEmailaZKolejki( 1 );
 /* DANE TESTOWE */
