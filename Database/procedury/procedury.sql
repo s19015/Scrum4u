@@ -104,7 +104,17 @@ drop procedure if exists logowanie;
 delimiter //
 create procedure logowanie( in inUzytkownikEmail varchar(50), in inHaslo varchar(256))
 begin
-select count(*) as statusLogowania from Uzytkownik where uzytkownikEmail = inUzytkownikEmail and haslo = inHaslo;
+declare czyAktywne bool default 0; #domyslnie zakladamy ze konto jest aktywne
+set czyAktywne = czyKontoAktywneFunc(inUzytkownikEmail);
+if czyAktywne=0 then
+	begin
+		select 0 as statusLogowania;
+	end;
+else
+	begin
+		select count(*) as statusLogowania from Uzytkownik where uzytkownikEmail = inUzytkownikEmail and haslo = inHaslo;
+	end;
+end if;
 end//
 delimiter ;
 
@@ -271,7 +281,7 @@ create procedure pobierzNiewyslaneMaileZKolejki(in inDataOd timestamp)
 begin
 select idKolejkaEmaili, emailOd, emailDo, emailTemat, emailTresc, emailWersja, emailWyslany, emailDataKolejki, emailDataWyslania
 from KolejkaEmaili
-where emailDataKolejki >= inDataOd;
+where emailDataKolejki >= inDataOd and emailWyslany = 0;
 end//
 delimiter ;
 
@@ -292,6 +302,40 @@ select count(*) as czyUzytkownikIstnieje from Uzytkownik where uzytkownikEmail =
 end//
 delimiter ;
 
+drop procedure if exists pobierzTokenResetHasla;
+delimiter //
+create procedure pobierzTokenResetHasla( in inEmailUzytkownika varchar(50))
+begin
+
+select token from ResetowanieHasla where uzytkownikEmail = inEmailUzytkownika and czyAktywny = 1;
+
+end//
+delimiter ;
+
+drop procedure if exists utworzTokenResetHasla;
+delimiter //
+create procedure utworzTokenResetHasla( in inEmailUzytkownika varchar(50) )
+begin
+
+insert into ResetowanieHasla( uzytkownikEmail, token )
+values ( inEmailUzytkownika, cast(md5(rand()) as char(40) )) ;
+
+call pobierzTokenResetHasla( inEmailUzytkownika );
+
+end//
+delimiter ;
+
+
+drop procedure if exists resetujHaslo;
+delimiter //
+create procedure resetujHaslo( in inEmailUzytkownika varchar(50), in inToken char(40), in inNoweHaslo varchar(256) )
+begin
+	update Uzytkownik set haslo = inNoweHaslo
+	where uzytkownikEmail = inEmailUzytkownika and uzytkownikEmail = ( select uzytkownikEmail from ResetowanieHasla where uzytkownikEmail = inEmailUzytkownika and token = inToken and czyAktywny = 1 );
+
+	update ResetowanieHasla set czyAktywny = 0 where uzytkownikEmail = inEmailUzytkownika and token = inToken;
+end//
+delimiter ;
 
 /* DEFINICJA PROCEDUR */
 
@@ -305,8 +349,11 @@ truncate table GrupyRobocze;
 truncate table ProjektyZaproszenia;
 truncate table Projekty;
 truncate table ProjektyUzytkownicy;
+truncate table ResetowanieHasla;
+
 truncate table Uzytkownik;
 truncate table KolejkaEmaili;
+
 SET SQL_SAFE_UPDATES=1;
 
 call rejestracjaUzytkownika( 'jtestowy@test.pl', 'Jan', 'Testowy', '20cf0e0caf95a5464ae77ae124829a7a3df03d141d82f532ab75ce6aa17cbe8c', CURRENT_TIMESTAMP );
@@ -327,4 +374,6 @@ call dodajDoKolejkiMaili( 'testOd@test.pl', 'testDo@test.pl', 'test temat', 'tes
 call pobierzNiewyslaneMaileZKolejki( '2014-01-01' );
 call czyUzytkownikIstnieje( 'jtestowy@test.pl' );
 call potwierdzWyslanieEmailaZKolejki( 1 );
+call utworzTokenResetHasla( 'jtestowy@test.pl' );
+call resetujHaslo( 'jtestowy@test.pl', ( select token from ResetowanieHasla where uzytkownikEmail = 'jtestowy@test.pl' and czyAktywny = 1 ), '49673d1fa83a4adc62877657f6ce0adaff67be8b92889e59bfd4d7f38027ed1a' ); #nowehaslo
 /* DANE TESTOWE */
