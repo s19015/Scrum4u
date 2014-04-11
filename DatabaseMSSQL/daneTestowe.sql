@@ -9,4 +9,9 @@ begin
 --exec listaGrupRoboczych @email_uzytkownika = 'jtestowy@test.pl';
 --exec logowanie @email_uzytkownika = 'jtestowy@test.pl', @haslo = '20cf0e0caf95a5464ae77ae124829a7a3df03d141d82f532ab75ce6aa17cbe8c';
 --exec profilUzytkownika @email_uzytkownika = 'jtestowy@test.pl';
+--exec rejestracjaUzytkownika @email_uzytkownika = 'stestowy@test.pl', @imie ='Stefan', @nazwisko = 'Testowy', @haslo = '20cf0e0caf95a5464ae77ae124829a7a3df03d141d82f532ab75ce6aa17cbe8c';
+--exec aktywacjaKonta @email_uzytkownika = 'stestowy@test.pl', @token ='107EA93CE85BBE1F7325CC48799BE551';
+DECLARE @id_grupy_roboczej INT;
+SET @id_grupy_roboczej = ( SELECT id_grupy_robocze FROM GrupyRobocze WHERE uzytkownicy_email = 'jtestowy@test.pl' );
+exec utworzProjekt @email_uzytkownika = 'jtestowy@test.pl', @id_grupy_robocze = @id_grupy_roboczej, @nazwa_projektu = 'Projekt Testowy', @scrum_master_id = 'stestowy@test.pl';
 end;
