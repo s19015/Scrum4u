@@ -6,7 +6,7 @@
     <asp:Panel runat="server" ID="formLogowaniePanel" DefaultButton="btnZaloguj" ValidationGroup="formLogowanie">
         <p>Jeśli nie masz konta możesz się <a href="/Rejestracja.aspx">zarejestrować</a></p>
         <div class="form-group">
-            <asp:TextBox ValidationGroup="formLogowanie" runat="server" ID="txtEmail" MaxLength="100" placeholder="Email" TextMode="Email"></asp:TextBox>
+            <asp:TextBox ValidationGroup="formLogowanie" runat="server" ID="txtEmail" MaxLength="100" placeholder="Email"></asp:TextBox>
             <asp:RequiredFieldValidator ValidationGroup="formLogowanie" runat="server" ID="RequiredFieldValidator2" ControlToValidate="txtEmail" Display="Dynamic" ErrorMessage="Proszę wpisać adres e-mail."></asp:RequiredFieldValidator>
         </div>
         <div class="form-group">
@@ -20,7 +20,7 @@
     <asp:LinkButton runat="server" ID="lnkNiePamietamHasla" Font-Underline="True" Text="Nie pamiętam hasła" OnClick="lnkNiePamietamHasla_Click"> </asp:LinkButton>
     <asp:Panel runat="server" ID="panelHasla" DefaultButton="btnWyslijPrzypomnienie" Visible="false">
         <div class="form-group">
-            <asp:TextBox ValidationGroup="formHaslo" runat="server" ID="txtEmailPrzypomnienie" MaxLength="100" placeholder="Email" TextMode="Email"></asp:TextBox>
+            <asp:TextBox ValidationGroup="formHaslo" runat="server" ID="txtEmailPrzypomnienie" MaxLength="100" placeholder="Email"></asp:TextBox>
             <asp:RequiredFieldValidator ValidationGroup="formHaslo" runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtEmailPrzypomnienie" Display="Dynamic" ErrorMessage="Proszę wpisać adres e-mail."></asp:RequiredFieldValidator>
         </div>
         <div class="form-group">

@@ -13,7 +13,7 @@
             <asp:RequiredFieldValidator ValidationGroup="formRejestracja" runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtNazwisko" Display="Dynamic" ErrorMessage="Proszę wpisać nazwisko."></asp:RequiredFieldValidator>
         </div>
         <div class="form-group">
-            <asp:TextBox ValidationGroup="formRejestracja" runat="server" ID="txtEmail" MaxLength="100" placeholder="Email" TextMode="Email"></asp:TextBox>
+            <asp:TextBox ValidationGroup="formRejestracja" runat="server" ID="txtEmail" MaxLength="100" placeholder="Email" ></asp:TextBox>
             <asp:RequiredFieldValidator ValidationGroup="formRejestracja" runat="server" ID="RequiredFieldValidator2" ControlToValidate="txtEmail" Display="Dynamic" ErrorMessage="Proszę wpisać adres e-mail."></asp:RequiredFieldValidator>
         </div>
         <div class="form-group">

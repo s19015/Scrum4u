@@ -1,0 +1,218 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2013-12-29, 15:14:21
+    Author     : Bart
+*/
+
+body{
+   /*background: none;*/
+   background: #F5F5F5;
+}
+
+.ImageBox { 
+   background: url(../images/background1.jpg) no-repeat center center; 
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
+
+.FrontHeader{
+   height: 40px;
+   background: #ffffff;
+   width: 100%;
+   color: #000000;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+   padding-left: 200px;
+   padding-top: 9px;
+}
+
+.ImageBox{
+   height: 480px;
+}
+
+.FrontContent{
+   width: 960px;
+   margin: 0 auto;
+}
+
+.f-nav{ z-index: 9999; position: fixed; left: 0; top: 0; width: 100%;} /* this make our menu fixed top */
+
+.FrontMenu{
+   opacity: 1;
+   background: #0866C6;
+   width: 100%;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+   margin-bottom: 10px;
+}
+
+.FrontMenuContent {
+   font-size: 18px;
+   color: #ffffff;
+   text-align: center;
+}
+
+.FrontMenuContent ul{
+   list-style: none outside none;
+   padding: 0px;
+   margin: 0px;
+}
+
+.FrontMenuContent li {
+   display: inline-block;
+   padding: 10px;
+}
+
+.FrontMenuContent li a{
+   color: #ffffff;
+   opacity: 0.5;
+}
+
+.FrontMenuContent li a{
+   transition: all 0.2s ease-out 0s;
+}
+
+.FrontMenuContent li a:hover{
+   opacity: 1;
+   text-decoration: none;
+}
+
+.FrontMainContent{
+   background: #F5F5F5;
+   padding-bottom: 25px;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.FrontMainArrow{
+   border-top: 1px solid #D6D6D6;
+   text-align: center;
+   margin-bottom: 10px;
+   text-shadow: 0px 2px 3px rgba(150, 150, 150, 1);
+}
+
+.FrontMainArrow .icon-arrow{
+   border-top: 1px solid #D6D6D6;
+   padding: 3px;
+   text-align: center;
+   width: 40px;
+   height: 24px;
+   background: #D6D6D6;
+   -webkit-border-bottom-right-radius: 20px;
+   -webkit-border-bottom-left-radius: 20px;
+   -moz-border-radius-bottomright: 20px;
+   -moz-border-radius-bottomleft: 20px;
+   border-bottom-right-radius: 20px;
+   border-bottom-left-radius: 20px;
+}
+
+.FrontFooterArrow {
+   float: right;
+}
+
+.FrontFooterArrow .icon-arrow-top{
+   border-top: 1px solid #D6D6D6;
+   padding: 3px;
+   text-align: center;
+   width: 40px;
+   height: 24px;
+   background: #D6D6D6;
+   -webkit-border-top-right-radius: 20px;
+   -webkit-border-top-left-radius: 20px;
+   -moz-border-radius-topright: 20px;
+   -moz-border-radius-topleft: 20px;
+   border-top-right-radius: 20px;
+   border-top-left-radius: 20px;
+   
+}
+
+.FrontMainArrow a, .FrontFooterArrow a{
+   color: #000000;
+   opacity: 0.8;
+}
+
+.FrontMainArrow a:hover, .FrontFooterArrow a:hover{
+   opacity: 0.5;
+   text-decoration: none;
+}
+
+.FrontMainArrow a, .FrontFooterArrow a{
+   transition: all 0.2s ease-out 0s;
+}
+
+.FrontFooter{
+   padding-top: 30px;
+   padding-bottom: 30px;
+   background: #515151;
+   color: #F5F5F5;
+   
+}
+
+.FrontHelloContent{
+   padding-top: 130px;
+   width: 281px;
+   float: right;
+}
+
+a.FrontForgotPassword{
+   color: #000000;
+   opacity: 0.7;
+}
+
+a.FrontForgotPassword:hover{
+   text-decoration: none;
+   opacity: 1;
+}
+
+a.FrontForgotPassword{
+   transition: all 0.2s ease-out 0s;
+}
+
+.white{
+   color: #ffffff;
+}
+
+.FrontHelloSingIn{
+   text-align: center;
+   border-top: 1px solid #D6D6D6;
+}
+
+.FrontHelloSingIn a, .FrontHelloSingIn span{
+   color: #000000;
+   opacity: 0.7; 
+}
+.FrontHelloSingIn a:hover{
+   text-decoration: none;
+   opacity: 1;
+}
+.FrontHelloSingIn a{
+   transition: all 0.2s ease-out 0s;
+}
+
+.Register .ImageBox{
+   height: 180px;
+}
+
+.Register .FrontHelloContent{
+   padding-top: 18px;
+   width: auto;
+}
+
+.Register .FrontLogInForm{
+   width: 50%;
+}
+
+
+.Register .FrontMainContent{
+   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+}
+
+.Register .FrontFooter{
+   position: absolute;
+   top: 100%;
+   left: 0;
+   right: 0;
+}

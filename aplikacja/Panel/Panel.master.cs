@@ -9,9 +9,9 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!HttpContext.Current.User.Identity.IsAuthenticated)
+        /*if (!HttpContext.Current.User.Identity.IsAuthenticated)
         {
             System.Web.Security.FormsAuthentication.RedirectToLoginPage();
-        }
+        }*/
     }
 }
