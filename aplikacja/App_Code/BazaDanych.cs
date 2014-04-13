@@ -1,8 +1,8 @@
-﻿using MySql.Data.MySqlClient;
-using Scrum4u;
+﻿using Scrum4u;
 using Scrum4u.Aplikacja;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
@@ -43,11 +43,11 @@ public static class BazaDanych
         internal static bool SprawdzCzyIstnieje(string email)
         {
             bool dodano = false;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("czyUzytkownikIstnieje", con);
+                    SqlCommand cmd = new SqlCommand("czyUzytkownikIstnieje", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inEmailUzytkownika", email);
@@ -65,11 +65,11 @@ public static class BazaDanych
         internal static string DodajNowego(Scrum4u.Uzytkownik u)
         {
             string token = "false";
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("rejestracjaUzytkownika", con);
+                    SqlCommand cmd = new SqlCommand("rejestracjaUzytkownika", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     
                     cmd.Parameters.AddWithValue("uzytkownikEmail", u.UzytkownikEmail);
@@ -80,12 +80,12 @@ public static class BazaDanych
 
                     cmd.Connection.Open();
                     
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            if (!String.IsNullOrEmpty(reader.GetString(0)))
-                                token = reader.GetString(0);
+                            if (!String.IsNullOrEmpty(reader[0].ToString()))
+                                token = reader[0].ToString();
                         }
                     }
                     cmd.Connection.Close();
@@ -101,11 +101,11 @@ public static class BazaDanych
         internal static bool AktywujUzytkownika(string email, string token)
         {
             bool dodano = false;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("aktywacjaKonta", con);
+                    SqlCommand cmd = new SqlCommand("aktywacjaKonta", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
@@ -113,11 +113,11 @@ public static class BazaDanych
 
                     cmd.Connection.Open();
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            if (!String.IsNullOrEmpty(reader.GetString(0)))
+                            if (!String.IsNullOrEmpty(reader[0].ToString()))
                                 dodano = reader.GetBoolean(0);
                         }
                     }
@@ -134,11 +134,11 @@ public static class BazaDanych
         internal static bool ZalogujUzytkownika(string email, string haslo)
         {
             bool dodano = false;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("logowanie", con);
+                    SqlCommand cmd = new SqlCommand("logowanie", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
@@ -157,22 +157,22 @@ public static class BazaDanych
         internal static string PobierzTokenRejestracyjny(string email)
         {
             string token = "false";
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("rejestracjaUzytkownika", con);
+                    SqlCommand cmd = new SqlCommand("rejestracjaUzytkownika", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("uzytkownikEmail", email);
 
                     cmd.Connection.Open();
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            if (!String.IsNullOrEmpty(reader.GetString(0)))
+                            if (!String.IsNullOrEmpty(reader[0].ToString()))
                                 token = reader.GetString(0);
                         }
                     }
@@ -189,27 +189,27 @@ public static class BazaDanych
         internal static Scrum4u.Uzytkownik PobierzUzytkownika(string email)
         {
             Uzytkownik u = null;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("pobierzProfil", con);
+                    SqlCommand cmd = new SqlCommand("pobierzProfil", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
 
                     cmd.Connection.Open();
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows) u = new Uzytkownik();
                         while (reader.Read())
                         {
-                            if (!String.IsNullOrEmpty(reader.GetString(0)))
+                            if (!String.IsNullOrEmpty(reader[0].ToString()))
                             {
                                 u.UzytkownikEmail = email;
-                                u.UzytkownikImie = reader.GetString("imie");
-                                u.UzytkownikNazwisko = reader.GetString("nazwisko");
+                                u.UzytkownikImie = reader["imie"].ToString(); //imie
+                                u.UzytkownikNazwisko = reader["nazwisko"].ToString(); // nazwisko
                             }
                         }
                     }
@@ -234,11 +234,11 @@ public static class BazaDanych
         internal static bool Loguj(Zdarzenie z)
         {
             int dodano = 0;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("dodajWpisDoDziennikaWydarzen", con);
+                    SqlCommand cmd = new SqlCommand("dodajWpisDoDziennikaWydarzen", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inDziennikZrodlo", Truncate(z.ZdarzenieZrodlo,200));
@@ -266,11 +266,11 @@ public static class BazaDanych
         internal static bool DodajEmailaDoKolejki(Email e)
         {
             int dodano = 0;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("dodajDoKolejkiMaili", con);
+                    SqlCommand cmd = new SqlCommand("dodajDoKolejkiMaili", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inEmailOd", Truncate((String.IsNullOrEmpty(e.EmailOd)?"noreply@scrum4u.pl":e.EmailOd), 50));
@@ -303,32 +303,32 @@ public static class BazaDanych
             List<Email> listaEmaili = null;
             Email e = null;
 
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    MySqlCommand cmd = new MySqlCommand("pobierzNiewyslaneMaileZKolejki", con);
+                    SqlCommand cmd = new SqlCommand("pobierzNiewyslaneMaileZKolejki", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("inDataOd", odKiedy);
 
                     cmd.Connection.Open();
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows) listaEmaili = new List<Email>();
                         while (reader.Read())
                         {
                             e = new Email();
 
-                            e.EmailID = reader.GetInt32("idKolejkaEmaili");
-                            e.EmailOd = reader.GetString("emailOd");
-                            e.EmailDo = reader.GetString("emailDo");
-                            e.EmailTemat = reader.GetString("emailTemat");
-                            e.EmailTresc = HttpContext.Current.Server.HtmlDecode(reader.GetString("emailTresc"));
-                            e.EmailWersja = reader.GetString("emailWersja");
-                            e.EmailWyslany = reader.GetBoolean("emailWyslany");
-                            e.EmailDataKolejki = reader.GetDateTime("emailDataKolejki");
+                            e.EmailID = int.Parse(reader["idKolejkaEmaili"].ToString());
+                            e.EmailOd = reader["emailOd"].ToString();
+                            e.EmailDo = reader["emailDo"].ToString();
+                            e.EmailTemat = reader["emailTemat"].ToString();
+                            e.EmailTresc = HttpContext.Current.Server.HtmlDecode(reader["emailTresc"].ToString());
+                            e.EmailWersja = reader["emailWersja"].ToString();
+                            e.EmailWyslany = bool.Parse(reader["emailWyslany"].ToString());
+                            e.EmailDataKolejki = DateTime.Parse(reader["emailDataKolejki"].ToString());
 
                             listaEmaili.Add(e);
                         }
@@ -346,13 +346,13 @@ public static class BazaDanych
         internal static int ZapiszWyslaneEmaileDoKolejki(List<Email> listaWyslanych)
         {
             int zapisano = 0;
-            using (MySqlConnection con = new MySqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 foreach (Email e in listaWyslanych)
                 {
                     try
                     {
-                        MySqlCommand cmd = new MySqlCommand("potwierdzWyslanieEmailaZKolejki", con);
+                        SqlCommand cmd = new SqlCommand("potwierdzWyslanieEmailaZKolejki", con);
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("inIdKolejkaEmaili", e.EmailID);
