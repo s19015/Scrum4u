@@ -12,8 +12,8 @@ using System.Web;
 /// </summary>
 public static class BazaDanych
 {
-    private static string connectionString = "Database=bb1511_scrum4u;Data Source=s73.vdl.pl;User Id=bb1511_scrum4u;Password=u4murcs";
-    private static string kluczHasla = "Kluczyyk$@!";
+    private static string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["Scrum4u"].ConnectionString;
+    private static string kluczHasla = System.Configuration.ConfigurationManager.AppSettings["Salt"];
 
     private static string Truncate(string value, int maxLength)
         {
