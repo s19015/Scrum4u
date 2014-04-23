@@ -16,14 +16,14 @@ public static class BazaDanych
     private static string kluczHasla = System.Configuration.ConfigurationManager.AppSettings["Salt"];
 
     private static string Truncate(string value, int maxLength)
-        {
-            value = value.Replace("'", "''");
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
-        }
+    {
+        value = value.Replace("'", "''");
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+    }
     public static class UzytkownikProvider
     {
- 
-        internal static string  HashujHasloSHA256(string tresc)
+
+        internal static string HashujHasloSHA256(string tresc)
         {
             if (tresc.Length == 64 || String.IsNullOrEmpty(tresc)) return tresc;
             tresc = tresc + kluczHasla;
@@ -42,24 +42,25 @@ public static class BazaDanych
 
         internal static bool SprawdzCzyIstnieje(string email)
         {
-            bool dodano = false;
+            bool czy_istnieje = false;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("czyUzytkownikIstnieje", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand("SELECT count(*) FROM Uzytkownicy WHERE uzytkownicy_email = @email_uzytkownika", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-                    cmd.Parameters.AddWithValue("inEmailUzytkownika", email);
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
-                    dodano = cmd.ExecuteScalar() is string;
+                    czy_istnieje = cmd.ExecuteScalar() is string;
+                    cmd.Connection.Close();
                 }
                 catch (Exception ex)
                 {
                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 93", ex.StackTrace));
                 }
             }
-            return dodano;
+            return czy_istnieje;
         }
 
         internal static string DodajNowego(Scrum4u.Uzytkownik u)
@@ -69,30 +70,48 @@ public static class BazaDanych
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("rejestracjaUzytkownika", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    
-                    cmd.Parameters.AddWithValue("uzytkownikEmail", u.UzytkownikEmail);
-                    cmd.Parameters.AddWithValue("imie", Truncate(u.UzytkownikImie, 50));
-                    cmd.Parameters.AddWithValue("nazwisko", Truncate(u.UzytkownikNazwisko, 50));
-                    cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(u.UzytkownikHaslo));
-                    cmd.Parameters.AddWithValue("dataRejestracji", DateTime.Now);
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Uzytkownicy (uzytkownicy_email, imie, nazwisko, haslo) 
+                    VALUES ( @email_uzytkownika, @imie, @nazwisko, @haslo );", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
+                    cmd.Parameters.AddWithValue("@imie", Truncate(u.UzytkownikImie, 50));
+                    cmd.Parameters.AddWithValue("@nazwisko", Truncate(u.UzytkownikNazwisko, 50));
+                    cmd.Parameters.AddWithValue("@haslo", HashujHasloSHA256(u.UzytkownikHaslo));
+                    //cmd.Parameters.AddWithValue("dataRejestracji", DateTime.Now);
 
                     cmd.Connection.Open();
-                    
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (!String.IsNullOrEmpty(reader[0].ToString()))
-                                token = reader[0].ToString();
-                        }
-                    }
+                    int dodano = cmd.ExecuteNonQuery();
                     cmd.Connection.Close();
+                    if (dodano > 0) {
+
+                        SqlCommand cmd2 = new SqlCommand(@"INSERT INTO TokenyRejestracyjne (uzytkownicy_email, token)
+VALUES ( @email_uzytkownika, CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2));
+
+SELECT token FROM TokenyRejestracyjne
+WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
+                        cmd2.CommandType = System.Data.CommandType.Text;
+                        cmd2.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
+                        //int dodano_token = cmd2.ExecuteNonQuery();
+
+                        using (SqlDataReader reader = cmd2.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!String.IsNullOrEmpty(reader["token"].ToString()))
+                                    token = reader["token"].ToString();
+                            }
+                        }
+                                                           
+                    }
+                    else { token = "false"; }
+
+                    
+                    
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 60", ex.StackTrace));
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 97", ex.StackTrace));
                 }
             }
             return token;
@@ -241,12 +260,12 @@ public static class BazaDanych
                     SqlCommand cmd = new SqlCommand("dodajWpisDoDziennikaWydarzen", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("inDziennikZrodlo", Truncate(z.ZdarzenieZrodlo,200));
+                    cmd.Parameters.AddWithValue("inDziennikZrodlo", Truncate(z.ZdarzenieZrodlo, 200));
                     cmd.Parameters.AddWithValue("inDziennikOpis", z.ZdarzenieOpis);
                     cmd.Parameters.AddWithValue("inDziennikStackTrace", z.ZdarzenieStackTrace);
 
                     cmd.Connection.Open();
-                    
+
                     dodano = cmd.ExecuteNonQuery();
                     cmd.Connection.Close();
                 }
@@ -273,9 +292,9 @@ public static class BazaDanych
                     SqlCommand cmd = new SqlCommand("dodajDoKolejkiMaili", con);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("inEmailOd", Truncate((String.IsNullOrEmpty(e.EmailOd)?"noreply@scrum4u.pl":e.EmailOd), 50));
-                    cmd.Parameters.AddWithValue("inEmailDo", Truncate(e.EmailDo,50));
-                    cmd.Parameters.AddWithValue("inEmailTemat", Truncate(e.EmailTemat,150));
+                    cmd.Parameters.AddWithValue("inEmailOd", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
+                    cmd.Parameters.AddWithValue("inEmailDo", Truncate(e.EmailDo, 50));
+                    cmd.Parameters.AddWithValue("inEmailTemat", Truncate(e.EmailTemat, 150));
                     cmd.Parameters.AddWithValue("inEmailTresc", HttpContext.Current.Server.HtmlEncode(e.EmailTresc));
                     cmd.Parameters.AddWithValue("inEmailWersja", Truncate(e.EmailWersja, 10));
                     cmd.Parameters.AddWithValue("inEmailDataKolejki", DateTime.Now);
