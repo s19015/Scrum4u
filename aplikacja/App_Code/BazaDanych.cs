@@ -47,12 +47,24 @@ public static class BazaDanych
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("SELECT count(*) FROM Uzytkownicy WHERE uzytkownicy_email = @email_uzytkownika", con);
+                    SqlCommand cmd = new SqlCommand("SELECT count(*) as czy_istnieje FROM Uzytkownicy WHERE uzytkownicy_email = @email_uzytkownika", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
-                    czy_istnieje = cmd.ExecuteScalar() is string;
+
+                   
+                   using ( SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                if (!String.IsNullOrEmpty(reader["czy_istnieje"].ToString()))
+                                    czy_istnieje = (bool) reader["czy_istnieje"];
+                            }
+                        }
+
+                    //czy_istnieje = cmd.ExecuteNonQuery() > 0;
+                    //czy_istnieje = cmd.ExecuteScalar() is string;
                     cmd.Connection.Close();
                 }
                 catch (Exception ex)
@@ -257,12 +269,12 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("dodajWpisDoDziennikaWydarzen", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand("insert into DziennikWydarzen (zrodlo, opis, stacktrace ) VALUES (@zrodlo, @opis, @stacktrace);", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-                    cmd.Parameters.AddWithValue("inDziennikZrodlo", Truncate(z.ZdarzenieZrodlo, 200));
-                    cmd.Parameters.AddWithValue("inDziennikOpis", z.ZdarzenieOpis);
-                    cmd.Parameters.AddWithValue("inDziennikStackTrace", z.ZdarzenieStackTrace);
+                    cmd.Parameters.AddWithValue("@zrodlo", Truncate(z.ZdarzenieZrodlo, 200));
+                    cmd.Parameters.AddWithValue("@opis", z.ZdarzenieOpis);
+                    cmd.Parameters.AddWithValue("@stacktrace", z.ZdarzenieStackTrace);
 
                     cmd.Connection.Open();
 
@@ -271,7 +283,7 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
                 }
                 catch (Exception ex)
                 {
-                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 93", ex.StackTrace));
+                    //BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 93", ex.StackTrace));
                 }
             }
             if (dodano > 0) return true;
