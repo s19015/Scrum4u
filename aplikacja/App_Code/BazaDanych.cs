@@ -56,9 +56,9 @@ public static class BazaDanych
                    
                    using ( SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if (reader.HasRows)
+                            while (reader.Read())
                             {
-                                if (!String.IsNullOrEmpty(reader["czy_istnieje"].ToString()))
+                                //if (!String.IsNullOrEmpty(reader["czy_istnieje"].ToString()))
                                     czy_istnieje = (bool) reader["czy_istnieje"];
                             }
                         }
@@ -269,7 +269,7 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("insert into DziennikWydarzen (zrodlo, opis, stacktrace ) VALUES (@zrodlo, @opis, @stacktrace);", con);
+                    SqlCommand cmd = new SqlCommand("insert into DziennikWydarzen (zrodlo, opis, stack_trace ) VALUES (@zrodlo, @opis, @stacktrace);", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
                     cmd.Parameters.AddWithValue("@zrodlo", Truncate(z.ZdarzenieZrodlo, 200));
