@@ -47,24 +47,13 @@ public static class BazaDanych
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("SELECT count(*) as czy_istnieje FROM Uzytkownicy WHERE uzytkownicy_email = @email_uzytkownika", con);
-                    cmd.CommandType = System.Data.CommandType.Text;
+                    SqlCommand cmd = new SqlCommand("SELECT imie FROM Uzytkownicy WHERE uzytkownicy_email = @email_uzytkownika", con);
+
 
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
 
-                   
-                   using ( SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                //if (!String.IsNullOrEmpty(reader["czy_istnieje"].ToString()))
-                                    czy_istnieje = (bool) reader["czy_istnieje"];
-                            }
-                        }
-
-                    //czy_istnieje = cmd.ExecuteNonQuery() > 0;
-                    //czy_istnieje = cmd.ExecuteScalar() is string;
+                    czy_istnieje = cmd.ExecuteScalar() is string;
                     cmd.Connection.Close();
                 }
                 catch (Exception ex)
@@ -94,7 +83,7 @@ public static class BazaDanych
 
                     cmd.Connection.Open();
                     int dodano = cmd.ExecuteNonQuery();
-                    cmd.Connection.Close();
+                    
                     if (dodano > 0) {
 
                         SqlCommand cmd2 = new SqlCommand(@"INSERT INTO TokenyRejestracyjne (uzytkownicy_email, token)
@@ -118,6 +107,7 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
                     }
                     else { token = "false"; }
 
+                    cmd.Connection.Close();
                     
                     
                 }
