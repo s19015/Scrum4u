@@ -258,7 +258,7 @@ namespace Scrum4u
                 try
                 {
                     List<Email> listaWyslanych = new List<Email>();
-                    List<Email> lista = BazaDanych.EmailProvider.PobierzWszystkieNieWyslaneEmaile(DateTime.MinValue);
+                    List<Email> lista = BazaDanych.EmailProvider.PobierzWszystkieNieWyslaneEmaile();
                     if (lista != null)
                     {
                         MailMessage wiadomosc = new MailMessage();

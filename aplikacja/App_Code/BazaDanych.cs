@@ -291,19 +291,39 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("dodajDoKolejkiMaili", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO [Kolejka_Emaili]
+           ([od]
+           ,[do]
+           ,[temat]
+           ,[tresc]
+           ,[wersja]
+           ,[wyslany]
+           ,[data_kolejki]
+           ,[data_wyslania])
+     VALUES
+           (@od
+           ,@do
+           ,@temat
+           ,@tresc
+           ,@wersja
+           ,@wyslany
+           ,@data_kolejki
+           ,@data_wyslania)", con);
+                    
 
-                    cmd.Parameters.AddWithValue("inEmailOd", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
-                    cmd.Parameters.AddWithValue("inEmailDo", Truncate(e.EmailDo, 50));
-                    cmd.Parameters.AddWithValue("inEmailTemat", Truncate(e.EmailTemat, 150));
-                    cmd.Parameters.AddWithValue("inEmailTresc", HttpContext.Current.Server.HtmlEncode(e.EmailTresc));
-                    cmd.Parameters.AddWithValue("inEmailWersja", Truncate(e.EmailWersja, 10));
-                    cmd.Parameters.AddWithValue("inEmailDataKolejki", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@od", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
+                    cmd.Parameters.AddWithValue("@do", Truncate(e.EmailDo, 50));
+                    cmd.Parameters.AddWithValue("@temat", Truncate(e.EmailTemat, 150));
+                    cmd.Parameters.AddWithValue("@tresc", HttpContext.Current.Server.HtmlEncode(e.EmailTresc));
+                    cmd.Parameters.AddWithValue("@wersja", Truncate(e.EmailWersja, 10));
+                    cmd.Parameters.AddWithValue("@wyslany", false);
+                    cmd.Parameters.AddWithValue("@data_kolejki", e.EmailDataKolejki);
+                    cmd.Parameters.AddWithValue("@data_wyslania", new DateTime(2000,1,1));
                     cmd.Connection.Open();
 
                     dodano = cmd.ExecuteNonQuery();
                     cmd.Connection.Close();
+                    Email.WyslijEmaile();
                 }
                 catch (Exception ex)
                 {
@@ -319,7 +339,7 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             throw new NotImplementedException();
         }
 
-        internal static List<Email> PobierzWszystkieNieWyslaneEmaile(DateTime odKiedy)
+        internal static List<Email> PobierzWszystkieNieWyslaneEmaile()
         {
             List<Email> listaEmaili = null;
             Email e = null;
@@ -328,10 +348,18 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("pobierzNiewyslaneMaileZKolejki", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand(@"SELECT [id_kolejka_emaili]
+      ,[od]
+      ,[do]
+      ,[temat]
+      ,[tresc]
+      ,[wersja]
+      ,[wyslany]
+      ,[data_kolejki]
+      ,[data_wyslania]
+  FROM [Kolejka_Emaili]
+  Where wyslany=0", con);
 
-                    cmd.Parameters.AddWithValue("inDataOd", odKiedy);
 
                     cmd.Connection.Open();
 
@@ -342,14 +370,14 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
                         {
                             e = new Email();
 
-                            e.EmailID = int.Parse(reader["idKolejkaEmaili"].ToString());
-                            e.EmailOd = reader["emailOd"].ToString();
-                            e.EmailDo = reader["emailDo"].ToString();
-                            e.EmailTemat = reader["emailTemat"].ToString();
-                            e.EmailTresc = HttpContext.Current.Server.HtmlDecode(reader["emailTresc"].ToString());
-                            e.EmailWersja = reader["emailWersja"].ToString();
-                            e.EmailWyslany = bool.Parse(reader["emailWyslany"].ToString());
-                            e.EmailDataKolejki = DateTime.Parse(reader["emailDataKolejki"].ToString());
+                            e.EmailID = int.Parse(reader["id_kolejka_emaili"].ToString());
+                            e.EmailOd = reader["od"].ToString();
+                            e.EmailDo = reader["do"].ToString();
+                            e.EmailTemat = reader["temat"].ToString();
+                            e.EmailTresc = HttpContext.Current.Server.HtmlDecode(reader["tresc"].ToString());
+                            e.EmailWersja = reader["wersja"].ToString();
+                            e.EmailWyslany = bool.Parse(reader["wyslany"].ToString());
+                            e.EmailDataKolejki = DateTime.Parse(reader["data_kolejki"].ToString());
 
                             listaEmaili.Add(e);
                         }
@@ -373,10 +401,15 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
                 {
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("potwierdzWyslanieEmailaZKolejki", con);
+                        SqlCommand cmd = new SqlCommand(@"UPDATE [Kolejka_Emaili]
+   SET [wyslany] = @wyslany
+
+      ,[data_wyslania] = @data_wyslania
+ WHERE id_kolejka_emaili = @id", con);
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue("inIdKolejkaEmaili", e.EmailID);
+                        cmd.Parameters.AddWithValue("@wyslany", true);
+                        cmd.Parameters.AddWithValue("@id", e.EmailID);
 
                         cmd.Connection.Open();
 
