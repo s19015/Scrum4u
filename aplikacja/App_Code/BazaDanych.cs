@@ -126,22 +126,30 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("aktywacjaKonta", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Uzytkownicy SET is_konto_aktywne = 1
+WHERE uzytkownicy_email in 
+	(SELECT uzytkownicy_email 
+	FROM TokenyRejestracyjne 
+	WHERE uzytkownicy_email = @email_uzytkownika 
+	AND token = @token 
+	AND is_aktywny = 1);", con);
 
-                    cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
                     cmd.Parameters.AddWithValue("token", token);
 
                     cmd.Connection.Open();
+                    dodano = cmd.ExecuteNonQuery() > 0;
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    /*using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             if (!String.IsNullOrEmpty(reader[0].ToString()))
                                 dodano = reader.GetBoolean(0);
                         }
-                    }
+                    }*/
                     cmd.Connection.Close();
                 }
                 catch (Exception ex)
@@ -159,13 +167,15 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("logowanie", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand(@"SELECT count(*) FROM Uzytkownicy
+WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_aktywne = 1;", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-                    cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
-                    cmd.Parameters.AddWithValue("inHaslo", HashujHasloSHA256(haslo));
+                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
+                    cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
                     cmd.Connection.Open();
-                    dodano = cmd.ExecuteScalar() is string;
+                    dodano = cmd.ExecuteScalar() is int;
+                    
                 }
                 catch (Exception ex)
                 {
