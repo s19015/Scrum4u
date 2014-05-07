@@ -18,10 +18,11 @@ public partial class Zaloguj : System.Web.UI.Page
         string email=txtEmail.Text.Replace("'", "''").Trim();
         if(Uzytkownik.Zaloguj(email, txtHaslo.Text))
         {
+            FormsAuthentication.SetAuthCookie(email, false);
+            Session.Add("uzytkownik", Uzytkownik.Pobierz(email));
 
             if (string.IsNullOrEmpty(Request.QueryString["ReturnUrl"]))
             {
-                FormsAuthentication.SetAuthCookie(email, false);
                 Response.Redirect("~/Panel/");
             }
             else

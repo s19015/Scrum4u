@@ -53,9 +53,9 @@
                             <img alt="" src="#">
                         </div>
                         <div class="userinfo">
-                            <h5>Bartłomiej Jańczak
+                            <h5><asp:Literal runat="server" ID="litImieNazwisko"></asp:Literal>
                         
-                                <small>janczakbartek@gmail.com</small>
+                                <small><asp:Literal runat="server" ID="litEmail"></asp:Literal></small>
                             </h5>
                             <ul>
                                 <li>
@@ -65,7 +65,7 @@
                                     <a href="#">Ustawienia konta</a>
                                 </li>
                                 <li>
-                                    <a href="#">Wyloguj</a>
+                                    <asp:LinkButton runat="server" ID="btnWyloguj" Text="Wyloguj" OnClick="btnWyloguj_Click"></asp:LinkButton>
                                 </li>
                             </ul>
                         </div>

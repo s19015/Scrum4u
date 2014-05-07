@@ -58,7 +58,7 @@ namespace Scrum4u
         sb.AppendLine("Jeśli nie Ty rejestrowałeś się w serwisie, to zignoruj tę wiadomość. Nie musisz się wypisywać, ani podejmować dodatkowych akcji.</p>");
         sb.AppendLine();
         sb.AppendLine("<p>Aby dokończyć proces rejestracji kliknij w poniższy link:<br/>");
-        sb.AppendLine("<a href='http://www.scrum4u.pl/Aktywuj.aspx?e="+this.UzytkownikEmail+"&t="+token+"'>Aktywuj</a></p>");
+        sb.AppendLine("<a href='http://www.scrum4u.pl/Aktywuj.aspx?e=" + PoprawPlusWMailu(this.UzytkownikEmail) + "&t=" + token + "'>Aktywuj</a></p>");
         sb.AppendLine();
         sb.AppendLine();
         sb.AppendLine();
@@ -85,6 +85,11 @@ namespace Scrum4u
            return token;
         }
 
+        private static string PoprawPlusWMailu(string e)
+        {
+            return e.Replace("+", "%2B");
+        }
+
         public static bool SprawdzCzyIstnieje(Uzytkownik u)
         {
             return BazaDanych.UzytkownikProvider.SprawdzCzyIstnieje(u.UzytkownikEmail);
@@ -99,7 +104,10 @@ namespace Scrum4u
         {
             return BazaDanych.UzytkownikProvider.ZalogujUzytkownika(email, haslo);
         }
-
+        public static Uzytkownik Pobierz(string email)
+        {
+            return BazaDanych.UzytkownikProvider.PobierzUzytkownika(email);
+        }
         public static bool WyslijPrzypomnienie(string email)
         {
             bool wyslano = false;
@@ -167,9 +175,32 @@ namespace Scrum4u
     public class GrupaRobocza
     {
         public int GrupaRoboczaID { get; set; }
-        public int GrupaRoboczaUzytkownikID { get; set; }
+        public string GrupaRoboczaUzytkownikID { get; set; }
+        public string GrupaRoboczaNazwa { get; set; }
+        public bool GrupaRoboczaAktywna { get; set; }
+        public DateTime GrupaRoboczaData { get; set; }
 
+
+        public bool Dodaj()
+        {
+            return BazaDanych.GrupaRoboczaProvider.DodajNowa(this);
+        }
+
+        public List<GrupaRobocza> PobierzWszystkie(string email)
+        {
+            return BazaDanych.GrupaRoboczaProvider.PobierzWszystkie(email);
+        }
     }
+
+    public class GrupyRoboczeZaproszenie
+{
+        public int GrupyRoboczeZaproszenieID { get; set; }
+        public string GrupyRoboczeZaproszenieIDZapraszajacego { get; set; }
+        public string GrupyRoboczeZaproszenieIDZapraszanego { get; set; }
+        public string GrupyRoboczeZaproszenieToken { get; set; }
+        public bool GrupyRoboczeZaproszenieAktywne { get; set; }
+        public DateTime GrupyRoboczeZaproszenieData { get; set; }
+}
     public class TokenRejestracji
     {
         public int TokenRejestracjiID { get; set; }

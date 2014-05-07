@@ -224,10 +224,9 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("pobierzProfil", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand("select", con); // do napisania
 
-                    cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
+                    cmd.Parameters.AddWithValue("[uzytkownicy_email]", email.Trim());
 
                     cmd.Connection.Open();
 
@@ -412,13 +411,13 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
                     try
                     {
                         SqlCommand cmd = new SqlCommand(@"UPDATE [Kolejka_Emaili]
-   SET [wyslany] = @wyslany
+   SET [wyslany] = 1
 
       ,[data_wyslania] = @data_wyslania
  WHERE id_kolejka_emaili = @id", con);
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue("@wyslany", true);
+
+                        cmd.Parameters.AddWithValue("@data_wyslania", DateTime.Now);
                         cmd.Parameters.AddWithValue("@id", e.EmailID);
 
                         cmd.Connection.Open();
@@ -434,6 +433,19 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
             }
 
             return zapisano;
+        }
+    }
+
+    public class GrupaRoboczaProvider
+    {
+        internal static bool DodajNowa(GrupaRobocza g)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static List<GrupaRobocza> PobierzWszystkie(string email)
+        {
+            throw new NotImplementedException();
         }
     }
 }

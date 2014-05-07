@@ -23,5 +23,11 @@ namespace Scrum4u
             string password = s.ToString();
             return password;
         }
+        /// <summary>
+        /// Pobiera obecnie zalogowanego uzytkownika
+        /// </summary>
+        /// <returns>Obecnie zalogowany uzytkownik</returns>
+        public static Uzytkownik ObecnyUzytkownik = (Uzytkownik)HttpContext.Current.Session["uzytkownik"];
+
     }
 }
