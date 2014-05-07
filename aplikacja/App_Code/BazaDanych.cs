@@ -224,9 +224,18 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
             {
                 try
                 {
+<<<<<<< HEAD
                     SqlCommand cmd = new SqlCommand("select", con); // do napisania
 
                     cmd.Parameters.AddWithValue("[uzytkownicy_email]", email.Trim());
+=======
+                    SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, imie, nazwisko
+FROM Uzytkownicy
+WHERE uzytkownicy_email = @email_uzytkownika;", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
+>>>>>>> a175d13a8ce5d63f810056569220dcfe032418d0
 
                     cmd.Connection.Open();
 
