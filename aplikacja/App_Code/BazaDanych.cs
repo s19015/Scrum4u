@@ -224,10 +224,12 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("pobierzProfil", con);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, imie, nazwisko
+FROM Uzytkownicy
+WHERE uzytkownicy_email = @email_uzytkownika;", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-                    cmd.Parameters.AddWithValue("inUzytkownikEmail", email);
+                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
 
                     cmd.Connection.Open();
 
