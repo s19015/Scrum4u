@@ -444,7 +444,57 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
     {
         internal static bool DodajNowa(GrupaRobocza g)
         {
-            throw new NotImplementedException();
+            int dodano = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+
+                    // Bartek
+                    // sql dodawanie grupy, wszystkie dane masz w obiekcie g
+
+
+//                    SqlCommand cmd = new SqlCommand(@"INSERT INTO [Kolejka_Emaili]
+//           ([od]
+//           ,[do]
+//           ,[temat]
+//           ,[tresc]
+//           ,[wersja]
+//           ,[wyslany]
+//           ,[data_kolejki]
+//           ,[data_wyslania])
+//     VALUES
+//           (@od
+//           ,@do
+//           ,@temat
+//           ,@tresc
+//           ,@wersja
+//           ,@wyslany
+//           ,@data_kolejki
+//           ,@data_wyslania)", con);
+
+
+//                    cmd.Parameters.AddWithValue("@od", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
+//                    cmd.Parameters.AddWithValue("@do", Truncate(e.EmailDo, 50));
+//                    cmd.Parameters.AddWithValue("@temat", Truncate(e.EmailTemat, 150));
+//                    cmd.Parameters.AddWithValue("@tresc", HttpContext.Current.Server.HtmlEncode(e.EmailTresc));
+//                    cmd.Parameters.AddWithValue("@wersja", Truncate(e.EmailWersja, 10));
+//                    cmd.Parameters.AddWithValue("@wyslany", false);
+//                    cmd.Parameters.AddWithValue("@data_kolejki", e.EmailDataKolejki);
+//                    cmd.Parameters.AddWithValue("@data_wyslania", new DateTime(2000, 1, 1));
+                    //cmd.Connection.Open();
+
+                    //dodano = cmd.ExecuteNonQuery();
+                    //cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 493", ex.StackTrace));
+                }
+            }
+            if (dodano > 0) return true;
+            return false;
         }
 
         internal static List<GrupaRobocza> PobierzWszystkie(string email)

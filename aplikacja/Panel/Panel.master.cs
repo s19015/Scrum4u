@@ -10,16 +10,14 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!HttpContext.Current.User.Identity.IsAuthenticated)
+        if (!IsPostBack)
         {
-            System.Web.Security.FormsAuthentication.RedirectToLoginPage();
-        }
-
-        u= (Uzytkownik)Session["uzytkownik"];
-        if (u!=null)
-        {
-            litImieNazwisko.Text = u.UzytkownikImie + " " + u.UzytkownikNazwisko;
-            litEmail.Text = u.UzytkownikEmail;
+            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                System.Web.Security.FormsAuthentication.RedirectToLoginPage();
+                return;
+            }
+            litImieNazwisko.Text = HttpContext.Current.User.Identity.Name;
         }
     }
     protected void btnWyloguj_Click(object sender, EventArgs e)
@@ -27,5 +25,7 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
         Session.RemoveAll();
         Session.Abandon();
         System.Web.Security.FormsAuthentication.SignOut();
+
+        Response.Redirect("/Zaloguj.aspx");
     }
 }

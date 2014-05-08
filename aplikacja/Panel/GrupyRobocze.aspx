@@ -10,8 +10,8 @@
     <asp:LinkButton runat="server" ID="btnPokazDodajGrupe" Text="Dodaj grupę" OnClick="btnPokazDodajGrupe_Click"></asp:LinkButton>
     <asp:Panel runat="server" ID="formDodajGrupe" Visible="false">
         <div class="widget">
-            <h4 class="widgettitle">Nowa grupa robocza</h4>
-            <div class="widgetcontent form-horizontal" role="form">
+            <h4 class="widgettitle" runat="server" id="h4TytulDodajGrupe">Nowa grupa robocza</h4>
+            <div class="widgetcontent form-horizontal" role="form" runat="server" id="panelDodajGrupe">
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="txtNazwaGrupy" CssClass="col-sm-2 control-label" Text="Nazwa grupy"></asp:Label>
                     <div class="col-sm-10">

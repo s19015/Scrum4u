@@ -10,6 +10,10 @@ namespace Scrum4u
     /// </summary>
     public class Scrum4uHelper
     {
+        public Scrum4uHelper()
+        {
+            this.ObecnyUzytkownik = (Uzytkownik)HttpContext.Current.Session["uzytkownik"];
+        }
         public static string PobierzHashMD5(string input)
         {
             System.Security.Cryptography.MD5CryptoServiceProvider x = new System.Security.Cryptography.MD5CryptoServiceProvider();
@@ -27,7 +31,7 @@ namespace Scrum4u
         /// Pobiera obecnie zalogowanego uzytkownika
         /// </summary>
         /// <returns>Obecnie zalogowany uzytkownik</returns>
-        public static Uzytkownik ObecnyUzytkownik = (Uzytkownik)HttpContext.Current.Session["uzytkownik"];
+        public Uzytkownik ObecnyUzytkownik = (Uzytkownik)HttpContext.Current.Session["uzytkownik"];
 
     }
 }
