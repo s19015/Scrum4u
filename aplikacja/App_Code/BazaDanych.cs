@@ -83,8 +83,9 @@ public static class BazaDanych
 
                     cmd.Connection.Open();
                     int dodano = cmd.ExecuteNonQuery();
-                    
-                    if (dodano > 0) {
+
+                    if (dodano > 0)
+                    {
 
                         SqlCommand cmd2 = new SqlCommand(@"INSERT INTO TokenyRejestracyjne (uzytkownicy_email, token)
 VALUES ( @email_uzytkownika, CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2));
@@ -103,13 +104,13 @@ WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
                                     token = reader["token"].ToString();
                             }
                         }
-                                                           
+
                     }
                     else { token = "false"; }
 
                     cmd.Connection.Close();
-                    
-                    
+
+
                 }
                 catch (Exception ex)
                 {
@@ -175,7 +176,7 @@ WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_akt
                     cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
                     cmd.Connection.Open();
                     dodano = cmd.ExecuteScalar() is int;
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -322,7 +323,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
            ,@wyslany
            ,@data_kolejki
            ,@data_wyslania)", con);
-                    
+
 
                     cmd.Parameters.AddWithValue("@od", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
                     cmd.Parameters.AddWithValue("@do", Truncate(e.EmailDo, 50));
@@ -331,7 +332,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                     cmd.Parameters.AddWithValue("@wersja", Truncate(e.EmailWersja, 10));
                     cmd.Parameters.AddWithValue("@wyslany", false);
                     cmd.Parameters.AddWithValue("@data_kolejki", e.EmailDataKolejki);
-                    cmd.Parameters.AddWithValue("@data_wyslania", new DateTime(2000,1,1));
+                    cmd.Parameters.AddWithValue("@data_wyslania", new DateTime(2000, 1, 1));
                     cmd.Connection.Open();
 
                     dodano = cmd.ExecuteNonQuery();
@@ -450,42 +451,14 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
 
-                    // Bartek
-                    // sql dodawanie grupy, wszystkie dane masz w obiekcie g
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO GrupyRobocze (uzytkownicy_email, nazwa) VALUES ( @nazwa_uzytkownika, @nazwa );", con);
 
+                    cmd.Parameters.AddWithValue("@nazwa_uzytkownika", g.GrupaRoboczaUzytkownikID);
+                    cmd.Parameters.AddWithValue("@nazwa", g.GrupaRoboczaNazwa);
 
-//                    SqlCommand cmd = new SqlCommand(@"INSERT INTO [Kolejka_Emaili]
-//           ([od]
-//           ,[do]
-//           ,[temat]
-//           ,[tresc]
-//           ,[wersja]
-//           ,[wyslany]
-//           ,[data_kolejki]
-//           ,[data_wyslania])
-//     VALUES
-//           (@od
-//           ,@do
-//           ,@temat
-//           ,@tresc
-//           ,@wersja
-//           ,@wyslany
-//           ,@data_kolejki
-//           ,@data_wyslania)", con);
-
-
-//                    cmd.Parameters.AddWithValue("@od", Truncate((String.IsNullOrEmpty(e.EmailOd) ? "noreply@scrum4u.pl" : e.EmailOd), 50));
-//                    cmd.Parameters.AddWithValue("@do", Truncate(e.EmailDo, 50));
-//                    cmd.Parameters.AddWithValue("@temat", Truncate(e.EmailTemat, 150));
-//                    cmd.Parameters.AddWithValue("@tresc", HttpContext.Current.Server.HtmlEncode(e.EmailTresc));
-//                    cmd.Parameters.AddWithValue("@wersja", Truncate(e.EmailWersja, 10));
-//                    cmd.Parameters.AddWithValue("@wyslany", false);
-//                    cmd.Parameters.AddWithValue("@data_kolejki", e.EmailDataKolejki);
-//                    cmd.Parameters.AddWithValue("@data_wyslania", new DateTime(2000, 1, 1));
-                    //cmd.Connection.Open();
-
-                    //dodano = cmd.ExecuteNonQuery();
-                    //cmd.Connection.Close();
+                    cmd.Connection.Open();
+                    dodano = cmd.ExecuteNonQuery();
+                    cmd.Connection.Close();
 
                 }
                 catch (Exception ex)
@@ -499,7 +472,49 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         internal static List<GrupaRobocza> PobierzWszystkie(string email)
         {
-            throw new NotImplementedException();
+            List<GrupaRobocza> grupyRobocze = null;
+            GrupaRobocza g = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                                                    FROM GrupyRobocze
+                                                    WHERE uzytkownicy_email = @email_uzytkownika
+                                                    and is_aktywna = 1;", con);
+
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            grupyRobocze = new List<GrupaRobocza>();
+                            while (reader.Read())
+                            {
+                                g = new GrupaRobocza();
+                                g.GrupaRoboczaID = int.Parse( reader["id_grupy_robocze"].ToString() );
+                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+
+                                grupyRobocze.Add(g);
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 480", ex.StackTrace));
+                }
+            }
+
+            return grupyRobocze;
+
         }
     }
 }
