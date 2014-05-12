@@ -33,5 +33,12 @@ namespace Scrum4u
         /// <returns>Obecnie zalogowany uzytkownik</returns>
         public Uzytkownik ObecnyUzytkownik = (Uzytkownik)HttpContext.Current.Session["uzytkownik"];
 
+        public static bool SprawdzDataViewJestNullLubPusty(System.Data.DataView dv)
+        {
+            if (dv == null) return true;
+            if (dv.Table.Rows.Count == 0) return true;
+            return false;
+        }
+
     }
 }

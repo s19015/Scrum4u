@@ -497,7 +497,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                                 g = new GrupaRobocza();
                                 g.GrupaRoboczaID = int.Parse( reader["id_grupy_robocze"].ToString() );
                                 g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-
+                                g.GrupaRoboczaUzytkownikID = email;
                                 grupyRobocze.Add(g);
                             }
                         }
@@ -515,6 +515,50 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
             return grupyRobocze;
 
+        }
+
+        internal static GrupaRobocza Pobierz(int idGrupy)
+        {
+            GrupaRobocza g = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
+                                                    FROM GrupyRobocze
+                                                    WHERE id_grupy_robocze = @idGrupy
+                                                    and is_aktywna = 1;", con);
+
+                    cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            while (reader.Read())
+                            {
+                                g = new GrupaRobocza();
+                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
+                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+                                g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 557", ex.StackTrace));
+                }
+            }
+
+            return g;
         }
     }
 }

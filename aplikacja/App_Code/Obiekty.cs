@@ -186,9 +186,14 @@ namespace Scrum4u
             return BazaDanych.GrupaRoboczaProvider.DodajNowa(this);
         }
 
-        public List<GrupaRobocza> PobierzWszystkie(string email)
+        public static List<GrupaRobocza> PobierzWszystkie(string email)
         {
             return BazaDanych.GrupaRoboczaProvider.PobierzWszystkie(email);
+        }
+
+        public static GrupaRobocza PobierzGrupe(int idGrupy)
+        {
+            return BazaDanych.GrupaRoboczaProvider.Pobierz(idGrupy);
         }
     }
 
