@@ -11,7 +11,10 @@ public partial class Rejestracja : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (Request.QueryString["email"]!=null && Scrum4uHelper.CzyJestToEmail(Request.QueryString["email"]))
+        {
+            txtEmail.Text = Request.QueryString["email"].Trim();
+        }
     }
     protected void btnRejestruj_Click(object sender, EventArgs e)
     {

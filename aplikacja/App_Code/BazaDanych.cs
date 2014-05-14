@@ -39,7 +39,11 @@ public static class BazaDanych
             }
             return hex;
         }
-
+        /// <summary>
+        /// Zwraca prawde jezli uzytkownik istnieje
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         internal static bool SprawdzCzyIstnieje(string email)
         {
             bool czy_istnieje = false;
@@ -516,6 +520,54 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             return grupyRobocze;
 
         }
+        internal static List<GrupaRobocza> PobierzWszystkieDoKtorychNaleze(string email)
+        {
+            List<GrupaRobocza> grupyRobocze = null;
+            GrupaRobocza g = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+
+                    //do zrobienia na wybranie grup roboczych do ktorych naleze, ale nie jestem wlascicielem
+                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                                                    FROM GrupyRobocze
+                                                    WHERE uzytkownicy_email = @email_uzytkownika
+                                                    and is_aktywna = 1;", con);
+
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            grupyRobocze = new List<GrupaRobocza>();
+                            while (reader.Read())
+                            {
+                                g = new GrupaRobocza();
+                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
+                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+                                g.GrupaRoboczaUzytkownikID = email;
+                                grupyRobocze.Add(g);
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 480", ex.StackTrace));
+                }
+            }
+
+            return grupyRobocze;
+
+        }
 
         internal static GrupaRobocza Pobierz(int idGrupy)
         {
@@ -559,6 +611,207 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             }
 
             return g;
+        }
+    }
+
+    public class GrupyRoboczeZaproszenieProvider
+    {
+
+        internal static string Dodaj(Scrum4u.GrupyRoboczeZaproszenie zaproszenie)
+        {
+            string token = "false";
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    //Do Zrobienia, cos jak w przykladzie ponizej, dane masz w zaproszenie
+//                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Uzytkownicy (uzytkownicy_email, imie, nazwisko, haslo) 
+//                    VALUES ( @email_uzytkownika, @imie, @nazwisko, @haslo );", con);
+//                    cmd.CommandType = System.Data.CommandType.Text;
+
+//                    cmd.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
+//                    cmd.Parameters.AddWithValue("@imie", Truncate(u.UzytkownikImie, 50));
+//                    cmd.Parameters.AddWithValue("@nazwisko", Truncate(u.UzytkownikNazwisko, 50));
+//                    cmd.Parameters.AddWithValue("@haslo", HashujHasloSHA256(u.UzytkownikHaslo));
+//                    //cmd.Parameters.AddWithValue("dataRejestracji", DateTime.Now);
+
+//                    cmd.Connection.Open();
+//                    int dodano = cmd.ExecuteNonQuery();
+
+//                    if (dodano > 0)
+//                    {
+
+//                        SqlCommand cmd2 = new SqlCommand(@"INSERT INTO TokenyRejestracyjne (uzytkownicy_email, token)
+//VALUES ( @email_uzytkownika, CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2));
+//
+//SELECT token FROM TokenyRejestracyjne
+//WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
+//                        cmd2.CommandType = System.Data.CommandType.Text;
+//                        cmd2.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
+//                        //int dodano_token = cmd2.ExecuteNonQuery();
+
+//                        using (SqlDataReader reader = cmd2.ExecuteReader())
+//                        {
+//                            while (reader.Read())
+//                            {
+//                                if (!String.IsNullOrEmpty(reader["token"].ToString()))
+//                                    token = reader["token"].ToString();
+//                            }
+//                        }
+
+//                    }
+//                    else { token = "false"; }
+
+//                    cmd.Connection.Close();
+
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 618", ex.StackTrace));
+                }
+            }
+            return token;
+        }
+
+        internal static bool PotwierdzZaproszenie(string email, string token)
+        {
+            bool dodano = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    //Do zrobienia
+//                    SqlCommand cmd = new SqlCommand(@"UPDATE Uzytkownicy SET is_konto_aktywne = 1
+//WHERE uzytkownicy_email in 
+//	(SELECT uzytkownicy_email 
+//	FROM TokenyRejestracyjne 
+//	WHERE uzytkownicy_email = @email_uzytkownika 
+//	AND token = @token 
+//	AND is_aktywny = 1);", con);
+
+//                    cmd.CommandType = System.Data.CommandType.Text;
+
+//                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
+//                    cmd.Parameters.AddWithValue("token", token);
+
+//                    cmd.Connection.Open();
+//                    dodano = cmd.ExecuteNonQuery() > 0;
+
+                    ///*using (SqlDataReader reader = cmd.ExecuteReader())
+                    //{
+                    //    while (reader.Read())
+                    //    {
+                    //        if (!String.IsNullOrEmpty(reader[0].ToString()))
+                    //            dodano = reader.GetBoolean(0);
+                    //    }
+                    //}*/
+                    //cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 120", ex.StackTrace));
+                }
+            }
+            return dodano;
+        }
+
+        internal static List<Scrum4u.GrupyRoboczeZaproszenie> PobierzWszystkie(int idGrupy)
+        {
+            List<GrupyRoboczeZaproszenie> grupyRobocze = null;
+            GrupyRoboczeZaproszenie g = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    //Do zrobienia
+//                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+//                                                    FROM GrupyRobocze
+//                                                    WHERE uzytkownicy_email = @email_uzytkownika
+//                                                    and is_aktywna = 1;", con);
+
+//                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
+//                    cmd.Connection.Open();
+
+//                    using (SqlDataReader reader = cmd.ExecuteReader())
+//                    {
+//                        if (reader.HasRows)
+//                        {
+//                            grupyRobocze = new List<GrupyRoboczeZaproszenie>();
+//                            while (reader.Read())
+//                            {
+//                                g = new GrupyRoboczeZaproszenie();
+//                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
+//                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+//                                g.GrupaRoboczaUzytkownikID = email;
+//                                grupyRobocze.Add(g);
+//                            }
+//                        }
+
+//                    }
+
+//                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 480", ex.StackTrace));
+                }
+            }
+
+            return grupyRobocze;
+        }
+
+        internal static Scrum4u.GrupyRoboczeZaproszenie Pobierz(int idGrupy, string email)
+        {
+            //Do zrobienia
+            GrupyRoboczeZaproszenie g = null;
+
+//            using (SqlConnection con = new SqlConnection(connectionString))
+//            {
+//                try
+//                {
+//                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
+//                                                    FROM GrupyRobocze
+//                                                    WHERE id_grupy_robocze = @idGrupy
+//                                                    and is_aktywna = 1;", con);
+
+//                    cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
+//                    cmd.Connection.Open();
+
+//                    using (SqlDataReader reader = cmd.ExecuteReader())
+//                    {
+//                        if (reader.HasRows)
+//                        {
+
+//                            while (reader.Read())
+//                            {
+//                                g = new GrupaRobocza();
+//                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
+//                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+//                                g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
+//                            }
+//                        }
+
+//                    }
+
+//                    cmd.Connection.Close();
+
+//                }
+//                catch (Exception ex)
+//                {
+//                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 557", ex.StackTrace));
+//                }
+//            }
+
+            return g;
+        }
+
+        internal static bool Usun(GrupyRoboczeZaproszenie zaproszenie)
+        {
+            //do zrobiena, na wzor pozostalych. Funkcja powinna zwracac true jak usunie wiersz z bazy danych
+            return true;
         }
     }
 }

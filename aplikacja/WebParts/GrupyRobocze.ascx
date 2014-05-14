@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="GrupyRobocze.ascx.cs" Inherits="WebParts_GrupyRobocze" %>
 
-<asp:ListView runat="server" ID="grupyRobocze">
+<asp:ListView runat="server" ID="grupyRobocze" Visible="false">
     <LayoutTemplate>
         <div class="table-responsive tablewidget">
             <table class="table table-hover table-striped">

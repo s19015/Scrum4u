@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="GrupaRobocza.aspx.cs" Inherits="Panel_GrupaRobocza" %>
 
+<%@ Register Src="~/WebParts/GrupyRoboczeZaproszenia.ascx" TagPrefix="s4u" TagName="GrupyRoboczeZaproszenia" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainTitle" runat="Server">
@@ -19,7 +22,7 @@
                     <div class="col-sm-10">
                         <asp:TextBox runat="server" ID="txtNazwaGrupy" ValidationGroup="formDodajGrupe" CssClass="form-control" placeholder="Email użytkownika" TextMode="Email"></asp:TextBox>
                         <asp:RequiredFieldValidator ValidationGroup="formDodajGrupe" runat="server" ID="ValidNazwa" ControlToValidate="txtNazwaGrupy" Display="Dynamic" ErrorMessage="Proszę wpisać email użytkownika."></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ValidationGroup="formDodajGrupe" runat="server" ID="ValidEmail" ControlToValidate="txtNazwaGrupy" Display="Dynamic" ErrorMessage="Wpisz poprawny adres email."></asp:RegularExpressionValidator>
+                        <asp:RegularExpressionValidator ValidationGroup="formDodajGrupe" runat="server" ID="ValidEmail" ControlToValidate="txtNazwaGrupy" Display="Dynamic" ErrorMessage="Wpisz poprawny adres email." ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                     </div>
                 </div>
                 <div class="form-group">
@@ -31,5 +34,8 @@
             </div>
         </div>
     </asp:Panel>
+
+
+    <s4u:GrupyRoboczeZaproszenia runat="server" id="GrupyRoboczeZaproszenia" />
 </asp:Content>
 

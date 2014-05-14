@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="GrupyRobocze.aspx.cs" Inherits="Panel_GrupyRobocze" %>
 
-<%@ Register src="/WebParts/GrupyRobocze.ascx" tagname="GrupyRobocze" tagprefix="s4u" %>
+<%@ Register src="~/WebParts/GrupyRobocze.ascx" tagname="GrupyRobocze" tagprefix="s4u" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>

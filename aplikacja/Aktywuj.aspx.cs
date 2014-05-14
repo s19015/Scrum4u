@@ -11,6 +11,10 @@ public partial class Aktywuj : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         bool zapisano = false;
+        if (Request.QueryString["gr"] != null && Request.QueryString["gr"] == "1")
+        {
+            AktywujWProjekcie();
+        }
         if (Request.QueryString["e"] != null && Request.QueryString["t"] != null && !String.IsNullOrEmpty(Request.QueryString["e"]) && !String.IsNullOrEmpty(Request.QueryString["t"]))
         {
             string email = Request.QueryString["e"].Replace("'","''");
@@ -34,6 +38,47 @@ public partial class Aktywuj : System.Web.UI.Page
             else
             {
                 litInfo.Text = "Niepoprawny link aktywacyjny. Skontaktuj się z <a href='mailto:noreply@scrum4u.pl'>administratorem</a>";
+            }
+        }
+        else
+        {
+            litInfo.Text = "Niepoprawny link aktywacyjny. Skontaktuj się z <a href='mailto:noreply@scrum4u.pl'>administratorem</a>";
+        }
+    }
+
+    private void AktywujWProjekcie()
+    {
+
+        bool zapisano = false;
+        if (Request.QueryString["e"] != null && Request.QueryString["t"] != null && !String.IsNullOrEmpty(Request.QueryString["e"]) && !String.IsNullOrEmpty(Request.QueryString["t"]))
+        {
+            string email = Request.QueryString["e"].Replace("'", "''");
+            string token = Request.QueryString["t"].Replace("'", "''");
+
+            try
+            {
+                zapisano = Scrum4u.GrupyRoboczeZaproszenie.Aktywuj(email, token);
+            }
+            catch (Exception ex)
+            {
+                Zdarzenie.Loguj("PotwierdzenieGrupy", "Blad", ex);
+            }
+
+            if (zapisano)
+            {
+                litInfo.Text = "Zostałeś dodany do grupy roboczej. Możesz się zalogować <a href='/Zaloguj.aspx'>tutaj.</a>";
+
+                Zdarzenie.Loguj("PotwierdzenieGrupy", "Info", "Email: " + email + " potiwerdzony");
+            }
+            else
+            {
+                litInfo.Text = "Niepoprawny link. Skontaktuj się z <a href='mailto:noreply@scrum4u.pl'>administratorem</a>";
+            }
+
+            //Rejestruje, jeśli użytkownik jeszcze nie jest zarejestrowany.
+            if (!Scrum4u.Uzytkownik.SprawdzCzyIstnieje(new Scrum4u.Uzytkownik(email)))
+            {
+                Response.Redirect("/Rejestruj.aspx?email=" + email);
             }
         }
         else

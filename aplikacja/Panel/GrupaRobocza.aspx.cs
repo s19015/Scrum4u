@@ -1,4 +1,5 @@
 ﻿using Scrum4u;
+using Scrum4u.Aplikacja;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,18 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
             if (grupa!=null)
             {
                 litTytul.Text = "- " + grupa.GrupaRoboczaNazwa;
+
+                if (Request.QueryString["usunOsobe"]!=null && Scrum4uHelper.CzyJestToEmail(Request.QueryString["usunOsobe"]))
+                {
+                    GrupyRoboczeZaproszenie zapro = GrupyRoboczeZaproszenie.Pobierz(idGrupy, Request.QueryString["usunOsobe"]);
+                    if (zapro!=null)
+                    {
+                        bool usunieto = zapro.Usun();
+
+                        if (usunieto)
+                            Server.Transfer("/Panel/GrupaRobocza.aspx?id=" + idGrupy);
+                    }
+                }
             }
             else
             {
@@ -40,6 +53,43 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
     }
     protected void btnZapiszNowaGrupe_ServerClick(object sender, EventArgs e)
     {
+        int idGrupy = 0;
+        int.TryParse(Request.QueryString["id"],out idGrupy);
+        if (idGrupy <= 0) {
+            h4TytulDodajGrupe.InnerText = "Wystąpił błąd. Spróbuj ponownie później. Sprawdź grupę.";
+            h4TytulDodajGrupe.Attributes["class"] = "widgettitle title-danger";
+            return;
+        }
 
+        GrupyRoboczeZaproszenie noweZaproszenie = new GrupyRoboczeZaproszenie()
+        {
+            GrupyRoboczeZaproszenieData = DateTime.Now,
+            GrupyRoboczeZaproszenieIDZapraszajacego = HttpContext.Current.User.Identity.Name,
+            GrupyRoboczeZaproszenieIDZapraszanego = txtNazwaGrupy.Text.Trim().Replace("'", "''"),
+            GrupyRoboczeZaproszenieAktywne = true,
+            GrupyRoboczeGrupaRoboczaID = idGrupy
+        };
+
+        bool dodano = false;
+        try
+        {
+            dodano = noweZaproszenie.Dodaj();
+        }
+        catch(Exception ex)
+        {
+            Zdarzenie.Loguj("GrupaRoboczaZapraszanie", "Blad", ex);
+        }
+
+        if (dodano)
+        {
+            panelDodajGrupe.Visible = false;
+            h4TytulDodajGrupe.InnerText = "Zaproszenie zostało wysłane.";
+            h4TytulDodajGrupe.Attributes["class"] = "widgettitle title-success";
+        }
+        else
+        {
+            h4TytulDodajGrupe.InnerText = "Wystąpił błąd. Spróbuj ponownie później.";
+            h4TytulDodajGrupe.Attributes["class"] = "widgettitle title-danger";
+        }
     }
 }

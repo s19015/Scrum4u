@@ -85,7 +85,7 @@ namespace Scrum4u
            return token;
         }
 
-        private static string PoprawPlusWMailu(string e)
+        public static string PoprawPlusWMailu(string e)
         {
             return e.Replace("+", "%2B");
         }
@@ -200,11 +200,74 @@ namespace Scrum4u
     public class GrupyRoboczeZaproszenie
 {
         public int GrupyRoboczeZaproszenieID { get; set; }
+        public int GrupyRoboczeGrupaRoboczaID { get; set; }
         public string GrupyRoboczeZaproszenieIDZapraszajacego { get; set; }
         public string GrupyRoboczeZaproszenieIDZapraszanego { get; set; }
         public string GrupyRoboczeZaproszenieToken { get; set; }
         public bool GrupyRoboczeZaproszenieAktywne { get; set; }
         public DateTime GrupyRoboczeZaproszenieData { get; set; }
+
+        public bool Dodaj()
+        {
+            string token = BazaDanych.GrupyRoboczeZaproszenieProvider.Dodaj(this);
+            bool dodano = false;
+            if (token.ToLower() != "false")
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine();
+                sb.AppendLine("<h3>Witaj</h3>");
+                sb.AppendLine();
+                sb.AppendLine("<p>Ten email został wysłany z <a href='http://www.scrum4u.pl'>http://www.scrum4u.pl</a>.</p>");
+                sb.AppendLine();
+                sb.AppendLine("<p>Dostałeś tego emaila, ponieważ użytkownik "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" zaprosił Cie do swojej grupy roboczej <strong>"+GrupaRobocza.PobierzGrupe(this.GrupyRoboczeGrupaRoboczaID).GrupaRoboczaNazwa+"</strong>.<br/>");
+                sb.AppendLine("Jeśli nie rejestrowałeś się jeszcze w serwisie, zapraszamy do rejestracji aby wspólnie z "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" tworzyć projekty.</p>");
+                sb.AppendLine();
+                sb.AppendLine("<p>Jeśli wyrazasz zgodę na dołączenie do grupy roboczej kliknij w poniższy link:<br/>");
+                sb.AppendLine("<a href='http://www.scrum4u.pl/Aktywuj.aspx?gr=1&e=" + Uzytkownik.PoprawPlusWMailu(this.GrupyRoboczeZaproszenieIDZapraszanego) + "&t=" + token + "'>Potwierdzam</a></p>");
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine("<p>Pozdrawiamy<br/>");
+                sb.AppendLine("<a href='mailto:noreply@scrum4u.pl'>Zespół Scrum4u</a></p>");
+                Aplikacja.Email e = new Aplikacja.Email();
+                e.EmailOd = "noreply@scrum4u.pl";
+                e.EmailDo = this.GrupyRoboczeZaproszenieIDZapraszajacego;
+                e.EmailTemat = "Zaproszenie do grupy roboczej Scrum4u.pl";
+                e.EmailTresc = sb.ToString();
+                e.EmailWersja = Aplikacja.Email.Wersja.HTML.ToString();
+                e.EmailDataKolejki = DateTime.Now;
+
+                try
+                {
+                   dodano= BazaDanych.EmailProvider.DodajEmailaDoKolejki(e);
+                }
+                catch (Exception ex)
+                {
+                    Aplikacja.Zdarzenie.Loguj("EmailZaproszenie", "Blad", ex);
+                }
+            }
+            return dodano;
+        }
+
+        public static bool Aktywuj(string email, string token)
+        {
+            return BazaDanych.GrupyRoboczeZaproszenieProvider.PotwierdzZaproszenie(email, token);
+        }
+
+        public static List<GrupyRoboczeZaproszenie> PobierzWszystkie(int idGrupy)
+        {
+            return BazaDanych.GrupyRoboczeZaproszenieProvider.PobierzWszystkie(idGrupy);
+        }
+
+        public static GrupyRoboczeZaproszenie Pobierz(int idGrupy, string email)
+        {
+            return BazaDanych.GrupyRoboczeZaproszenieProvider.Pobierz(idGrupy, email);
+        }
+
+        public bool Usun()
+        {
+            return BazaDanych.GrupyRoboczeZaproszenieProvider.Usun(this);
+        }
 }
     public class TokenRejestracji
     {

@@ -15,6 +15,7 @@ public partial class WebParts_GrupyRobocze : System.Web.UI.UserControl
             List<GrupaRobocza> grupy = GrupaRobocza.PobierzWszystkie(HttpContext.Current.User.Identity.Name);
             if (grupy!=null && grupy.Count()>0)
             {
+                grupyRobocze.Visible = false;
                 grupyRobocze.DataSource = grupy;
                 grupyRobocze.DataBind();
             }

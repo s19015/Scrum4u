@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Scrum4u
@@ -38,6 +39,16 @@ namespace Scrum4u
             if (dv == null) return true;
             if (dv.Table.Rows.Count == 0) return true;
             return false;
+        }
+        /// <summary>
+        /// Sprawdza czy dany tekst jest adresem email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public static bool CzyJestToEmail(string email)
+        {
+            Regex r = new Regex(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
+            return r.IsMatch(email);
         }
 
     }
