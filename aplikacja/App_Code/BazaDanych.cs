@@ -499,7 +499,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                             while (reader.Read())
                             {
                                 g = new GrupaRobocza();
-                                g.GrupaRoboczaID = int.Parse( reader["id_grupy_robocze"].ToString() );
+                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
                                 g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
                                 g.GrupaRoboczaUzytkownikID = email;
                                 grupyRobocze.Add(g);
@@ -625,44 +625,47 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
                     //Do Zrobienia, cos jak w przykladzie ponizej, dane masz w zaproszenie
-//                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Uzytkownicy (uzytkownicy_email, imie, nazwisko, haslo) 
-//                    VALUES ( @email_uzytkownika, @imie, @nazwisko, @haslo );", con);
-//                    cmd.CommandType = System.Data.CommandType.Text;
+                    SqlCommand cmd = new SqlCommand(@"insert into GrupyRoboczeZaproszenia
+                    ( id_grupy_robocze, id_zapraszajacego, id_zapraszanego, token )
+                    values (
+                        @id_grupy_roboczej, 
+                        @id_zapraszajacego, 
+                        @id_zapraszanego, 
+                        CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2)); );", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-//                    cmd.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
-//                    cmd.Parameters.AddWithValue("@imie", Truncate(u.UzytkownikImie, 50));
-//                    cmd.Parameters.AddWithValue("@nazwisko", Truncate(u.UzytkownikNazwisko, 50));
-//                    cmd.Parameters.AddWithValue("@haslo", HashujHasloSHA256(u.UzytkownikHaslo));
-//                    //cmd.Parameters.AddWithValue("dataRejestracji", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
+                    cmd.Parameters.AddWithValue("@id_zapraszajacego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszajacego);
+                    cmd.Parameters.AddWithValue("@id_zapraszanego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszanego);
 
-//                    cmd.Connection.Open();
-//                    int dodano = cmd.ExecuteNonQuery();
+                    cmd.Connection.Open();
+                    int dodano = cmd.ExecuteNonQuery();
 
-//                    if (dodano > 0)
-//                    {
+                    if (dodano > 0)
+                    {
 
-//                        SqlCommand cmd2 = new SqlCommand(@"INSERT INTO TokenyRejestracyjne (uzytkownicy_email, token)
-//VALUES ( @email_uzytkownika, CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2));
-//
-//SELECT token FROM TokenyRejestracyjne
-//WHERE uzytkownicy_email = @email_uzytkownika and is_aktywny = 1;", con);
-//                        cmd2.CommandType = System.Data.CommandType.Text;
-//                        cmd2.Parameters.AddWithValue("@email_uzytkownika", u.UzytkownikEmail);
-//                        //int dodano_token = cmd2.ExecuteNonQuery();
+                        SqlCommand cmd2 = new SqlCommand(@"select token from GrupyRoboczeZaproszenia
+                            where id_grupy_robocze = @id_grupy_roboczej
+                            and id_zapraszanego = @id_zapraszanego
+                            and is_aktywne_zaproszenie = 1;", con);
+                        cmd2.CommandType = System.Data.CommandType.Text;
+                        cmd2.Parameters.AddWithValue("@id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
+                        cmd2.Parameters.AddWithValue("@id_zapraszanego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszanego);
+                        //cmd2.ExecuteNonQuery();
 
-//                        using (SqlDataReader reader = cmd2.ExecuteReader())
-//                        {
-//                            while (reader.Read())
-//                            {
-//                                if (!String.IsNullOrEmpty(reader["token"].ToString()))
-//                                    token = reader["token"].ToString();
-//                            }
-//                        }
+                        using (SqlDataReader reader = cmd2.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!String.IsNullOrEmpty(reader["token"].ToString()))
+                                    token = reader["token"].ToString();
+                            }
+                        }
 
-//                    }
-//                    else { token = "false"; }
+                    }
+                    else { token = "false"; }
 
-//                    cmd.Connection.Close();
+                    cmd.Connection.Close();
 
 
                 }
@@ -674,46 +677,41 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             return token;
         }
 
-        internal static bool PotwierdzZaproszenie(string email, string token)
+        internal static bool PotwierdzZaproszenie(string email, string token, int idGrupyRoboczej)
         {
-            bool dodano = false;
+            bool potwierdzenie = false;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
                     //Do zrobienia
-//                    SqlCommand cmd = new SqlCommand(@"UPDATE Uzytkownicy SET is_konto_aktywne = 1
-//WHERE uzytkownicy_email in 
-//	(SELECT uzytkownicy_email 
-//	FROM TokenyRejestracyjne 
-//	WHERE uzytkownicy_email = @email_uzytkownika 
-//	AND token = @token 
-//	AND is_aktywny = 1);", con);
+                    SqlCommand cmd = new SqlCommand(@"update GrupyRoboczeZaproszenia
+                            set is_aktywne_zaproszenie = 0,
+                            is_zaproszenie_przyjete = 1,
+                            data_przyjecia_zaproszenia = CURRENT_TIMESTAMP
+                            where id_grupy_robocze = @id_grupy_roboczej
+                            and id_zapraszanego = @id_zapraszanego
+                            and token = @token
+                            and is_aktywne_zaproszenie = 1);", con);
 
-//                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandType = System.Data.CommandType.Text;
 
-//                    cmd.Parameters.AddWithValue("email_uzytkownika", email);
-//                    cmd.Parameters.AddWithValue("token", token);
+                    cmd.Parameters.AddWithValue("@id_grupy_roboczej", idGrupyRoboczej);
+                    cmd.Parameters.AddWithValue("@id_zapraszanego", email);
+                    cmd.Parameters.AddWithValue("@token", token);
 
-//                    cmd.Connection.Open();
-//                    dodano = cmd.ExecuteNonQuery() > 0;
+                    cmd.Connection.Open();
+                    potwierdzenie = cmd.ExecuteNonQuery() > 0;
 
-                    ///*using (SqlDataReader reader = cmd.ExecuteReader())
-                    //{
-                    //    while (reader.Read())
-                    //    {
-                    //        if (!String.IsNullOrEmpty(reader[0].ToString()))
-                    //            dodano = reader.GetBoolean(0);
-                    //    }
-                    //}*/
-                    //cmd.Connection.Close();
+
+                    cmd.Connection.Close();
                 }
                 catch (Exception ex)
                 {
                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 120", ex.StackTrace));
                 }
             }
-            return dodano;
+            return potwierdzenie;
         }
 
         internal static List<Scrum4u.GrupyRoboczeZaproszenie> PobierzWszystkie(int idGrupy)
@@ -726,32 +724,33 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
                     //Do zrobienia
-//                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
-//                                                    FROM GrupyRobocze
-//                                                    WHERE uzytkownicy_email = @email_uzytkownika
-//                                                    and is_aktywna = 1;", con);
+                    SqlCommand cmd = new SqlCommand(@"select id_zapraszajacego, id_zapraszanego, row_date 
+                        from GrupyRoboczeZaproszenia
+                        where id_grupy_robocze = @id_grupy_roboczej
+                        and is_aktywne_zaproszenie = 1
+                        and is_zaproszenie_przyjete = 0", con);
 
-//                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
-//                    cmd.Connection.Open();
+                    cmd.Parameters.AddWithValue("@id_grupy_roboczej", idGrupy);
+                    cmd.Connection.Open();
 
-//                    using (SqlDataReader reader = cmd.ExecuteReader())
-//                    {
-//                        if (reader.HasRows)
-//                        {
-//                            grupyRobocze = new List<GrupyRoboczeZaproszenie>();
-//                            while (reader.Read())
-//                            {
-//                                g = new GrupyRoboczeZaproszenie();
-//                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
-//                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-//                                g.GrupaRoboczaUzytkownikID = email;
-//                                grupyRobocze.Add(g);
-//                            }
-//                        }
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            grupyRobocze = new List<GrupyRoboczeZaproszenie>();
+                            while (reader.Read())
+                            {
+                                g = new GrupyRoboczeZaproszenie();
+                                g.GrupyRoboczeZaproszenieIDZapraszajacego = reader["id_zapraszajacego"].ToString();
+                                g.GrupyRoboczeZaproszenieIDZapraszanego = reader["id_zapraszanego"].ToString();
+                                g.GrupyRoboczeZaproszenieData = DateTime.Parse(reader["row_date"].ToString());
+                                grupyRobocze.Add(g);
+                            }
+                        }
 
-//                    }
+                    }
 
-//                    cmd.Connection.Close();
+                    cmd.Connection.Close();
 
                 }
                 catch (Exception ex)
@@ -768,42 +767,46 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             //Do zrobienia
             GrupyRoboczeZaproszenie g = null;
 
-//            using (SqlConnection con = new SqlConnection(connectionString))
-//            {
-//                try
-//                {
-//                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
-//                                                    FROM GrupyRobocze
-//                                                    WHERE id_grupy_robocze = @idGrupy
-//                                                    and is_aktywna = 1;", con);
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"select id_grupy_robocze, id_zapraszajacego, id_zapraszanego, token, row_date, is_aktywne_zaproszenie
+                        from GrupyRoboczeZaproszenia
+                        where id_grupy_robocze = @id_grupy_roboczej
+                        and id_zapraszanego = @id_zapraszanego
+                        and is_zaproszenie_przyjete = 0", con);
 
-//                    cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
-//                    cmd.Connection.Open();
+                    cmd.Parameters.AddWithValue("@id_grupy_roboczej", idGrupy);
+                    cmd.Connection.Open();
 
-//                    using (SqlDataReader reader = cmd.ExecuteReader())
-//                    {
-//                        if (reader.HasRows)
-//                        {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
 
-//                            while (reader.Read())
-//                            {
-//                                g = new GrupaRobocza();
-//                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
-//                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-//                                g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
-//                            }
-//                        }
+                            while (reader.Read())
+                            {
+                                g = new GrupyRoboczeZaproszenie();
+                                g.GrupyRoboczeGrupaRoboczaID = (int) reader["id_grupy_robocze"];
+                                g.GrupyRoboczeZaproszenieIDZapraszajacego = reader["id_zapraszajacego"].ToString();
+                                g.GrupyRoboczeZaproszenieIDZapraszanego = reader["id_zapraszanego"].ToString();
+                                g.GrupyRoboczeZaproszenieData  = DateTime.Parse(reader["row_date"].ToString());
+                                
+                              
+                            }
+                        }
 
-//                    }
+                    }
 
-//                    cmd.Connection.Close();
+                    cmd.Connection.Close();
 
-//                }
-//                catch (Exception ex)
-//                {
-//                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 557", ex.StackTrace));
-//                }
-//            }
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 557", ex.StackTrace));
+                }
+            }
 
             return g;
         }
