@@ -10,10 +10,7 @@ public partial class Panel_GrupyRobocze : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.QueryString["id"]!=null)
-        {
 
-        }
     }
     protected void btnPokazDodajGrupe_Click(object sender, EventArgs e)
     {
