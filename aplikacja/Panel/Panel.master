@@ -78,11 +78,9 @@
                     <div id="cssmenu">
                         <ul>
                             <li class="active"><a href="#"><span>Strona główna</span></a></li>
-                            <li><a href="#"><span>Projekty</span></a>
+                            <li><a href="/Panel/GrupyRobocze.aspx"><span>Grupy robocze</span></a>
                                 <ul>
-                                    <li><a href="#">Utwórz</a></li>
-                                    <li><a href="#">Szukaj</a></li>
-                                    <li><a href="#">Lista</a></li>
+                                    <li><a href="/Panel/GrupyRobocze.aspx">Lista</a></li>
                                 </ul>
                             </li>
                             <li><a href="#"><span>Zadania</span></a>
@@ -124,6 +122,7 @@
                         </li>
                         <li>Last Level</li>
                     </ul>
+                    
 
                     <div class="row pageheader">
 

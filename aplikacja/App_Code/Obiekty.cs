@@ -186,9 +186,9 @@ namespace Scrum4u
             return BazaDanych.GrupaRoboczaProvider.DodajNowa(this);
         }
 
-        public static List<GrupaRobocza> PobierzWszystkie(string email)
+        public static List<GrupaRobocza> PobierzWszystkie(string email, bool doKtorychNaleze)
         {
-            return BazaDanych.GrupaRoboczaProvider.PobierzWszystkie(email);
+            return BazaDanych.GrupaRoboczaProvider.PobierzWszystkie(email, doKtorychNaleze);
         }
 
         public static GrupaRobocza PobierzGrupe(int idGrupy)
@@ -223,7 +223,7 @@ namespace Scrum4u
                 sb.AppendLine("Jeśli nie rejestrowałeś się jeszcze w serwisie, zapraszamy do rejestracji aby wspólnie z "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" tworzyć projekty.</p>");
                 sb.AppendLine();
                 sb.AppendLine("<p>Jeśli wyrazasz zgodę na dołączenie do grupy roboczej kliknij w poniższy link:<br/>");
-                sb.AppendLine("<a href='http://www.scrum4u.pl/Aktywuj.aspx?gr=1&e=" + Uzytkownik.PoprawPlusWMailu(this.GrupyRoboczeZaproszenieIDZapraszanego) + "&t=" + token + "'>Potwierdzam</a></p>");
+                sb.AppendLine("<a href='http://www.scrum4u.pl/Aktywuj.aspx?gr=1&e=" + Uzytkownik.PoprawPlusWMailu(this.GrupyRoboczeZaproszenieIDZapraszanego) + "&t=" + token + "&id="+this.GrupyRoboczeGrupaRoboczaID+"'>Potwierdzam</a></p>");
                 sb.AppendLine();
                 sb.AppendLine();
                 sb.AppendLine();
@@ -231,7 +231,7 @@ namespace Scrum4u
                 sb.AppendLine("<a href='mailto:noreply@scrum4u.pl'>Zespół Scrum4u</a></p>");
                 Aplikacja.Email e = new Aplikacja.Email();
                 e.EmailOd = "noreply@scrum4u.pl";
-                e.EmailDo = this.GrupyRoboczeZaproszenieIDZapraszajacego;
+                e.EmailDo = this.GrupyRoboczeZaproszenieIDZapraszanego;
                 e.EmailTemat = "Zaproszenie do grupy roboczej Scrum4u.pl";
                 e.EmailTresc = sb.ToString();
                 e.EmailWersja = Aplikacja.Email.Wersja.HTML.ToString();
@@ -249,9 +249,9 @@ namespace Scrum4u
             return dodano;
         }
 
-        public static bool Aktywuj(string email, string token)
+        public static bool Aktywuj(string email, string token, int idGrupyRoboczej)
         {
-            return BazaDanych.GrupyRoboczeZaproszenieProvider.PotwierdzZaproszenie(email, token);
+            return BazaDanych.GrupyRoboczeZaproszenieProvider.PotwierdzZaproszenie(email, token, idGrupyRoboczej);
         }
 
         public static List<GrupyRoboczeZaproszenie> PobierzWszystkie(int idGrupy)

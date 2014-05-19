@@ -172,14 +172,14 @@ WHERE uzytkownicy_email in
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(@"SELECT count(*) FROM Uzytkownicy
+                    SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email FROM Uzytkownicy
 WHERE uzytkownicy_email = @email_uzytkownika and haslo = @haslo and is_konto_aktywne = 1;", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
                     cmd.Parameters.AddWithValue("email_uzytkownika", email);
                     cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
                     cmd.Connection.Open();
-                    dodano = cmd.ExecuteScalar() is int;
+                    dodano = cmd.ExecuteScalar() is string;
 
                 }
                 catch (Exception ex)
@@ -474,53 +474,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             return false;
         }
 
-        internal static List<GrupaRobocza> PobierzWszystkie(string email)
-        {
-            List<GrupaRobocza> grupyRobocze = null;
-            GrupaRobocza g = null;
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
-                                                    FROM GrupyRobocze
-                                                    WHERE uzytkownicy_email = @email_uzytkownika
-                                                    and is_aktywna = 1;", con);
-
-                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
-                    cmd.Connection.Open();
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            grupyRobocze = new List<GrupaRobocza>();
-                            while (reader.Read())
-                            {
-                                g = new GrupaRobocza();
-                                g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
-                                g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-                                g.GrupaRoboczaUzytkownikID = email;
-                                grupyRobocze.Add(g);
-                            }
-                        }
-
-                    }
-
-                    cmd.Connection.Close();
-
-                }
-                catch (Exception ex)
-                {
-                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 480", ex.StackTrace));
-                }
-            }
-
-            return grupyRobocze;
-
-        }
-        internal static List<GrupaRobocza> PobierzWszystkieDoKtorychNaleze(string email)
+        internal static List<GrupaRobocza> PobierzWszystkie(string email, bool doKtorychNaleze)
         {
             List<GrupaRobocza> grupyRobocze = null;
             GrupaRobocza g = null;
@@ -530,7 +484,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
 
-                    //do zrobienia na wybranie grup roboczych do ktorych naleze, ale nie jestem wlascicielem
+                    //do zrobiena, jesli parametr doKtorychNaleze nalezy dodac rowniez te grupy do ktorych naleze
                     SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
                                                     WHERE uzytkownicy_email = @email_uzytkownika
@@ -631,7 +585,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                         @id_grupy_roboczej, 
                         @id_zapraszajacego, 
                         @id_zapraszanego, 
-                        CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2)); );", con);
+                        CONVERT(VARCHAR(32), HashBytes('MD5', cast(rand() as char(10))), 2));", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
                     cmd.Parameters.AddWithValue("@id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
@@ -692,7 +646,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                             where id_grupy_robocze = @id_grupy_roboczej
                             and id_zapraszanego = @id_zapraszanego
                             and token = @token
-                            and is_aktywne_zaproszenie = 1);", con);
+                            and is_aktywne_zaproszenie = 1", con);
 
                     cmd.CommandType = System.Data.CommandType.Text;
 
@@ -724,11 +678,10 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
                     //Do zrobienia
-                    SqlCommand cmd = new SqlCommand(@"select id_zapraszajacego, id_zapraszanego, row_date 
+                    SqlCommand cmd = new SqlCommand(@"select id_zapraszajacego, id_zapraszanego, row_date,is_aktywne_zaproszenie 
                         from GrupyRoboczeZaproszenia
                         where id_grupy_robocze = @id_grupy_roboczej
-                        and is_aktywne_zaproszenie = 1
-                        and is_zaproszenie_przyjete = 0", con);
+                        ", con);
 
                     cmd.Parameters.AddWithValue("@id_grupy_roboczej", idGrupy);
                     cmd.Connection.Open();
@@ -744,6 +697,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                                 g.GrupyRoboczeZaproszenieIDZapraszajacego = reader["id_zapraszajacego"].ToString();
                                 g.GrupyRoboczeZaproszenieIDZapraszanego = reader["id_zapraszanego"].ToString();
                                 g.GrupyRoboczeZaproszenieData = DateTime.Parse(reader["row_date"].ToString());
+                                g.GrupyRoboczeZaproszenieAktywne = bool.Parse(reader["is_aktywne_zaproszenie"].ToString());
                                 grupyRobocze.Add(g);
                             }
                         }

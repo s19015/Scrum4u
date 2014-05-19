@@ -12,7 +12,8 @@ public partial class WebParts_GrupyRobocze : System.Web.UI.UserControl
     {
         if (!IsPostBack)
         {
-            List<GrupaRobocza> grupy = GrupaRobocza.PobierzWszystkie(HttpContext.Current.User.Identity.Name);
+            List<GrupaRobocza> grupy = GrupaRobocza.PobierzWszystkie(HttpContext.Current.User.Identity.Name, true);
+            
             if (grupy!=null && grupy.Count()>0)
             {
                 grupyRobocze.Visible = true;

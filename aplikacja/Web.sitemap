@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="/Panel/" title="Dashboard"  description="">
+        <siteMapNode url="/Panel/GrupyRobocze.aspx" title="Grupy robocze"  description="">
+          <siteMapNode url="/Panel/GrupaRobocza.aspx" title="Grupa robocza"></siteMapNode>
+        </siteMapNode>
+        <siteMapNode url="" title=""  description="" />
+    </siteMapNode>
+</siteMap>

@@ -54,10 +54,12 @@ public partial class Aktywuj : System.Web.UI.Page
         {
             string email = Request.QueryString["e"].Replace("'", "''");
             string token = Request.QueryString["t"].Replace("'", "''");
-
+            string idGrupy = Request.QueryString["id"].Replace("'", "''");
+            int idGrupyRoboczej = 0;
+            int.TryParse(idGrupy, out idGrupyRoboczej);
             try
             {
-                zapisano = Scrum4u.GrupyRoboczeZaproszenie.Aktywuj(email, token);
+                zapisano = Scrum4u.GrupyRoboczeZaproszenie.Aktywuj(email, token, idGrupyRoboczej);
             }
             catch (Exception ex)
             {
@@ -76,9 +78,9 @@ public partial class Aktywuj : System.Web.UI.Page
             }
 
             //Rejestruje, jeśli użytkownik jeszcze nie jest zarejestrowany.
-            if (!Scrum4u.Uzytkownik.SprawdzCzyIstnieje(new Scrum4u.Uzytkownik(email)))
+            if (zapisano && !Scrum4u.Uzytkownik.SprawdzCzyIstnieje(new Scrum4u.Uzytkownik(email)))
             {
-                Response.Redirect("/Rejestruj.aspx?email=" + email);
+                Response.Redirect("/Rejestracja.aspx?email=" + email);
             }
         }
         else

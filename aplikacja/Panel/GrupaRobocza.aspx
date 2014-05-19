@@ -37,5 +37,7 @@
 
 
     <s4u:GrupyRoboczeZaproszenia runat="server" id="GrupyRoboczeZaproszenia" />
+
+    <a href="javascript:window.history.go(-1)">&laquo; Powrót</a>
 </asp:Content>
 
