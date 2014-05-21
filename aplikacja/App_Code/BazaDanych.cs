@@ -485,10 +485,19 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 {
 
                     //do zrobiena, jesli parametr doKtorychNaleze nalezy dodac rowniez te grupy do ktorych naleze
-                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                    if (doKtorychNaleze == false)
+                    {
+                        SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
                                                     WHERE uzytkownicy_email = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
+                    }
+                    else {
+                        SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                                                    FROM GrupyRobocze
+                                                    WHERE uzytkownicy_email = @email_uzytkownika
+                                                    and is_aktywna = 1;", con);
+                    }
 
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
@@ -578,7 +587,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
-                    //Do Zrobienia, cos jak w przykladzie ponizej, dane masz w zaproszenie
+                    
                     SqlCommand cmd = new SqlCommand(@"insert into GrupyRoboczeZaproszenia
                     ( id_grupy_robocze, id_zapraszajacego, id_zapraszanego, token )
                     values (
@@ -605,7 +614,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                         cmd2.CommandType = System.Data.CommandType.Text;
                         cmd2.Parameters.AddWithValue("@id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
                         cmd2.Parameters.AddWithValue("@id_zapraszanego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszanego);
-                        //cmd2.ExecuteNonQuery();
+                       
 
                         using (SqlDataReader reader = cmd2.ExecuteReader())
                         {
@@ -638,7 +647,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
-                    //Do zrobienia
+                    
                     SqlCommand cmd = new SqlCommand(@"update GrupyRoboczeZaproszenia
                             set is_aktywne_zaproszenie = 0,
                             is_zaproszenie_przyjete = 1,
@@ -677,7 +686,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
-                    //Do zrobienia
+                    
                     SqlCommand cmd = new SqlCommand(@"select id_zapraszajacego, id_zapraszanego, row_date,is_aktywne_zaproszenie 
                         from GrupyRoboczeZaproszenia
                         where id_grupy_robocze = @id_grupy_roboczej
@@ -718,7 +727,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         internal static Scrum4u.GrupyRoboczeZaproszenie Pobierz(int idGrupy, string email)
         {
-            //Do zrobienia
+            
             GrupyRoboczeZaproszenie g = null;
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -767,8 +776,31 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         internal static bool Usun(GrupyRoboczeZaproszenie zaproszenie)
         {
-            //do zrobiena, na wzor pozostalych. Funkcja powinna zwracac true jak usunie wiersz z bazy danych
-            return true;
+            bool usunieto = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"delete from GrupyRoboczeZaproszenia
+where id_grupy_robocze = @id_grupy_roboczej
+and id_zapraszanego = @id_zapraszanego;", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
+                    cmd.Parameters.AddWithValue("id_zapraszanego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszanego);
+
+                    cmd.Connection.Open();
+                    usunieto = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 120", ex.StackTrace));
+                }
+            }
+            return usunieto;
         }
     }
 }
