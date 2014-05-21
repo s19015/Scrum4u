@@ -484,7 +484,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
 
-                    //do zrobiena, jesli parametr doKtorychNaleze nalezy dodac rowniez te grupy do ktorych naleze
+                    //nie sprawdzałem powinno działać
                     if (doKtorychNaleze == false)
                     {
                         SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
@@ -495,6 +495,10 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                     else {
                         SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
+                                                    INNER JOIN GrupyRoboczeZaproszenia as Zaproszenia 
+	                                                    on GrupyRobocze.id_grupy_robocze=Zaproszenia.id_grupy_robocze 
+	                                                    and Zaproszenia.id_zapraszanego = @email_uzytkownika
+	                                                    and Zaproszenia.is_zaproszenie_przyjete = 1
                                                     WHERE uzytkownicy_email = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
                     }
