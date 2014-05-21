@@ -10,6 +10,7 @@ public partial class WebParts_GrupyRobocze : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         if (!IsPostBack)
         {
             List<GrupaRobocza> grupy = GrupaRobocza.PobierzWszystkie(HttpContext.Current.User.Identity.Name, true);

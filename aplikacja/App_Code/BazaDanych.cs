@@ -483,17 +483,19 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
-
+                    SqlCommand cmd = new SqlCommand();
                     //nie sprawdzałem powinno działać
                     if (doKtorychNaleze == false)
                     {
-                        SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
                                                     WHERE uzytkownicy_email = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
                     }
                     else {
-                        SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+
+                        //to zapytanie nalezy poprawic, nie wyciaga zadnych danych. Powinno wyciagac dane jesli zostalem zaproszony LUB jestem właścicielem ktorejsc z grup
+                        cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
                                                     INNER JOIN GrupyRoboczeZaproszenia as Zaproszenia 
 	                                                    on GrupyRobocze.id_grupy_robocze=Zaproszenia.id_grupy_robocze 
