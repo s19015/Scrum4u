@@ -807,4 +807,82 @@ and id_zapraszanego = @id_zapraszanego;", con);
             return usunieto;
         }
     }
+
+    public class ProjektProvider {
+
+        internal static bool DodajNowy(Projekt projekt)
+        {
+            int dodano = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    //do zrobienia dodawanie projektu, dane w zmiennej projekt, projekt na starcie powinien byc aktywny
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO GrupyRobocze (uzytkownicy_email, nazwa) VALUES ( @nazwa_uzytkownika, @nazwa );", con);
+
+                    //cmd.Parameters.AddWithValue("@nazwa_uzytkownika", g.GrupaRoboczaUzytkownikID);
+                    //cmd.Parameters.AddWithValue("@nazwa", g.GrupaRoboczaNazwa);
+
+                    cmd.Connection.Open();
+                    dodano = cmd.ExecuteNonQuery();
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 797", ex.StackTrace));
+                }
+            }
+            if (dodano > 0) return true;
+            return false;
+        }
+
+        internal static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
+        {
+            List<Projekt> projekty = null;
+            GrupaRobocza g = null;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+
+                    //do zrobiena, jesli parametr doKtorychNaleze nalezy dodac rowniez te projekty do ktorych naleze
+                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                                                    FROM projekty
+                                                    WHERE uzytkownicy_email = @email_uzytkownika
+                                                    and is_aktywna = 1;", con);
+
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", email);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            projekty = new List<Projekt>();
+                            while (reader.Read())
+                            {
+                                //g = new GrupaRobocza();
+                                //g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
+                                //g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
+                                //g.GrupaRoboczaUzytkownikID = email;
+                                //projekty.Add(g);
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 845", ex.StackTrace));
+                }
+            }
+
+            return projekty;
+        }
+    }
 }

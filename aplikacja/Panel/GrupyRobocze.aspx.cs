@@ -26,7 +26,6 @@ public partial class Panel_GrupyRobocze : System.Web.UI.Page
         if (gr!=null)
         {
             dodano=gr.Dodaj();
-            dodano = true;
         }
 
         if (dodano)

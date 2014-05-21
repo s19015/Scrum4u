@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="Projekty.aspx.cs" Inherits="Panel_Projekty" %>
 
+<%@ Register src="/WebParts/Projekty.ascx" tagname="Projekty" tagprefix="s4u" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainTitle" Runat="Server">
@@ -22,7 +24,7 @@
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddGrupaRobocza" CssClass="col-sm-2 control-label" Text="Grupa robocza"></asp:Label>
                     <div class="col-sm-10">
-                        <asp:TextBox runat="server" ID="TextBox1" ValidationGroup="formDodajGrupe" CssClass="form-control" placeholder="Nazwa projektu"></asp:TextBox>
+                        
                         <asp:DropDownList runat="server" ID="ddGrupaRobocza" AppendDataBoundItems="true"></asp:DropDownList>
                     </div>
                 </div>
@@ -31,12 +33,14 @@
                         <button class="btn btn-default" type="submit" runat="server" id="btnZapiszNowyProjekt" onserverclick="btnZapiszNowyProjekt_ServerClick">Zapisz</button>
 
                     </div>
+                    
+                    
                 </div>
             </div>
         </div>
     </asp:Panel>
 
     
-    <s4u:GrupyRobocze ID="GrupyRobocze1" runat="server" />
+    <s4u:Projekty ID="Projekty1" runat="server" />
 </asp:Content>
 

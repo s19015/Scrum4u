@@ -288,9 +288,22 @@ namespace Scrum4u
     {
         public int ProjektID { get; set; }
         public int ProjektGrupaRoboczaID { get; set; }
-        public int ProjektScrumMasterID { get; set; }
+        public string ProjektScrumMasterID { get; set; }
+        public string ProjektManagerProjektuID { get; set; }
+        public bool ProjektAktywny { get; set; }
         public string ProjektNazwa { get; set; }
         public DateTime ProjektDataUtworzenia { get; set; }
+
+        public bool Dodaj()
+        {
+            return BazaDanych.ProjektProvider.DodajNowy(this);
+;
+        }
+
+        public static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
+        {
+            return BazaDanych.ProjektProvider.PobierzWszystkie(email, doKtorychNaleze);
+        }
     }
     public class Sprint
     {
