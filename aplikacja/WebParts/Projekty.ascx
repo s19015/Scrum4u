@@ -10,6 +10,7 @@
                         <th>Nazwa projektu</th>
                         <th>Manager</th>
                         <th>Scrum Master</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -26,6 +27,7 @@
             <td><%#Eval("ProjektNazwa") %></td>
             <td><%#Eval("ProjektManagerProjektuID") %></td>
             <td><%#Eval("ProjektScrumMasterID") %></td>
+            <td><%#bool.Parse(Eval("ProjektAktywny").ToString())?"Aktywny":"Nie aktywny" %></td>
             <td><a href="/Panel/Projekt.aspx?id=<%#Eval("ProjektID") %>">Wybierz</a></td>
         </tr>
     </ItemTemplate>

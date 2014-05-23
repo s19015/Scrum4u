@@ -304,6 +304,16 @@ namespace Scrum4u
         {
             return BazaDanych.ProjektProvider.PobierzWszystkie(email, doKtorychNaleze);
         }
+        /// <summary>
+        /// Pobiera dane projektu
+        /// </summary>
+        /// <param name="idProjektu">idProjektu</param>
+        /// <param name="tylkoPowiazaneZeMna">Czy pobrac projekt do ktorego naleze</param>
+        /// <returns></returns>
+        public static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
+        {
+            return BazaDanych.ProjektProvider.Pobierz(idProjektu, tylkoPowiazaneZeMna);
+        }
     }
     public class Sprint
     {

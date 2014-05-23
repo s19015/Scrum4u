@@ -886,5 +886,12 @@ and id_zapraszanego = @id_zapraszanego;", con);
 
             return projekty;
         }
+
+        internal static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
+        {
+            throw new NotImplementedException();
+
+            // do zrobienia, wybiera po idProjektu, ale jesli wartosc tylkoPowiazaneZeMna bedzie na true, to tylko ten projekt z ktorym jestem powiazany przez grupe
+        }
     }
 }

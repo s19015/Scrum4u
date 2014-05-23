@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 public partial class WebParts_Projekty : System.Web.UI.UserControl
 {
+    public bool Aktywny { get; set; }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -15,6 +16,7 @@ public partial class WebParts_Projekty : System.Web.UI.UserControl
             List<Projekt> projekty = Projekt.PobierzWszystkie(HttpContext.Current.User.Identity.Name, true);
             if (projekty!=null && projekty.Count>0)
             {
+                if (Aktywny) projekty = projekty.Where(p => p.ProjektAktywny == true).ToList();
                 projektyListView.Visible = true;
                 projektyListView.DataSource = projekty;
                 projektyListView.DataBind();
