@@ -494,7 +494,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                     }
                     else {
 
-                        //to zapytanie nalezy poprawic, nie wyciaga zadnych danych. Powinno wyciagac dane jesli zostalem zaproszony LUB jestem właścicielem ktorejsc z grup
+                        //to zapytanie nalezy poprawic, nie wyciaga zadnych danych. Powinno wyciagac dane jesli zostalem zaproszony LUB jestem właścicielem ktorejs z grup
                         cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa
                                                     FROM GrupyRobocze
                                                     INNER JOIN GrupyRoboczeZaproszenia as Zaproszenia 
@@ -538,7 +538,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         }
 
-        internal static GrupaRobocza Pobierz(int idGrupy)
+        internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze)
         {
             GrupaRobocza g = null;
 
@@ -546,6 +546,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
+                    //dodalem kolejny parametr do zrobienia, musi sprawdzac czy uzytkownik jest z ta grupa w jakis sposob powiazany
                     SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
                                                     FROM GrupyRobocze
                                                     WHERE id_grupy_robocze = @idGrupy
@@ -580,6 +581,14 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             }
 
             return g;
+        }
+
+        internal static List<Uzytkownik> PobierzUzytkownikowGrupy(int idGrupy)
+        {
+            List<Uzytkownik> listaUzytkownikow = null;
+            //do zrobienia, musi wybrac wszystkich uzytkownikow w grupie roboczej.
+
+            return listaUzytkownikow;
         }
     }
 
@@ -709,6 +718,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                             while (reader.Read())
                             {
                                 g = new GrupyRoboczeZaproszenie();
+                                g.GrupyRoboczeGrupaRoboczaID = idGrupy;
                                 g.GrupyRoboczeZaproszenieIDZapraszajacego = reader["id_zapraszajacego"].ToString();
                                 g.GrupyRoboczeZaproszenieIDZapraszanego = reader["id_zapraszanego"].ToString();
                                 g.GrupyRoboczeZaproszenieData = DateTime.Parse(reader["row_date"].ToString());
@@ -892,6 +902,53 @@ and id_zapraszanego = @id_zapraszanego;", con);
             throw new NotImplementedException();
 
             // do zrobienia, wybiera po idProjektu, ale jesli wartosc tylkoPowiazaneZeMna bedzie na true, to tylko ten projekt z ktorym jestem powiazany przez grupe
+        }
+    }
+
+    public class ZadanieProvider
+    {
+
+        internal static bool Dodaj(Zadanie zadanie)
+        {
+            //do zrobienia, zadanie, enumy maja wartosci int, nalezy zmienic troche baze danych
+            bool dodano = false;
+
+            return dodano;
+        }
+
+        internal static bool Usun(Zadanie zadanie)
+        {
+            bool usunieto = false;
+
+            //do zrobienia, zadanie do usuniecia, 
+
+            return usunieto;
+        }
+
+        internal static Zadanie Pobierz(int idZadania)
+        {
+            Zadanie z = null;
+
+            //do zrobienia, nalezy pobrac zadanie z Bazy danych, najlepiej wszystko co mozna
+            return z;
+        }
+
+        internal static List<Zadanie> PobierzWszystkie(string email)
+        {
+            List<Zadanie> listaZadan = null;
+
+            //do zrobienia, pobiera wszystkie zadania przypisane do danego uzytkownika
+
+            return listaZadan;
+        }
+
+        internal static List<Zadanie> PobierzWszystkie(int idProjektu)
+        {
+            List<Zadanie> listaZadan = null;
+
+            //do zrobienia, pobiera wszystkie zadania przypisane do danego projektu
+
+            return listaZadan;
         }
     }
 }

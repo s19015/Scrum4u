@@ -10,8 +10,8 @@ using System.Web;
 namespace Scrum4u
 {
     //enumeratory
-    public enum Status { do_wykonania, w_trakcie, wykonane, odlozone }
-    public enum TypZadania { zadanie, blad, pomysl }
+    public enum Status { do_wykonania=0, w_trakcie=1, wykonane=2, odlozone=3 }
+    public enum TypZadania { zadanie=0, blad=1, pomysl=2 }
 
     //klasy
     public class Uzytkownik
@@ -166,11 +166,6 @@ namespace Scrum4u
             return BazaDanych.UzytkownikProvider.Aktualizuj(this);
         }
     }
-    public class Tag
-    {
-        public int TagID { get; set; }
-        public string TagNazwa { get; set; }
-    }
 
     public class GrupaRobocza
     {
@@ -191,9 +186,14 @@ namespace Scrum4u
             return BazaDanych.GrupaRoboczaProvider.PobierzWszystkie(email, doKtorychNaleze);
         }
 
-        public static GrupaRobocza PobierzGrupe(int idGrupy)
+        public static GrupaRobocza PobierzGrupe(int idGrupy, bool doKtorejNaleze)
         {
-            return BazaDanych.GrupaRoboczaProvider.Pobierz(idGrupy);
+            return BazaDanych.GrupaRoboczaProvider.Pobierz(idGrupy, doKtorejNaleze);
+        }
+
+        public static List<Uzytkownik> PobierzWszystkichUzytkownikow(int idGrupy)
+        {
+            return BazaDanych.GrupaRoboczaProvider.PobierzUzytkownikowGrupy(idGrupy);
         }
     }
 
@@ -219,7 +219,7 @@ namespace Scrum4u
                 sb.AppendLine();
                 sb.AppendLine("<p>Ten email został wysłany z <a href='http://www.scrum4u.pl'>http://www.scrum4u.pl</a>.</p>");
                 sb.AppendLine();
-                sb.AppendLine("<p>Dostałeś tego emaila, ponieważ użytkownik "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" zaprosił Cie do swojej grupy roboczej <strong>"+GrupaRobocza.PobierzGrupe(this.GrupyRoboczeGrupaRoboczaID).GrupaRoboczaNazwa+"</strong>.<br/>");
+                sb.AppendLine("<p>Dostałeś tego emaila, ponieważ użytkownik "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" zaprosił Cie do swojej grupy roboczej <strong>"+GrupaRobocza.PobierzGrupe(this.GrupyRoboczeGrupaRoboczaID,false).GrupaRoboczaNazwa+"</strong>.<br/>");
                 sb.AppendLine("Jeśli nie rejestrowałeś się jeszcze w serwisie, zapraszamy do rejestracji aby wspólnie z "+this.GrupyRoboczeZaproszenieIDZapraszajacego+" tworzyć projekty.</p>");
                 sb.AppendLine();
                 sb.AppendLine("<p>Jeśli wyrazasz zgodę na dołączenie do grupy roboczej kliknij w poniższy link:<br/>");
@@ -277,13 +277,6 @@ namespace Scrum4u
         public DateTime TokenRejestracjiDataWaznosci { get; set; }
     }
 
-    public class ProjektZaproszenie
-    {
-        public int ProjektZaproszenieID { get; set; }
-        public int ProjektZaproszenieProjektID { get; set; }
-        public string ProjektZaproszenieUzytkownikEmail { get; set; }
-    }
-
     public class Projekt
     {
         public int ProjektID { get; set; }
@@ -293,6 +286,7 @@ namespace Scrum4u
         public bool ProjektAktywny { get; set; }
         public string ProjektNazwa { get; set; }
         public DateTime ProjektDataUtworzenia { get; set; }
+        public string ProjektOpis { get; set; }
 
         public bool Dodaj()
         {
@@ -331,16 +325,51 @@ namespace Scrum4u
         public int ZadanieSprintID { get; set; }
         public TypZadania ZadanieTypZadania { get; set; }
         public string ZadanieNazwa { get; set; }
+        public string ZadanieOpis { get; set; }
         public Status ZadanieStatus { get; set; }
         public bool ZadaniePriorytet { get; set; }
         public DateTime ZadanieDataUtworzenia { get; set; }
         public DateTime ZadanieDataRozpoczecia { get; set; }
         public DateTime ZadanieDataUkonczenia { get; set; }
+        public string ZadaniePrzypisaneDo { get; set; }
+
+        public bool Dodaj()
+        {
+            return BazaDanych.ZadanieProvider.Dodaj(this);
+        }
+        public bool Usun()
+        {
+            return BazaDanych.ZadanieProvider.Usun(this);
+        }
+        public bool Usun(int idZadania)
+        {
+            bool usunieto = false;
+           Zadanie z = Pobierz(idZadania);
+           if (z != null)
+               usunieto=z.Usun();
+
+           return usunieto;
+        }
+
+        public Zadanie Pobierz(int idZadania)
+        {
+            return BazaDanych.ZadanieProvider.Pobierz(idZadania);
+        }
+
+        public List<Zadanie> PobierzWszystkie(string email)
+        {
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(email);
+        }
+
+        public List<Zadanie> PobierzWszystkie(int idProjektu)
+        {
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu);
+        }
     }
 
     public class Blad : Zadanie
     {
-
+  
     }
 
     public class Pomysl : Zadanie

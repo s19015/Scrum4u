@@ -15,7 +15,7 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
         int idGrupy = 0;
         if (Request.QueryString["id"]!=null && int.TryParse(Request.QueryString["id"],out idGrupy))
         {
-            grupa = GrupaRobocza.PobierzGrupe(idGrupy);
+            grupa = GrupaRobocza.PobierzGrupe(idGrupy,true);
             if (grupa!=null)
             {
                 litTytul.Text = "- " + grupa.GrupaRoboczaNazwa;

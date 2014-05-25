@@ -23,7 +23,7 @@
     </LayoutTemplate>
     <ItemTemplate>
         <tr>
-            <td><%#Scrum4u.GrupaRobocza.PobierzGrupe(int.Parse(Eval("ProjektGrupaRoboczaID").ToString())).GrupaRoboczaNazwa %></td>
+            <td><%#Scrum4u.GrupaRobocza.PobierzGrupe(int.Parse(Eval("ProjektGrupaRoboczaID").ToString()),false).GrupaRoboczaNazwa %></td>
             <td><%#Eval("ProjektNazwa") %></td>
             <td><%#Eval("ProjektManagerProjektuID") %></td>
             <td><%#Eval("ProjektScrumMasterID") %></td>

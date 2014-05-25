@@ -29,6 +29,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <asp:Label runat="server" AssociatedControlID="txtOpisProjektu" CssClass="col-sm-2 control-label" Text="Opis"></asp:Label>
+                    <div class="col-sm-10">
+                        <asp:TextBox runat="server" ID="txtOpisProjektu" ValidationGroup="formDodajGrupe" CssClass="form-control" placeholder="Opis" TextMode="MultiLine"></asp:TextBox>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" type="submit" runat="server" id="btnZapiszNowyProjekt" onserverclick="btnZapiszNowyProjekt_ServerClick">Zapisz</button>
 
