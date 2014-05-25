@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Scrum4u Project Manager</title>
     <link rel="stylesheet" href ="/App_Themes/scrum4u/css/bootstrap.min.css"/>
     <link rel="stylesheet" href ="/App_Themes/scrum4u/css/style.css"/>
     <link rel="stylesheet" href ="/App_Themes/scrum4u/css/front.css"/>
@@ -17,7 +17,7 @@
        <div class="Front">
          <div class="ImageBox">
             <div class="FrontHeader" id="top">
-               <a href="../front">Scrum4u</a>
+               <a href="#">Scrum4u</a>
             </div>           
             
             <div class="FrontContent">
