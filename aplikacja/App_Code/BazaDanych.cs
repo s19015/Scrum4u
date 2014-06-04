@@ -484,7 +484,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
                     SqlCommand cmd = new SqlCommand();
-                    //nie sprawdzałem powinno działać
+                    
                     if (doKtorychNaleze == false)
                     {
                         cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
@@ -494,15 +494,17 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                     }
                     else {
 
-                        //to zapytanie nalezy poprawic, nie wyciaga zadnych danych. Powinno wyciagac dane jesli zostalem zaproszony LUB jestem właścicielem ktorejs z grup
+                        
                         cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa
-                                                    FROM GrupyRobocze
-                                                    INNER JOIN GrupyRoboczeZaproszenia as Zaproszenia 
-	                                                    on GrupyRobocze.id_grupy_robocze=Zaproszenia.id_grupy_robocze 
-	                                                    and Zaproszenia.id_zapraszanego = @email_uzytkownika
-	                                                    and Zaproszenia.is_zaproszenie_przyjete = 1
-                                                    WHERE uzytkownicy_email = @email_uzytkownika
-                                                    and is_aktywna = 1;", con);
+FROM GrupyRobocze
+WHERE uzytkownicy_email = @email_uzytkownika
+and is_aktywna = 1
+UNION
+select Grupy.id_grupy_robocze, Grupy.nazwa 
+from GrupyRoboczeZaproszenia as Zaproszenia
+inner join GrupyRobocze as Grupy on Zaproszenia.id_grupy_robocze = Grupy.id_grupy_robocze
+where id_zapraszanego = @email_uzytkownika
+and is_zaproszenie_przyjete = 1", con);
                     }
 
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
@@ -538,6 +540,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         }
 
+        //nalezy zrezygnowac z parametru doKtorej należe na rzecz emailUzytkownika bo jest on równoznaczny i niezbędny
         internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze)
         {
             GrupaRobocza g = null;
@@ -546,13 +549,22 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             {
                 try
                 {
-                    //dodalem kolejny parametr do zrobienia, musi sprawdzac czy uzytkownik jest z ta grupa w jakis sposob powiazany
+                    
                     SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
-                                                    FROM GrupyRobocze
-                                                    WHERE id_grupy_robocze = @idGrupy
-                                                    and is_aktywna = 1;", con);
+FROM GrupyRobocze
+WHERE id_grupy_robocze = @idGrupy
+and uzytkownicy_email = @email_uzytkownika
+and is_aktywna = 1
+UNION
+SELECT Grupy.id_grupy_robocze, nazwa, uzytkownicy_email
+FROM GrupyRoboczeZaproszenia as Zaproszenia
+INNER JOIN GrupyRobocze as Grupy on Zaproszenia.id_grupy_robocze = Grupy.id_grupy_robocze
+and Grupy.is_aktywna = 1 and Grupy.id_grupy_robocze = @idGrupy
+where id_zapraszanego = @email_uzytkownika
+and is_zaproszenie_przyjete = 1", con);
 
                     cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
+                    //cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -566,6 +578,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                                 g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
                                 g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
                                 g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
+
                             }
                         }
 
@@ -586,7 +599,45 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
         internal static List<Uzytkownik> PobierzUzytkownikowGrupy(int idGrupy)
         {
             List<Uzytkownik> listaUzytkownikow = null;
-            //do zrobienia, musi wybrac wszystkich uzytkownikow w grupie roboczej.
+
+            using (SqlConnection con = new SqlConnection(connectionString)) {
+                try {
+
+                    SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
+FROM GrupyRobocze Grupy 
+WHERE id_grupy_robocze = @idGrupy
+and is_aktywna = 1
+UNION
+SELECT id_zapraszanego as uzytkownicy_email, is_zaproszenie_przyjete FROM GrupyRoboczeZaproszenia
+where id_grupy_robocze = @idGrupy", con);
+
+                    cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            while (reader.Read())
+                            {
+                                Uzytkownik u = new Uzytkownik();
+                                u.UzytkownikEmail = reader["uzytkownicy_email"].ToString();
+                                listaUzytkownikow.Add(u);
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+
+                }
+                catch (Exception ex) {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 604", ex.StackTrace));
+                }
+            }
+            
 
             return listaUzytkownikow;
         }
@@ -829,11 +880,14 @@ and id_zapraszanego = @id_zapraszanego;", con);
             {
                 try
                 {
-                    //do zrobienia dodawanie projektu, dane w zmiennej projekt, projekt na starcie powinien byc aktywny
-                    SqlCommand cmd = new SqlCommand(@"INSERT INTO GrupyRobocze (uzytkownicy_email, nazwa) VALUES ( @nazwa_uzytkownika, @nazwa );", con);
+                    
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Projekty (id_menager_projektu,id_grupy_robocze,nazwa_projektu,id_scrum_master)
+VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
 
-                    //cmd.Parameters.AddWithValue("@nazwa_uzytkownika", g.GrupaRoboczaUzytkownikID);
-                    //cmd.Parameters.AddWithValue("@nazwa", g.GrupaRoboczaNazwa);
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", projekt.ProjektManagerProjektuID);
+                    cmd.Parameters.AddWithValue("@idGrupy", projekt.ProjektGrupaRoboczaID);
+                    cmd.Parameters.AddWithValue("@nazwaProjektu", projekt.ProjektNazwa);
+                    cmd.Parameters.AddWithValue("@scrumMaster", projekt.ProjektScrumMasterID);
 
                     cmd.Connection.Open();
                     dodano = cmd.ExecuteNonQuery();
@@ -849,6 +903,7 @@ and id_zapraszanego = @id_zapraszanego;", con);
             return false;
         }
 
+        
         internal static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
         {
             List<Projekt> projekty = null;
@@ -859,12 +914,31 @@ and id_zapraszanego = @id_zapraszanego;", con);
                 try
                 {
 
-                    //do zrobiena, jesli parametr doKtorychNaleze nalezy dodac rowniez te projekty do ktorych naleze
-                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
-                                                    FROM projekty
-                                                    WHERE uzytkownicy_email = @email_uzytkownika
-                                                    and is_aktywna = 1;", con);
+                    SqlCommand cmd = new SqlCommand();
 
+                    if (doKtorychNaleze == false)
+                    {
+                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                                                    FROM projekty
+                                                    WHERE id_menager_projektu = @email_uzytkownika
+                                                    and is_aktywna = 1;", con);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand(@"SELECT Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM Projekty
+WHERE id_menager_projektu = @email_uzytkownika
+and is_aktywny = 1
+UNION
+SELECT Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM GrupyRoboczeZaproszenia Zaproszenia
+INNER JOIN GrupyRobocze on Zaproszenia.id_grupy_robocze = GrupyRobocze.id_grupy_robocze
+and GrupyRobocze.is_aktywna = 1
+INNER JOIN Projekty on GrupyRobocze.id_grupy_robocze = Projekty.id_grupy_robocze
+WHERE id_zapraszanego = @email_uzytkownika
+and is_zaproszenie_przyjete = 1", con);
+
+                    }
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
 
@@ -875,11 +949,11 @@ and id_zapraszanego = @id_zapraszanego;", con);
                             projekty = new List<Projekt>();
                             while (reader.Read())
                             {
-                                //g = new GrupaRobocza();
-                                //g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
-                                //g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-                                //g.GrupaRoboczaUzytkownikID = email;
-                                //projekty.Add(g);
+                                Projekt p = new Projekt();
+                                p.ProjektID =  (int) reader["id_grupy_robocze"];
+                                p.ProjektNazwa = reader["nazwa"].ToString();
+                                projekty.Add(p);
+
                             }
                         }
 
@@ -897,7 +971,7 @@ and id_zapraszanego = @id_zapraszanego;", con);
             return projekty;
         }
 
-        internal static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
+        internal static Projekt Pobierz(int idProjektu, string emailUzytkownika)
         {
             throw new NotImplementedException();
 
