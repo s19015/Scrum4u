@@ -484,7 +484,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                 try
                 {
                     SqlCommand cmd = new SqlCommand();
-                    
+
                     if (doKtorychNaleze == false)
                     {
                         cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
@@ -492,9 +492,10 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                                                     WHERE uzytkownicy_email = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
                     }
-                    else {
+                    else
+                    {
 
-                        
+
                         cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa
 FROM GrupyRobocze
 WHERE uzytkownicy_email = @email_uzytkownika
@@ -549,7 +550,7 @@ and is_zaproszenie_przyjete = 1", con);
             {
                 try
                 {
-                    
+
                     SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
 FROM GrupyRobocze
 WHERE id_grupy_robocze = @idGrupy
@@ -600,8 +601,10 @@ and is_zaproszenie_przyjete = 1", con);
         {
             List<Uzytkownik> listaUzytkownikow = null;
 
-            using (SqlConnection con = new SqlConnection(connectionString)) {
-                try {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
 
                     SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
 FROM GrupyRobocze Grupy 
@@ -633,11 +636,12 @@ where id_grupy_robocze = @idGrupy", con);
 
 
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 604", ex.StackTrace));
                 }
             }
-            
+
 
             return listaUzytkownikow;
         }
@@ -653,7 +657,7 @@ where id_grupy_robocze = @idGrupy", con);
             {
                 try
                 {
-                    
+
                     SqlCommand cmd = new SqlCommand(@"insert into GrupyRoboczeZaproszenia
                     ( id_grupy_robocze, id_zapraszajacego, id_zapraszanego, token )
                     values (
@@ -680,7 +684,7 @@ where id_grupy_robocze = @idGrupy", con);
                         cmd2.CommandType = System.Data.CommandType.Text;
                         cmd2.Parameters.AddWithValue("@id_grupy_roboczej", zaproszenie.GrupyRoboczeGrupaRoboczaID);
                         cmd2.Parameters.AddWithValue("@id_zapraszanego", zaproszenie.GrupyRoboczeZaproszenieIDZapraszanego);
-                       
+
 
                         using (SqlDataReader reader = cmd2.ExecuteReader())
                         {
@@ -713,7 +717,7 @@ where id_grupy_robocze = @idGrupy", con);
             {
                 try
                 {
-                    
+
                     SqlCommand cmd = new SqlCommand(@"update GrupyRoboczeZaproszenia
                             set is_aktywne_zaproszenie = 0,
                             is_zaproszenie_przyjete = 1,
@@ -752,7 +756,7 @@ where id_grupy_robocze = @idGrupy", con);
             {
                 try
                 {
-                    
+
                     SqlCommand cmd = new SqlCommand(@"select id_zapraszajacego, id_zapraszanego, row_date,is_aktywne_zaproszenie 
                         from GrupyRoboczeZaproszenia
                         where id_grupy_robocze = @id_grupy_roboczej
@@ -794,7 +798,7 @@ where id_grupy_robocze = @idGrupy", con);
 
         internal static Scrum4u.GrupyRoboczeZaproszenie Pobierz(int idGrupy, string email)
         {
-            
+
             GrupyRoboczeZaproszenie g = null;
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -818,12 +822,12 @@ where id_grupy_robocze = @idGrupy", con);
                             while (reader.Read())
                             {
                                 g = new GrupyRoboczeZaproszenie();
-                                g.GrupyRoboczeGrupaRoboczaID = (int) reader["id_grupy_robocze"];
+                                g.GrupyRoboczeGrupaRoboczaID = (int)reader["id_grupy_robocze"];
                                 g.GrupyRoboczeZaproszenieIDZapraszajacego = reader["id_zapraszajacego"].ToString();
                                 g.GrupyRoboczeZaproszenieIDZapraszanego = reader["id_zapraszanego"].ToString();
-                                g.GrupyRoboczeZaproszenieData  = DateTime.Parse(reader["row_date"].ToString());
-                                
-                              
+                                g.GrupyRoboczeZaproszenieData = DateTime.Parse(reader["row_date"].ToString());
+
+
                             }
                         }
 
@@ -871,7 +875,8 @@ and id_zapraszanego = @id_zapraszanego;", con);
         }
     }
 
-    public class ProjektProvider {
+    public class ProjektProvider
+    {
 
         internal static bool DodajNowy(Projekt projekt)
         {
@@ -880,7 +885,7 @@ and id_zapraszanego = @id_zapraszanego;", con);
             {
                 try
                 {
-                    
+
                     SqlCommand cmd = new SqlCommand(@"INSERT INTO Projekty (id_menager_projektu,id_grupy_robocze,nazwa_projektu,id_scrum_master)
 VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
 
@@ -903,7 +908,7 @@ VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
             return false;
         }
 
-        
+
         internal static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
         {
             List<Projekt> projekty = null;
@@ -950,7 +955,7 @@ and is_zaproszenie_przyjete = 1", con);
                             while (reader.Read())
                             {
                                 Projekt p = new Projekt();
-                                p.ProjektID =  (int) reader["id_grupy_robocze"];
+                                p.ProjektID = (int)reader["id_grupy_robocze"];
                                 p.ProjektNazwa = reader["nazwa"].ToString();
                                 projekty.Add(p);
 
@@ -971,11 +976,96 @@ and is_zaproszenie_przyjete = 1", con);
             return projekty;
         }
 
-        internal static Projekt Pobierz(int idProjektu, string emailUzytkownika)
+        internal static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
         {
-            throw new NotImplementedException();
 
-            // do zrobienia, wybiera po idProjektu, ale jesli wartosc tylkoPowiazaneZeMna bedzie na true, to tylko ten projekt z ktorym jestem powiazany przez grupe
+            Projekt projekt = new Projekt();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    SqlCommand cmd;
+
+                    if (tylkoPowiazaneZeMna == false)
+                    {
+                        cmd = new SqlCommand(@"SELECT id_projekty
+      ,id_menager_projektu
+      ,id_grupy_robocze
+      ,nazwa_projektu
+      ,id_scrum_master
+      ,is_aktywny
+      ,row_date
+  FROM Projekty
+  WHERE id_projekty = @idProjektu
+  and id_manager_projektu = @emailUzytkownika
+  and is_aktywny = 1", con);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand(@"/* projekty użytkownika */
+SELECT id_projekty
+      ,id_menager_projektu
+      ,id_grupy_robocze
+      ,nazwa_projektu
+      ,id_scrum_master
+      ,is_aktywny
+      ,row_date
+  FROM Projekty
+  WHERE id_projekty = @idProjektu
+  and id_menager_projektu = @emailUzytkownika
+  and is_aktywny = 1
+  UNION
+  /*Powiązane projekty*/
+  select Projekty.id_projekty
+      ,Projekty.id_menager_projektu
+      ,Projekty.id_grupy_robocze
+      ,Projekty.nazwa_projektu
+      ,Projekty.id_scrum_master
+      ,Projekty.is_aktywny
+      ,Projekty.row_date 
+from GrupyRoboczeZaproszenia Zaproszenia
+inner join Projekty on Zaproszenia.id_grupy_robocze = Projekty.id_grupy_robocze and Projekty.is_aktywny = 1
+where Zaproszenia.id_zapraszanego = @emailUzytkownika
+and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
+                    }
+
+                    cmd.Parameters.AddWithValue("@idProjektu", idProjektu);
+                    cmd.Parameters.AddWithValue("@emailUzytkownika", HttpContext.Current.User.Identity.Name);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            while (reader.Read())
+                            {
+
+                                projekt.ProjektID = (int)reader["id_grupy_robocze"];
+                                projekt.ProjektNazwa = reader["nazwa"].ToString();
+                                projekt.ProjektManagerProjektuID = reader["id_menager_projektu"].ToString();
+                                projekt.ProjektGrupaRoboczaID = Int32.Parse(reader["id_grupy_robocze"].ToString());
+                                projekt.ProjektScrumMasterID = reader["id_scrum_master"].ToString();
+                                projekt.ProjektAktywny = bool.Parse(reader["is_aktywny"].ToString());
+                                projekt.ProjektDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1043", ex.StackTrace));
+                }
+            }
+
+            return projekt;
+
         }
     }
 
@@ -985,25 +1075,162 @@ and is_zaproszenie_przyjete = 1", con);
         internal static bool Dodaj(Zadanie zadanie)
         {
             //do zrobienia, zadanie, enumy maja wartosci int, nalezy zmienic troche baze danych
+            // do zrobienia , brak zadania nadrzednego w obiektcie?
             bool dodano = false;
 
-            return dodano;
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Zadania(
+id_sprinty,
+id_zadania_typy,
+tytul,
+opis,
+email_dodajacego,
+zadanie_nadrzedne
+)
+VALUES(
+@idSprintu,
+@zadanieTyp,
+@tytul,
+@opis,
+@emailDodajacego,
+@zadanieNadrzedneId
+);", con);
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@idSprintu", zadanie.ZadanieSprintID);
+                    cmd.Parameters.AddWithValue("@zadanieTyp", zadanie.ZadanieTypZadania);
+                    cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieTypZadania);
+                    cmd.Parameters.AddWithValue("@opis", zadanie.ZadanieOpis);
+                    cmd.Parameters.AddWithValue("@emailDodajacego", HttpContext.Current.User.Identity.Name);
+                    cmd.Parameters.AddWithValue("@zadanieNadrzedne", zadanie);
+
+
+                    cmd.Connection.Open();
+                    int ileDodano = cmd.ExecuteNonQuery();
+
+                    if (ileDodano > 0)
+                    {
+                        dodano = true;
+                    }
+
+
+                    cmd.Connection.Close();
+
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 618", ex.StackTrace));
+                }
+
+                return dodano;
+            }
         }
 
         internal static bool Usun(Zadanie zadanie)
         {
             bool usunieto = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"  UPDATE Projekty
+                      SET is_usuniete = 1
+                      WHERE id_zadania = @idZadania", con);
 
-            //do zrobienia, zadanie do usuniecia, 
+                    cmd.CommandType = System.Data.CommandType.Text;
 
+                    cmd.Parameters.AddWithValue("@idZadania", zadanie.ZadanieID);
+                    
+                    cmd.Connection.Open();
+                    usunieto = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1158", ex.StackTrace));
+                }
+            }
             return usunieto;
         }
 
+        
         internal static Zadanie Pobierz(int idZadania)
         {
             Zadanie z = null;
 
-            //do zrobienia, nalezy pobrac zadanie z Bazy danych, najlepiej wszystko co mozna
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT [id_zadania]
+      ,[id_sprinty]
+      ,[id_zadania_typy]
+      ,[tytul]
+      ,[opis]
+      ,[is_usuniety]
+      ,[email_dodajacego]
+      ,[row_date]
+      ,[priorytet]
+      ,[email_przydzielony_uzytkownik]
+      ,[id_przydzielonej_grupy]
+      ,[zadanie_nadrzedne]
+      ,[data_zakonczenia]
+FROM Zadania
+WHERE id_zadania = @idZadania", con);
+
+                    
+
+                    cmd.Parameters.AddWithValue("@idProjektu", idZadania);
+                   
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            z = new Zadanie();
+
+                            while (reader.Read())
+                            {
+
+                                z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
+                                z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
+                                z.ZadanieTypZadania = new TypZadania(); //reader["id_zadania_typy"].ToString()
+                                z.ZadanieOpis = reader["opis"].ToString();
+                                //z.ZadanieDodajacy
+                                z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+                                //z.ZadaniePriorytet = reader["priorytet"].ToString(); // INT!!!!
+                                z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
+                                //przypisanie do grupy??
+                                //zadanie nadrzędne
+                                z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
+                                //DEADLINE !!
+                                                              
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+                    return z;
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1043", ex.StackTrace));
+                }
+            }
+            
+
             return z;
         }
 
