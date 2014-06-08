@@ -1147,7 +1147,7 @@ VALUES(
                     cmd.CommandType = System.Data.CommandType.Text;
 
                     cmd.Parameters.AddWithValue("@idZadania", zadanie.ZadanieID);
-                    
+
                     cmd.Connection.Open();
                     usunieto = cmd.ExecuteNonQuery() > 0;
 
@@ -1161,7 +1161,7 @@ VALUES(
             return usunieto;
         }
 
-        
+
         internal static Zadanie Pobierz(int idZadania)
         {
             Zadanie z = null;
@@ -1187,10 +1187,10 @@ VALUES(
 FROM Zadania
 WHERE id_zadania = @idZadania", con);
 
-                    
+
 
                     cmd.Parameters.AddWithValue("@idProjektu", idZadania);
-                   
+
                     cmd.Connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -1205,17 +1205,19 @@ WHERE id_zadania = @idZadania", con);
 
                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
-                                z.ZadanieTypZadania = new TypZadania(); //reader["id_zadania_typy"].ToString()
+                                TypZadania t = TypZadania.zadanie;
+                                Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
+                                z.ZadanieTypZadania = t;
                                 z.ZadanieOpis = reader["opis"].ToString();
-                                //z.ZadanieDodajacy
+                                z.ZadanieDodajacy = HttpContext.Current.User.Identity.Name;
                                 z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
-                                //z.ZadaniePriorytet = reader["priorytet"].ToString(); // INT!!!!
+                                z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
                                 z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
                                 //przypisanie do grupy??
-                                //zadanie nadrzędne
+                                z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
                                 z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 //DEADLINE !!
-                                                              
+
                             }
                         }
 
@@ -1229,7 +1231,7 @@ WHERE id_zadania = @idZadania", con);
                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1043", ex.StackTrace));
                 }
             }
-            
+
 
             return z;
         }

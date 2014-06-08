@@ -11,7 +11,7 @@ namespace Scrum4u
 {
     //enumeratory
     public enum Status { do_wykonania=0, w_trakcie=1, wykonane=2, odlozone=3 }
-    public enum TypZadania { zadanie=0, blad=1, pomysl=2 }
+    public enum TypZadania { zadanie="ZADANIE", blad="BLAD", pomysl="POMYSL" }
 
     //klasy
     public class Uzytkownik
@@ -327,11 +327,13 @@ namespace Scrum4u
         public string ZadanieNazwa { get; set; }
         public string ZadanieOpis { get; set; }
         public Status ZadanieStatus { get; set; }
-        public bool ZadaniePriorytet { get; set; }
+        public int ZadaniePriorytet { get; set; }
         public DateTime ZadanieDataUtworzenia { get; set; }
-        public DateTime ZadanieDataRozpoczecia { get; set; }
+        //public DateTime ZadanieDataRozpoczecia { get; set; }
         public DateTime ZadanieDataUkonczenia { get; set; }
         public string ZadaniePrzypisaneDo { get; set; }
+        public string ZadanieDodajacy { get; set; }
+        public int ZadanieNadrzedneID { get; set; }
 
         public bool Dodaj()
         {
