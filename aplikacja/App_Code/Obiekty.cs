@@ -334,6 +334,7 @@ namespace Scrum4u
         public string ZadaniePrzypisaneDo { get; set; }
         public string ZadanieDodajacy { get; set; }
         public int ZadanieNadrzedneID { get; set; }
+        public DateTime ZadanieDeadline { get; set; }
 
         public bool Dodaj()
         {
