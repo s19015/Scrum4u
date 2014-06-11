@@ -36,10 +36,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="chckPriorytet" CssClass="col-sm-2 control-label" Text="Wysoki priorytet"></asp:Label>
+                    <asp:Label runat="server" AssociatedControlID="ddPriorytet" CssClass="col-sm-2 control-label" Text="Wysoki priorytet"></asp:Label>
                     <div class="col-sm-10">
-                        
-                        <asp:CheckBox runat="server" ID="chckPriorytet" ValidationGroup="formDodajGrupe" />
+                        <asp:DropDownList runat="server" ID="ddPriorytet" ValidationGroup="formDodajGrupe" >
+                            <asp:ListItem Value="1" Text="Niski"></asp:ListItem>
+                            <asp:ListItem Value="2" Text="Średni"></asp:ListItem>
+                            <asp:ListItem Value="3" Text="Wysoki"></asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                 </div>
                 <div class="form-group">

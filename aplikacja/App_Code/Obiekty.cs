@@ -11,7 +11,12 @@ namespace Scrum4u
 {
     //enumeratory
     public enum Status { do_wykonania=0, w_trakcie=1, wykonane=2, odlozone=3 }
-    public enum TypZadania { zadanie="ZADANIE", blad="BLAD", pomysl="POMYSL" }
+    public enum TypZadania 
+    { 
+        ZADANIE, 
+        BLAD, 
+        POMYSL 
+    }
 
     //klasy
     public class Uzytkownik

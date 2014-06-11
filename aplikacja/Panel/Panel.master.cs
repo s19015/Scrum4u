@@ -10,15 +10,14 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
-        {
+
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 System.Web.Security.FormsAuthentication.RedirectToLoginPage();
                 return;
             }
             litImieNazwisko.Text = HttpContext.Current.User.Identity.Name;
-        }
+        
     }
     protected void btnWyloguj_Click(object sender, EventArgs e)
     {

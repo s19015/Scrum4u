@@ -53,7 +53,7 @@ public partial class Panel_Projekt : System.Web.UI.Page
         Zadanie z = new Zadanie() {
         ZadanieNazwa=txtNazwaZadania.Text,
         ZadanieOpis=txtOpisZadania.Text,
-        ZadaniePriorytet=chckPriorytet.Checked,
+        ZadaniePriorytet=int.Parse(ddPriorytet.SelectedValue),
         ZadanieProjektID=projekt.ProjektID,
         ZadanieTypZadania = (TypZadania)Enum.Parse(typeof(TypZadania),ddTypZadania.SelectedValue),
         ZadanieStatus = Status.do_wykonania,
@@ -62,13 +62,10 @@ public partial class Panel_Projekt : System.Web.UI.Page
         
         };
 
-        DateTime dRozp = DateTime.MinValue;
-        DateTime.TryParse(txtDataRozpoczecia.Text, out dRozp);
-        z.ZadanieDataRozpoczecia = dRozp;
-
         DateTime dZak = DateTime.MinValue;
         DateTime.TryParse(txtDataZakonczenia.Text, out dZak);
         z.ZadanieDataUkonczenia = dZak;
+        z.ZadanieDeadline = dZak;
 
         bool dodano = false;
         try

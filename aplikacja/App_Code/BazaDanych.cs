@@ -542,6 +542,8 @@ and is_zaproszenie_przyjete = 1", con);
         }
 
         //nalezy zrezygnowac z parametru doKtorej należe na rzecz emailUzytkownika bo jest on równoznaczny i niezbędny
+        // do zrobienia
+        // to popraw zapytanie tak aby ten uzytkownik byl opcjonalny, teraz wiesz juz jak pobrac adres email
         internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze)
         {
             GrupaRobocza g = null;
@@ -565,7 +567,7 @@ where id_zapraszanego = @email_uzytkownika
 and is_zaproszenie_przyjete = 1", con);
 
                     cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
-                    //cmd.Parameters.AddWithValue("@email_uzytkownika", email);
+                    cmd.Parameters.AddWithValue("@email_uzytkownika", HttpContext.Current.User.Identity.Name);
                     cmd.Connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -605,7 +607,7 @@ and is_zaproszenie_przyjete = 1", con);
             {
                 try
                 {
-
+                    //sprawdz to zapytanie czy na pewno wyciaga lista uzytkownikow aktywnych przypisanych do grupy
                     SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
 FROM GrupyRobocze Grupy 
 WHERE id_grupy_robocze = @idGrupy
@@ -930,6 +932,8 @@ VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
                     }
                     else
                     {
+
+                        //do zrobiena, popraw proszę tą funkcje aby zwracała jeszcze id grupy roboczej, to powyzsze tez
                         cmd = new SqlCommand(@"SELECT Projekty.id_grupy_robocze, Projekty.nazwa_projektu
 FROM Projekty
 WHERE id_menager_projektu = @email_uzytkownika
@@ -956,7 +960,10 @@ and is_zaproszenie_przyjete = 1", con);
                             {
                                 Projekt p = new Projekt();
                                 p.ProjektID = (int)reader["id_grupy_robocze"];
-                                p.ProjektNazwa = reader["nazwa"].ToString();
+                                p.ProjektNazwa = reader["nazwa_projektu"].ToString();
+                                //p.ProjektGrupaRoboczaID = (int)reader[];
+                                //tymczasowo dodalem 9
+                                p.ProjektGrupaRoboczaID = 9;
                                 projekty.Add(p);
 
                             }
@@ -1208,7 +1215,7 @@ WHERE id_zadania = @idZadania", con);
                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
                                 z.ZadanieProjektID = int.Parse( reader["id_projekty"].ToString() );
                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
-                                TypZadania t = TypZadania.zadanie;
+                                TypZadania t = TypZadania.ZADANIE;
                                 Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
                                 z.ZadanieTypZadania = t;
                                 z.ZadanieOpis = reader["opis"].ToString();
@@ -1271,7 +1278,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
                                 z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
-                                TypZadania t = TypZadania.zadanie;
+                                TypZadania t = TypZadania.ZADANIE;
                                 Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
                                 z.ZadanieTypZadania = t;
                                 z.ZadanieOpis = reader["opis"].ToString();
@@ -1333,7 +1340,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                                  z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
                                  z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
                                  z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
-                                 TypZadania t = TypZadania.zadanie;
+                                 TypZadania t = TypZadania.ZADANIE;
                                  Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
                                  z.ZadanieTypZadania = t;
                                  z.ZadanieOpis = reader["opis"].ToString();

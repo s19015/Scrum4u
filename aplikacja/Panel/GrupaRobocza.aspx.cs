@@ -13,6 +13,7 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         int idGrupy = 0;
+        lblInfo.Visible = false;
         if (Request.QueryString["id"]!=null && int.TryParse(Request.QueryString["id"],out idGrupy))
         {
             grupa = GrupaRobocza.PobierzGrupe(idGrupy,true);
