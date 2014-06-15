@@ -11,7 +11,12 @@ public partial class Zaloguj : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (Request.QueryString["e"]!=null)
+        {
+            txtEmail.Text = Request.QueryString["e"];
+            if (int.Parse(Request.QueryString["s"]) == 0)
+                btnZaloguj_Click(sender, e);
+        }
     }
     protected void btnZaloguj_Click(object sender, EventArgs e)
     {

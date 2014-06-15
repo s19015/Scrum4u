@@ -12,8 +12,6 @@
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/bootstrap.min.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/script2.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <asp:ContentPlaceHolder id="head" runat="server">
-    </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">

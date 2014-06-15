@@ -39,10 +39,10 @@
                <div class="FrontContent">
                   <div class="FrontMenuContent">
                      <ul>
-                        <li><a href="Default.aspx#Page1">Scrum4u</a></li>
-                        <li><a href="Default.aspx#Page2">Produkt</a></li>
-                        <li><a href="Default.aspx#Page3">O nas</a></li>
-                        <li><a href="Default.aspx#Page4">Kontakt</a></li>
+                        <li><a href="/#Page1">Scrum4u</a></li>
+                        <li><a href="/#Page2">Produkt</a></li>
+                        <li><a href="/#Page3">O nas</a></li>
+                        <li><a href="/#Page4">Kontakt</a></li>
                      </ul>
                   </div>
                </div>

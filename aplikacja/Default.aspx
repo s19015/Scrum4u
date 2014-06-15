@@ -18,7 +18,7 @@
        <div class="Front">
          <div class="ImageBox">
             <div class="FrontHeader" id="top">
-               <a href="Default.aspx">Scrum4u</a>
+               <a href="/">Scrum4u</a>
             </div>           
             
             <div class="FrontContent">
@@ -27,13 +27,13 @@
                   
                   <%--<form class="FrontLogInForm" role="form">--%>
                      <div class="form-group">
-                         <input type="email" class="form-control" id="inputEmail3" placeholder="Email"/>
+                         <asp:TextBox class="form-control" ValidationGroup="formLogowanie" runat="server" ID="txtEmail" MaxLength="100" placeholder="Email"></asp:TextBox>
                      </div>
                      <div class="form-group">
-                         <input type="password" class="form-control" id="inputPassword3" placeholder="Password"/>
+                         <asp:TextBox class="form-control" ValidationGroup="formLogowanie" runat="server" ID="txtHaslo" MaxLength="100" placeholder="Hasło" TextMode="Password"></asp:TextBox>
                      </div>
                      <div class="form-group">
-                        <button type="submit" class="btn btn-default">Zaloguj</button>
+                        <button onserverclick="btnZaloguj_ServerClick" runat="server" id="btnZaloguj" validationgroup="formLogowanie" class="btn btn-default">Zaloguj</button>
                         <a class="FrontForgotPassword" href="Zaloguj.aspx">
                            Zapomniałeś swoje hasło?
                         </a>
