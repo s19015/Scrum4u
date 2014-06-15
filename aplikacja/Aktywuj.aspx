@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/App_Themes/scrum4u/js/jquery.v2.0.3.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/bootstrap.min.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/script2.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -23,9 +24,9 @@
             </div> 
             <div class="FrontContent">
                <div class="FrontHelloContent">
-                  <h1 class="">Uporządkuj swoje projekty!</h1>
+                  <h1 class="opensans f400">Uporządkuj swoje projekty!</h1>
                   <div class="FrontHelloSingIn">
-                     <span>Masz konto?</span>&nbsp;<a href="index.html">Zaloguj się!</a>
+                     <span>Masz konto?</span>&nbsp;<a href="Zaloguj.aspx">Zaloguj się!</a>
                   </div>
                   
                </div>
@@ -55,12 +56,6 @@
 
                </div>
 
-            </div>
-         </div>
-         
-         <div class="FrontFooter">
-            <div class="FrontContent">
-               <br/>
             </div>
          </div>
          

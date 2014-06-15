@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/App_Themes/scrum4u/js/jquery.v2.0.3.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/bootstrap.min.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/script.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -22,7 +23,7 @@
             
             <div class="FrontContent">
                <div class="FrontHelloContent">
-                  <h1 class="">Uporządkuj swoje projekty!</h1>
+                  <h1 class="opensans f400">Uporządkuj swoje projekty!</h1>
                   
                   <%--<form class="FrontLogInForm" role="form">--%>
                      <div class="form-group">
@@ -33,7 +34,7 @@
                      </div>
                      <div class="form-group">
                         <button type="submit" class="btn btn-default">Zaloguj</button>
-                        <a class="FrontForgotPassword" href="#">
+                        <a class="FrontForgotPassword" href="Zaloguj.aspx">
                            Zapomniałeś swoje hasło?
                         </a>
                      </div>
@@ -49,78 +50,132 @@
          </div>
          
          <div class="FrontMainContent">
-            <div class="FrontMenu">
+            <div id="Page1" class="FrontMenu">
                <div class="FrontContent">
                   <div class="FrontMenuContent">
                      <ul>
-                        <li><a href="Default.aspx#Page1">Scrum4u</a></li>
-                        <li><a href="Default.aspx#Page2">Produkt</a></li>
-                        <li><a href="Default.aspx#Page3">O nas</a></li>
-                        <li><a href="Default.aspx#Page4">Kontakt</a></li>
+                        <li><a href="#Page1">Scrum4u</a></li>
+                        <li><a href="#Page2">Produkt</a></li>
+                        <li><a href="#Page3">O nas</a></li>
+                        <li><a href="#Page4">Kontakt</a></li>
                      </ul>
                   </div>
                </div>
             </div>
             
-            <div class="FrontContent ">
-               
-               <div class="FrontMainArrow">
-                  <a href="#Page1"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
-               </div>
-               <div id="Page1">
-                  <h1>Scrum4u</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a congue lacus, in tristique massa. Proin quis lobortis risus. Curabitur rhoncus tortor hendrerit vestibulum fermentum. Suspendisse porta, eros nec sollicitudin cursus, velit ante interdum neque, tempus condimentum dolor dui eget nunc. Nullam vehicula velit ut pulvinar consectetur. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque pretium tristique nisl sit amet sagittis. Proin accumsan accumsan est, in porta lacus elementum vitae. In porttitor risus in elit vestibulum venenatis.</p>
-
-   <p>Sed congue urna a justo ornare volutpat. Nunc vestibulum eleifend ligula et eleifend. Vivamus suscipit lacinia lacinia. Ut at bibendum felis. In at orci laoreet, condimentum mauris nec, condimentum nulla. Cras fermentum facilisis tortor quis vulputate. Nulla ut est volutpat, malesuada nunc nec, laoreet orci.</p>
-
-   <p>Donec sit amet pharetra augue, id gravida lorem. Nunc semper fermentum nulla a pellentesque. Nunc ac risus nunc. Sed nisi mauris, iaculis vel laoreet eu, euismod vitae mi. Vestibulum diam urna, hendrerit a massa id, aliquam pellentesque odio. Maecenas sollicitudin metus eu diam malesuada, vitae bibendum dolor ullamcorper. Sed ac dui a dui gravida rhoncus. Donec risus justo, semper et commodo egestas, venenatis et neque. Fusce at velit pellentesque lacus volutpat pretium at at leo. Pellentesque varius velit vitae magna commodo, nec molestie dolor fermentum. Quisque non nibh nec quam egestas convallis. Nulla sed elit sed ante ullamcorper porttitor. Sed laoreet vehicula sapien eget porttitor. Proin sit amet quam lorem. Nulla dignissim nec mi eu lacinia. Phasellus eu felis lacinia, interdum lacus in, molestie erat. </p>
-               </div>
-
-               <div class="FrontMainArrow">
-                  <a href="#Page2"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
-               </div>
-               <div id="Page2">
-                 <h1>O produkcie</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a congue lacus, in tristique massa. Proin quis lobortis risus. Curabitur rhoncus tortor hendrerit vestibulum fermentum. Suspendisse porta, eros nec sollicitudin cursus, velit ante interdum neque, tempus condimentum dolor dui eget nunc. Nullam vehicula velit ut pulvinar consectetur. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque pretium tristique nisl sit amet sagittis. Proin accumsan accumsan est, in porta lacus elementum vitae. In porttitor risus in elit vestibulum venenatis.</p>
-
-   <p>Sed congue urna a justo ornare volutpat. Nunc vestibulum eleifend ligula et eleifend. Vivamus suscipit lacinia lacinia. Ut at bibendum felis. In at orci laoreet, condimentum mauris nec, condimentum nulla. Cras fermentum facilisis tortor quis vulputate. Nulla ut est volutpat, malesuada nunc nec, laoreet orci.</p>
-
-   <p>Donec sit amet pharetra augue, id gravida lorem. Nunc semper fermentum nulla a pellentesque. Nunc ac risus nunc. Sed nisi mauris, iaculis vel laoreet eu, euismod vitae mi. Vestibulum diam urna, hendrerit a massa id, aliquam pellentesque odio. Maecenas sollicitudin metus eu diam malesuada, vitae bibendum dolor ullamcorper. Sed ac dui a dui gravida rhoncus. Donec risus justo, semper et commodo egestas, venenatis et neque. Fusce at velit pellentesque lacus volutpat pretium at at leo. Pellentesque varius velit vitae magna commodo, nec molestie dolor fermentum. Quisque non nibh nec quam egestas convallis. Nulla sed elit sed ante ullamcorper porttitor. Sed laoreet vehicula sapien eget porttitor. Proin sit amet quam lorem. Nulla dignissim nec mi eu lacinia. Phasellus eu felis lacinia, interdum lacus in, molestie erat. </p>
-               </div>
-
-               <div class="FrontMainArrow">
-                  <a href="#Page3"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
-               </div>
-               <div id="Page3">
-                <h1>Informacje o twórcach</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a congue lacus, in tristique massa. Proin quis lobortis risus. Curabitur rhoncus tortor hendrerit vestibulum fermentum. Suspendisse porta, eros nec sollicitudin cursus, velit ante interdum neque, tempus condimentum dolor dui eget nunc. Nullam vehicula velit ut pulvinar consectetur. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque pretium tristique nisl sit amet sagittis. Proin accumsan accumsan est, in porta lacus elementum vitae. In porttitor risus in elit vestibulum venenatis.</p>
-
-   <p>Sed congue urna a justo ornare volutpat. Nunc vestibulum eleifend ligula et eleifend. Vivamus suscipit lacinia lacinia. Ut at bibendum felis. In at orci laoreet, condimentum mauris nec, condimentum nulla. Cras fermentum facilisis tortor quis vulputate. Nulla ut est volutpat, malesuada nunc nec, laoreet orci.</p>
-
-   <p>Donec sit amet pharetra augue, id gravida lorem. Nunc semper fermentum nulla a pellentesque. Nunc ac risus nunc. Sed nisi mauris, iaculis vel laoreet eu, euismod vitae mi. Vestibulum diam urna, hendrerit a massa id, aliquam pellentesque odio. Maecenas sollicitudin metus eu diam malesuada, vitae bibendum dolor ullamcorper. Sed ac dui a dui gravida rhoncus. Donec risus justo, semper et commodo egestas, venenatis et neque. Fusce at velit pellentesque lacus volutpat pretium at at leo. Pellentesque varius velit vitae magna commodo, nec molestie dolor fermentum. Quisque non nibh nec quam egestas convallis. Nulla sed elit sed ante ullamcorper porttitor. Sed laoreet vehicula sapien eget porttitor. Proin sit amet quam lorem. Nulla dignissim nec mi eu lacinia. Phasellus eu felis lacinia, interdum lacus in, molestie erat. </p>
-               </div>
-
-               <div class="FrontMainArrow">
-                  <a href="#Page4"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
-               </div>
-               <div id="Page4">
-                  <h1>Kontakt</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a congue lacus, in tristique massa. Proin quis lobortis risus. Curabitur rhoncus tortor hendrerit vestibulum fermentum. Suspendisse porta, eros nec sollicitudin cursus, velit ante interdum neque, tempus condimentum dolor dui eget nunc. Nullam vehicula velit ut pulvinar consectetur. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque pretium tristique nisl sit amet sagittis. Proin accumsan accumsan est, in porta lacus elementum vitae. In porttitor risus in elit vestibulum venenatis.</p>
-
-   <p>Sed congue urna a justo ornare volutpat. Nunc vestibulum eleifend ligula et eleifend. Vivamus suscipit lacinia lacinia. Ut at bibendum felis. In at orci laoreet, condimentum mauris nec, condimentum nulla. Cras fermentum facilisis tortor quis vulputate. Nulla ut est volutpat, malesuada nunc nec, laoreet orci.</p>
-
-   <p>Donec sit amet pharetra augue, id gravida lorem. Nunc semper fermentum nulla a pellentesque. Nunc ac risus nunc. Sed nisi mauris, iaculis vel laoreet eu, euismod vitae mi. Vestibulum diam urna, hendrerit a massa id, aliquam pellentesque odio. Maecenas sollicitudin metus eu diam malesuada, vitae bibendum dolor ullamcorper. Sed ac dui a dui gravida rhoncus. Donec risus justo, semper et commodo egestas, venenatis et neque. Fusce at velit pellentesque lacus volutpat pretium at at leo. Pellentesque varius velit vitae magna commodo, nec molestie dolor fermentum. Quisque non nibh nec quam egestas convallis. Nulla sed elit sed ante ullamcorper porttitor. Sed laoreet vehicula sapien eget porttitor. Proin sit amet quam lorem. Nulla dignissim nec mi eu lacinia. Phasellus eu felis lacinia, interdum lacus in, molestie erat. </p>
-               </div>
-               
-               <div class="FrontFooterArrow">
-                  <a href="#top"><span class="glyphicon glyphicon-chevron-up icon-arrow-top"></span></a>
-               </div>
-            </div>
-         </div>
-         
-         <div class="FrontFooter">
             <div class="FrontContent">
-               <br/>
+               <div class="col-xs-12">
+                  <div class="FrontMainArrow">
+                     <a href="#Page1"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
+                  </div>
+               </div>
+               
+               <div class="col-xs-7">
+                  <h1 class="opensans f300">Scrum4u</h1>
+                  <br/>
+                  <ul class="greatinfo opensans f300">
+                     <li>
+                        <span class="glyphicon glyphicon-user greatcolor"></span>&nbsp;Zbierz swój zespół
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-briefcase greatcolor"></span>&nbsp;Stwórz własny projekt
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-th-list greatcolor"></span>&nbsp;Zarządzaj zadaniami
+                     </li>
+                  </ul> 
+               </div>
+               <div class="col-xs-5">
+                  <br/>
+                  <br/>
+                  <br/>
+                  <img src="App_Themes/scrum4u/images/front1.jpg"/>
+               </div>
+               <div id="Page2" class="col-xs-12">
+                  <br/>
+                  <div class="FrontMainArrow">
+                     <a href="#Page2"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
+                  </div>
+               </div>
+               
+               <div class="col-xs-6">
+                 <h1 class="opensans f300">O produkcie</h1>
+                  <br/>
+                  <ul class="greatinfo opensans f300">
+                     <li>
+                        <span class="glyphicon glyphicon-ok greatcolor"></span>&nbsp;Prostota w użyciu
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-ok greatcolor"></span>&nbsp;Dostępność online
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-ok greatcolor"></span>&nbsp;Gwarancja bezpieczeństwa
+                     </li>
+                  </ul> 
+               </div>
+               <div class="col-xs-6">
+                  <br/>
+                  <br/>
+                  <img src="App_Themes/scrum4u/images/front2.png"/>
+               </div>
+               <div id="Page3" class="col-xs-12">
+                  <br/>
+                  <div class="FrontMainArrow">
+                     <a href="#Page3"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
+                  </div>
+               </div>
+
+               <div class="col-xs-7">
+                <h1 class="opensans f300">Informacje o twórcach</h1>
+                  <br/>
+                  <ul class="greatinfo opensans f300">
+                     <li>
+                        <span class="glyphicon glyphicon-chevron-right greatcolor"></span>&nbsp;Bartosz Bartniczak
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-chevron-right greatcolor"></span>&nbsp;Dawid Jachnik
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-chevron-right greatcolor"></span>&nbsp;Michał Łuczak
+                     </li>
+                     <li>
+                        <span class="glyphicon glyphicon-chevron-right greatcolor"></span>&nbsp;Bartłomiej Jańczak
+                     </li>
+                  </ul> 
+               </div>
+               <div class="col-xs-5">
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <img src="App_Themes/scrum4u/images/front3.jpg"/>
+               </div>
+               <div id="Page4" class="col-xs-12">
+                  <div class="FrontMainArrow">
+                     <a href="#Page4"><span class="glyphicon glyphicon-chevron-down icon-arrow"></span></a>
+                  </div>
+               </div>
+
+               <div class="col-xs-12">
+                  <h1 class="opensans f300">Kontakt</h1>
+                  <br/>
+                  <ul class="greatinfo opensans f300">
+                     <li>
+                        <span class="glyphicon glyphicon-envelope greatcolor"></span>&nbsp;<a href="mailto:biuro@scrum4u.pl">biuro@scrum4u.pl</a>
+                     </li>
+                  </ul> 
+               </div>
+               <div class="col-xs-12">
+                  <div class="FrontFooterArrow">
+                     <a href="#top"><span class="glyphicon glyphicon-chevron-up icon-arrow-top"></span></a>
+                  </div>
+               </div>
+               <!--<div class="col-xs-12">
+                  <div class="FrontFooter">
+                     <br/>
+                  </div>
+               </div>-->
             </div>
          </div>
          

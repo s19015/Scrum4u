@@ -84,7 +84,7 @@ body{
 .FrontMainContent{
    background: #F5F5F5;
    padding-bottom: 25px;
-   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+/*   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);*/
 }
 
 .FrontMainArrow{
@@ -146,6 +146,7 @@ body{
 .FrontFooter{
    padding-top: 30px;
    padding-bottom: 30px;
+   padding-left: 30px;
    background: #515151;
    color: #F5F5F5;
    
@@ -207,7 +208,7 @@ a.FrontForgotPassword{
 
 
 .Register .FrontMainContent{
-   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+   /*box-shadow: 0 0px 0px rgba(0, 0, 0, 0);*/
 }
 
 .Register .FrontFooter{
@@ -215,4 +216,32 @@ a.FrontForgotPassword{
    top: 100%;
    left: 0;
    right: 0;
+}
+
+.opensans{
+   font-family: 'Open Sans', sans-serif;
+}
+
+.f300{
+   font-weight: 300;
+}
+
+.f400{
+   font-weight: 400;
+}
+
+.f700{
+   font-weight: 700;
+}
+
+.greatinfo{
+   list-style: none;
+}
+.greatinfo li{
+   font-size: 26px;
+   margin-bottom: 20px;
+}
+
+.greatcolor{
+   color: #0866C6;
 }

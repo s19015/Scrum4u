@@ -44,12 +44,12 @@
          <div class="userinfo col-xs-12 col-sm-6 col-md-4">
             <div class="user">
                <div class="userimg">
-                  <img alt="" src="#">
+                  <!--<img alt="" src="#">-->
                </div>
                <div class="userinfo">
                   <h5>
-                     Bartłomiej Jańczak
-                     <small>janczakbartek@gmail.com</small>
+                     Jan kowalski
+                     <small>jankowalski@scrum4u.pl</small>
                   </h5>
                   <ul>
                      <li>
@@ -113,10 +113,11 @@
                   <span class="separator"></span>
                </li>
                <li>
-                  <a href="#">First Level</a>
+                  <a href="#">Strona główna</a>
                   <span class="separator"></span>
                </li>
-               <li>Last Level</li>
+               <li>Zadania</li>
+               <li>Lista</li>
             </ul>
             
             <div class="row pageheader">
@@ -127,8 +128,8 @@
                   </div>
 
                   <div class="pagetitle">
-                     <h5>UI Elements & Widgets</h5>
-                     <h1>Theme Components</h1>
+                     <h5>Twoje zadania</h5>
+                     <h1>Lista zadań do wykonania</h1>
                   </div>
                </div>
                
@@ -148,90 +149,107 @@
                      <div class="row-fluid">
                         
                         <!-- glowna tresc strony -->
-                        <h5 class="subtitle">PRZYKŁADOWA TABELA</h5>
+                        <h5 class="subtitle"></h5>
                         
                         <div class="table-responsive tablewidget">
                            <table class="table table-hover table-striped">
                               <thead>
                                  <tr>
                                     <th>#</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Username</th>
+                                    <th>Nazwa zadania</th>
+                                    <th>Data wykonania</th>
+                                    <th>Status</th>
+                                    <th>#</th>
                                  </tr>
                               </thead>
 
                               <tbody>
                                  <tr>
                                     <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <td>Przygotowanie dokumentacji</td>
+                                    <td>02.06.2014</td>
+                                    <td>W trakcie</td>
+                                    <td><a href="">Szczegóły</a></td>
                                  </tr>
 
                                  <tr class="success">
                                     <td>2</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
+                                    <td>Layout - koncepcja dla klienta</td>
+                                    <td>12.06.2014</td>
+                                    <td>Do wykonania</td>
+                                    <td><a href="">Szczegóły</a></td>
+                                 </tr>
+
+                                 <tr class="">
+                                    <td>3</td>
+                                    <td>Wstępne rozmowy</td>
+                                    <td>27.05.2014</td>
+                                    <td>Zakończone</td>
+                                    <td><a href="">Szczegóły</a></td>
+                                 </tr>
+
+                                 <tr class="">
+                                    <td>4</td>
+                                    <td>Moduł sklepu</td>
+                                    <td>14.08.2014</td>
+                                    <td>Do wykonania</td>
+                                    <td><a href="">Szczegóły</a></td>
                                  </tr>
 
                                  <tr>
-                                    <td >3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
+                                    <td>5</td>
+                                    <td>Moduł magazynowy produktów</td>
+                                    <td>1.08.2014</td>
+                                    <td>Do wykonania</td>
+                                    <td><a href="">Szczegóły</a></td>
                                  </tr>
 
-                                 <tr class="warning">
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                 </tr>
-
-                                 <tr>
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
+                                 <tr class="">
+                                    <td>5</td>
+                                    <td>Obsługa użytkowników</td>
+                                    <td>26.08.2014</td>
+                                    <td>Do wykonania</td>
+                                    <td><a href="">Szczegóły</a></td>
                                  </tr>
 
                                  <tr class="danger">
-                                    <td>3</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
+                                    <td>6</td>
+                                    <td>Prezentacja dla klienta</td>
+                                    <td>31.08.2014</td>
+                                    <td>Do wykonania</td>
+                                    <td><a href="">Szczegóły</a></td>
                                  </tr>
                               </tbody>
                            </table>
                         </div>
                         
                         <br>
-                        <h5 class="subtitle">PRZYKŁADOWY FORMULARZ</h5>
+                        <h5 class="subtitle"></h5>
                         <br>
 
                         <div class="widget">
-                           <h4 class="widgettitle">przykladowy formularz opis jego inny</h4>
+                           <h4 class="widgettitle">Dodawanie nowego zadania</h4>
                            <div class="widgetcontent">
                               <form class="form-horizontal" role="form">
                                  <div class="form-group">
-                                   <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                   <label for="inputEmail3" class="col-sm-2 control-label">Nazwa</label>
                                    <div class="col-sm-10">
-                                     <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                     <input type="email" class="form-control" id="inputEmail3" placeholder="Nazwa">
                                    </div>
                                  </div>
                                  <div class="form-group">
-                                   <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                                   <label for="inputPassword3" class="col-sm-2 control-label">Opis</label>
                                    <div class="col-sm-10">
-                                     <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                      <textarea rows="5" cols="120">
+                                         
+                                      </textarea>
                                    </div>
                                  </div>
                                  <div class="form-group">
                                    <div class="col-sm-offset-2 col-sm-10">
                                      <div class="checkbox">
                                        <label>
-                                         <input type="checkbox"> Remember me
+                                         <input type="checkbox"> Zadanie
                                        </label>
                                      </div>
                                    </div>
