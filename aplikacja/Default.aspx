@@ -17,7 +17,7 @@
        <div class="Front">
          <div class="ImageBox">
             <div class="FrontHeader" id="top">
-               <a href="#">Scrum4u</a>
+               <a href="Default.aspx">Scrum4u</a>
             </div>           
             
             <div class="FrontContent">
@@ -26,10 +26,10 @@
                   
                   <%--<form class="FrontLogInForm" role="form">--%>
                      <div class="form-group">
-                         <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                         <input type="email" class="form-control" id="inputEmail3" placeholder="Email"/>
                      </div>
                      <div class="form-group">
-                         <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                         <input type="password" class="form-control" id="inputPassword3" placeholder="Password"/>
                      </div>
                      <div class="form-group">
                         <button type="submit" class="btn btn-default">Zaloguj</button>
@@ -40,7 +40,7 @@
                   <%--</form>--%>
                   
                   <div class="FrontHelloSingIn">
-                     <span>Nie masz konta?</span>&nbsp;<a href="register.html">Zarejestruj się!</a>
+                     <span>Nie masz konta?</span>&nbsp;<a href="Rejestracja.aspx">Zarejestruj się!</a>
                   </div>
                   
                </div>
@@ -53,10 +53,10 @@
                <div class="FrontContent">
                   <div class="FrontMenuContent">
                      <ul>
-                        <li><a href="#Page1">Scrum4u</a></li>
-                        <li><a href="#Page2">Produkt</a></li>
-                        <li><a href="#Page3">O nas</a></li>
-                        <li><a href="#Page4">Kontakt</a></li>
+                        <li><a href="Default.aspx#Page1">Scrum4u</a></li>
+                        <li><a href="Default.aspx#Page2">Produkt</a></li>
+                        <li><a href="Default.aspx#Page3">O nas</a></li>
+                        <li><a href="Default.aspx#Page4">Kontakt</a></li>
                      </ul>
                   </div>
                </div>
@@ -120,9 +120,7 @@
          
          <div class="FrontFooter">
             <div class="FrontContent">
-               bla bla bla <br>
-               copyright itp...<br>
-               cyk cyk<br>
+               <br/>
             </div>
          </div>
          
