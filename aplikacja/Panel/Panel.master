@@ -58,11 +58,9 @@
                                 <small><asp:Literal runat="server" ID="litEmail"></asp:Literal></small>
                             </h5>
                             <ul>
+
                                 <li>
-                                    <a href="#">Edycja profilu</a>
-                                </li>
-                                <li>
-                                    <a href="#">Ustawienia konta</a>
+                                    <a href="/Panel/Ustawienia.aspx">Ustawienia konta</a>
                                 </li>
                                 <li>
                                     <asp:LinkButton runat="server" ID="btnWyloguj" Text="Wyloguj" OnClick="btnWyloguj_Click"></asp:LinkButton>

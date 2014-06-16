@@ -262,9 +262,12 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
             return u;
         }
 
-        internal static bool Aktualizuj(Uzytkownik u)
+        internal static bool ZmienHaslo(Uzytkownik uzytkownik, string haslo)
         {
-            throw new NotImplementedException();
+            bool dodano = false;
+            // do zrobienia, nalezy zahashowac haslo jak ponizej przy aktualizacji
+            //cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
+            return dodano;
         }
     }
     public class DziennikProvider

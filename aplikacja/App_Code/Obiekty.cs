@@ -155,20 +155,17 @@ namespace Scrum4u
             return wyslano;
         }
 
-        public static bool ZmienHaslo(string email, string haslo)
+        public bool ZmienHaslo(string haslo)
         {
-            Uzytkownik u = new Uzytkownik(email);
-            if (u!=null)
-            {
-                u.UzytkownikHaslo = haslo;
-                return u.Aktualizuj();
-            }
-            return false;
+            return BazaDanych.UzytkownikProvider.ZmienHaslo(this, haslo);
         }
 
-        private bool Aktualizuj()
+        public static bool ZmienHaslo(string email, string haslo)
         {
-            return BazaDanych.UzytkownikProvider.Aktualizuj(this);
+            Uzytkownik u = Uzytkownik.Pobierz(email);
+            if (u != null)
+                return u.ZmienHaslo(haslo);
+            return false;
         }
     }
 
