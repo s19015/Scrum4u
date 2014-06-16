@@ -1098,6 +1098,13 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
             return projekt;
 
         }
+
+        internal static List<Sprint> PobierzSprinty(int idProjektu)
+        {
+            List<Sprint> listaSprintow = null;
+            //do zrobienia pobieranie listy sprintów nalezacych dla danego projektu
+            return listaSprintow;
+        }
     }
 
     public class ZadanieProvider
@@ -1395,6 +1402,35 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
             }
 
             return listaZadan;
+        }
+    }
+
+    public class SprintProvider
+    {
+
+        internal static bool Dodaj(Sprint sprint)
+        {
+            //do zrobienia fynkcja do dodawania sprintow
+            return true;
+        }
+
+        internal static bool Usun(Sprint sprint)
+        {
+            //do zrobienia fynkcja do usuwania sprintow
+            return true;
+        }
+
+        internal static bool Aktualizuj(Sprint sprint)
+        {
+            // do zrobienia, aktualizacja: nazwy, opisu, deadlina
+            return true;
+        }
+        internal static List<Zadanie> PobierzZadania (int idSprinta)
+        {
+            List<Zadanie> zadaniaSprintu = null;
+
+            //do zrobienia, pobiera wszystkie zadania dla sprintu
+            return zadaniaSprintu;
         }
     }
 }

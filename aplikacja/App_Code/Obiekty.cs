@@ -318,6 +318,21 @@ namespace Scrum4u
         public string SprintNazwa { get; set; }
         public string SprintOpis { get; set; }
         public string SprintTerminWykonania { get; set; }
+
+        public bool Dodaj()
+        {
+            return BazaDanych.SprintProvider.Dodaj(this);
+        }
+
+        public bool Usun()
+        {
+            return BazaDanych.SprintProvider.Usun(this);
+        }
+
+        public bool Aktualizuj()
+        {
+            return BazaDanych.SprintProvider.Aktualizuj(this);
+        }
     }
 
     public class Zadanie
