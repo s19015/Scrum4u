@@ -544,7 +544,7 @@ and is_zaproszenie_przyjete = 1", con);
 
         }
 
-        
+
         internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze = true)
         {
             GrupaRobocza g = null;
@@ -612,7 +612,7 @@ WHERE id_grupy_robocze = @idGrupy", con);
             return g;
         }
 
-        internal static List<Uzytkownik> PobierzUzytkownikowGrupy(int idGrupy)
+        internal static List<Uzytkownik> PobierzUzytkownikowGrupy(int idGrupy, bool tylkoAktywni = false)
         {
             List<Uzytkownik> listaUzytkownikow = null;
 
@@ -620,14 +620,28 @@ WHERE id_grupy_robocze = @idGrupy", con);
             {
                 try
                 {
-                    //sprawdz to zapytanie czy na pewno wyciaga lista uzytkownikow aktywnych przypisanych do grupy
-                    SqlCommand cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
+                    SqlCommand cmd = null;
+                    if (tylkoAktywni == false)
+                    {
+                        cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
 FROM GrupyRobocze Grupy 
 WHERE id_grupy_robocze = @idGrupy
 and is_aktywna = 1
 UNION
 SELECT id_zapraszanego as uzytkownicy_email, is_zaproszenie_przyjete FROM GrupyRoboczeZaproszenia
 where id_grupy_robocze = @idGrupy", con);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand(@"SELECT uzytkownicy_email, 1 as is_zaproszenie_przyjete
+FROM GrupyRobocze Grupy 
+WHERE id_grupy_robocze = @idGrupy
+and is_aktywna = 1
+UNION
+SELECT id_zapraszanego as uzytkownicy_email, is_zaproszenie_przyjete FROM GrupyRoboczeZaproszenia
+where id_grupy_robocze = @idGrupy and is_zaproszenie_przyjete = 1", con);
+
+                    }
 
                     cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
                     cmd.Connection.Open();
