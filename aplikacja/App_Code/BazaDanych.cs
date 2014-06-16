@@ -544,10 +544,8 @@ and is_zaproszenie_przyjete = 1", con);
 
         }
 
-        //nalezy zrezygnowac z parametru doKtorej należe na rzecz emailUzytkownika bo jest on równoznaczny i niezbędny
-        // do zrobienia
-        // to popraw zapytanie tak aby ten uzytkownik byl opcjonalny, teraz wiesz juz jak pobrac adres email
-        internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze)
+        
+        internal static GrupaRobocza Pobierz(int idGrupy, bool doKtorejNaleze = true)
         {
             GrupaRobocza g = null;
 
@@ -556,7 +554,12 @@ and is_zaproszenie_przyjete = 1", con);
                 try
                 {
 
-                    SqlCommand cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
+                    SqlCommand cmd = null;
+
+                    if (doKtorejNaleze == true)
+                    {
+
+                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
 FROM GrupyRobocze
 WHERE id_grupy_robocze = @idGrupy
 and uzytkownicy_email = @email_uzytkownika
@@ -568,6 +571,13 @@ INNER JOIN GrupyRobocze as Grupy on Zaproszenia.id_grupy_robocze = Grupy.id_grup
 and Grupy.is_aktywna = 1 and Grupy.id_grupy_robocze = @idGrupy
 where id_zapraszanego = @email_uzytkownika
 and is_zaproszenie_przyjete = 1", con);
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
+FROM GrupyRobocze
+WHERE id_grupy_robocze = @idGrupy", con);
+                    }
 
                     cmd.Parameters.AddWithValue("@idGrupy", idGrupy);
                     cmd.Parameters.AddWithValue("@email_uzytkownika", HttpContext.Current.User.Identity.Name);
@@ -928,16 +938,14 @@ VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
 
                     if (doKtorychNaleze == false)
                     {
-                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                        cmd = new SqlCommand(@"SELECT id_projekty ,id_grupy_robocze, nazwa
                                                     FROM projekty
                                                     WHERE id_menager_projektu = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
                     }
                     else
                     {
-
-                        //do zrobiena, popraw proszę tą funkcje aby zwracała jeszcze id grupy roboczej, to powyzsze tez
-                        cmd = new SqlCommand(@"SELECT Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+                        cmd = new SqlCommand(@"SELECT Projekty.id_projekty ,Projekty.id_grupy_robocze, Projekty.nazwa_projektu
 FROM Projekty
 WHERE id_menager_projektu = @email_uzytkownika
 and is_aktywny = 1
@@ -962,11 +970,10 @@ and is_zaproszenie_przyjete = 1", con);
                             while (reader.Read())
                             {
                                 Projekt p = new Projekt();
-                                p.ProjektID = (int)reader["id_grupy_robocze"];
+                                p.ProjektID = (int)reader["id_projekty"];
                                 p.ProjektNazwa = reader["nazwa_projektu"].ToString();
-                                //p.ProjektGrupaRoboczaID = (int)reader[];
-                                //tymczasowo dodalem 9
-                                p.ProjektGrupaRoboczaID = 9;
+                                p.ProjektGrupaRoboczaID = (int)reader["id_grupy_robocze"];
+
                                 projekty.Add(p);
 
                             }
@@ -1084,8 +1091,8 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
 
         internal static bool Dodaj(Zadanie zadanie)
         {
-            
-            
+
+
             bool dodano = false;
 
 
@@ -1216,7 +1223,7 @@ WHERE id_zadania = @idZadania", con);
                             {
 
                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
-                                z.ZadanieProjektID = int.Parse( reader["id_projekty"].ToString() );
+                                z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
                                 TypZadania t = TypZadania.ZADANIE;
                                 Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
@@ -1253,7 +1260,7 @@ WHERE id_zadania = @idZadania", con);
         {
             List<Zadanie> listaZadan = null;
 
-             using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -1277,7 +1284,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                             while (reader.Read())
                             {
                                 Zadanie z = new Zadanie();
-                                
+
                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
                                 z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
@@ -1289,7 +1296,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                                 z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
                                 z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
                                 z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
-                                
+
                                 z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
                                 z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 z.ZadanieDeadline = DateTime.Parse(reader["deadline"].ToString());
@@ -1306,7 +1313,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                 {
                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1257", ex.StackTrace));
                 }
-            } 
+            }
 
             return listaZadan;
         }
@@ -1315,61 +1322,63 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
         {
             List<Zadanie> listaZadan = null;
 
-            
 
 
-             using (SqlConnection con = new SqlConnection(connectionString))
+
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                 try{
+                try
+                {
 
-                     SqlCommand cmd = new SqlCommand(@"SELECT Zadania.id_zadania, Zadania.id_sprinty, Zadania.id_zadania_typy, Zadania.tytul, Zadania.opis, Zadania.email_dodajacego, Zadania.row_date, Zadania.priorytet, Zadania.zadanie_nadrzedne, Zadania.data_zakonczenia, Zadania.deadline, Zadania.id_projekty, Zadania.email_przydzielony_uzytkownik
+                    SqlCommand cmd = new SqlCommand(@"SELECT Zadania.id_zadania, Zadania.id_sprinty, Zadania.id_zadania_typy, Zadania.tytul, Zadania.opis, Zadania.email_dodajacego, Zadania.row_date, Zadania.priorytet, Zadania.zadanie_nadrzedne, Zadania.data_zakonczenia, Zadania.deadline, Zadania.id_projekty, Zadania.email_przydzielony_uzytkownik
 FROM Zadania
 INNER JOIN Projekty on Zadania.id_projekty=Projekty.id_projekty and Projekty.is_aktywny = 1 and Projekty.id_projekty = @idProjektu
 WHERE Zadania.is_usuniety = 0
 order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", con);
 
-                     cmd.Parameters.AddWithValue("@idProjektu", idProjektu);
-                     cmd.Connection.Open();
+                    cmd.Parameters.AddWithValue("@idProjektu", idProjektu);
+                    cmd.Connection.Open();
 
-                     using (SqlDataReader reader = cmd.ExecuteReader())
-                     {
-                         if (reader.HasRows)
-                         {
-                             listaZadan = new List<Zadanie>();
-                             while (reader.Read())
-                             {
-                                 Zadanie z = new Zadanie();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            listaZadan = new List<Zadanie>();
+                            while (reader.Read())
+                            {
+                                Zadanie z = new Zadanie();
 
-                                 z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
-                                 z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
-                                 z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
-                                 TypZadania t = TypZadania.ZADANIE;
-                                 Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
-                                 z.ZadanieTypZadania = t;
-                                 z.ZadanieOpis = reader["opis"].ToString();
-                                 z.ZadanieDodajacy = HttpContext.Current.User.Identity.Name;
-                                 z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
-                                 z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
-                                 z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
+                                z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
+                                z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
+                                z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
+                                TypZadania t = TypZadania.ZADANIE;
+                                Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
+                                z.ZadanieTypZadania = t;
+                                z.ZadanieOpis = reader["opis"].ToString();
+                                z.ZadanieDodajacy = HttpContext.Current.User.Identity.Name;
+                                z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+                                z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
+                                z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
 
-                                 z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
-                                 z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
-                                 z.ZadanieDeadline = DateTime.Parse(reader["deadline"].ToString());
+                                z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
+                                z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
+                                z.ZadanieDeadline = DateTime.Parse(reader["deadline"].ToString());
 
-                             }
-                         }
+                            }
+                        }
 
-                     }
+                    }
 
-                     cmd.Connection.Close();
+                    cmd.Connection.Close();
 
 
 
-                 }
-                 catch(Exception ex){
-                     BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1323", ex.StackTrace));
-                 }
-             }
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1323", ex.StackTrace));
+                }
+            }
 
             return listaZadan;
         }
