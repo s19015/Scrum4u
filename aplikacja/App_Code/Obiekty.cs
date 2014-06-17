@@ -317,7 +317,10 @@ namespace Scrum4u
         public int SprintProjektID { get; set; }
         public string SprintNazwa { get; set; }
         public string SprintOpis { get; set; }
-        public string SprintTerminWykonania { get; set; }
+        public DateTime SprintTerminWykonania { get; set; }
+        public DateTime SprintDataZakonczenia { get; set; }
+        public DateTime SprintDataUtworzenia { get; set; }
+        public int SprintIdTworzacego { get; set; }
 
         public bool Dodaj()
         {

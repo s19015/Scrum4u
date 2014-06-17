@@ -1103,6 +1103,63 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
         {
             List<Sprint> listaSprintow = null;
             //do zrobienia pobieranie listy sprintów nalezacych dla danego projektu
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT [id_sprinty]
+                                  ,[id_projekty]
+                                  ,[data_zakonczenia]
+                                  ,[data_deadline]
+                                  ,[row_date]
+                                  ,[email_dodajacego]
+                                  ,[nazwa]
+                                  ,[opis]
+                              FROM Sprinty
+                              WHERE id_projekty = @idProjektu
+                              and is_usuniety = 0
+                            ", con);
+
+                    cmd.Parameters.AddWithValue("@idProjektu", idProjektu);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+
+                            listaSprintow = new List<Sprint>();
+
+                            while (reader.Read())
+                            {
+
+                                Sprint s = new Sprint();
+                                s.SprintID = Int32.Parse(reader["id_sprinty"].ToString());
+                                s.SprintProjektID = Int32.Parse( reader["id_projekty"].ToString() );
+                                s.SprintDataZakonczenia = DateTime.Parse( reader["data_zakonczenia"].ToString() );
+                                s.SprintTerminWykonania = DateTime.Parse(reader["data_deadline"].ToString());
+                                s.SprintDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+                                s.SprintIdTworzacego = Int32.Parse(reader["email_dodajacego"].ToString());
+                                s.SprintNazwa = reader["nazwa"].ToString();
+                                s.SprintOpis = reader["opis"].ToString();
+
+                                listaSprintow.Add(s);
+
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1114", ex.StackTrace));
+                }
+            }
+
             return listaSprintow;
         }
     }
@@ -1254,7 +1311,6 @@ WHERE id_zadania = @idZadania", con);
                                 z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
                                 z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
                                 z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
-                                //przypisanie do grupy??
                                 z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
                                 z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 z.ZadanieDeadline = DateTime.Parse(reader["deadline"].ToString());
@@ -1343,9 +1399,6 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
         {
             List<Zadanie> listaZadan = null;
 
-
-
-
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
@@ -1397,7 +1450,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                 }
                 catch (Exception ex)
                 {
-                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1323", ex.StackTrace));
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1456", ex.StackTrace));
                 }
             }
 
@@ -1410,26 +1463,183 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
 
         internal static bool Dodaj(Sprint sprint)
         {
-            //do zrobienia fynkcja do dodawania sprintow
-            return true;
+
+            bool dodano = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Sprinty(id_projekty, data_deadline, email_dodajacego, nazwa, opis )
+VALUES (@idProjektu, @deadline, @emailDodajacego, @nazwa, @opis );", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@idProjektu", sprint.SprintProjektID);
+                    cmd.Parameters.AddWithValue("@deadline", sprint.SprintTerminWykonania);
+                    cmd.Parameters.AddWithValue("@emailDodajacego", HttpContext.Current.User.Identity.Name);
+                    cmd.Parameters.AddWithValue("@nazwa", sprint.SprintNazwa);
+                    cmd.Parameters.AddWithValue("@opis", sprint.SprintOpis);
+
+
+                    cmd.Connection.Open();
+                    int ileDodano = cmd.ExecuteNonQuery();
+
+                    if (ileDodano > 0)
+                    {
+                        dodano = true;
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1501", ex.StackTrace));
+                }
+
+                return dodano;
+            }
+
         }
 
         internal static bool Usun(Sprint sprint)
         {
-            //do zrobienia fynkcja do usuwania sprintow
-            return true;
+            bool usunieto = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Sprinty
+                      SET is_usuniety = 1
+                      WHERE id_sprinty= @idSprintu", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@idSprintu", sprint.SprintID);
+
+                    cmd.Connection.Open();
+                    usunieto = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1531", ex.StackTrace));
+                }
+            }
+            return usunieto;
         }
 
         internal static bool Aktualizuj(Sprint sprint)
         {
-            // do zrobienia, aktualizacja: nazwy, opisu, deadlina
-            return true;
+            
+
+    bool zaktualizowano = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Sprinty
+SET data_zakonczenia = @dataZakonczenia,
+    data_deadline = @dataDeadline,
+    nazwa = @nazwa,
+    opis = @opis
+WHERE id_sprinty = @idSprintu", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@idSprintu", sprint.SprintID);
+                    cmd.Parameters.AddWithValue("@dataZakonczenia", sprint.SprintDataZakonczenia);
+                    cmd.Parameters.AddWithValue("@dataDeadline", sprint.SprintTerminWykonania);
+                    cmd.Parameters.AddWithValue("@nazwa", sprint.SprintNazwa);
+                    cmd.Parameters.AddWithValue("@opis", sprint.SprintOpis);
+
+                    cmd.Connection.Open();
+                    zaktualizowano = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1531", ex.StackTrace));
+                }
+            }
+            return zaktualizowano;
+
+
         }
-        internal static List<Zadanie> PobierzZadania (int idSprinta)
+        internal static List<Zadanie> PobierzZadania(int idSprintu)
         {
             List<Zadanie> zadaniaSprintu = null;
 
-            //do zrobienia, pobiera wszystkie zadania dla sprintu
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+
+                    SqlCommand cmd = new SqlCommand(@"SELECT [id_zadania]
+      ,[id_sprinty]
+      ,[id_zadania_typy]
+      ,[tytul]
+      ,[opis]
+      ,[email_dodajacego]
+      ,[row_date]
+      ,[priorytet]
+      ,[email_przydzielony_uzytkownik]
+      ,[zadanie_nadrzedne]
+      ,[data_zakonczenia]
+      ,[deadline]
+      ,[id_projekty]
+  FROM Zadania
+  WHERE id_sprinty = @idSprintu
+  and is_usuniety = 0", con);
+
+                    cmd.Parameters.AddWithValue("@idSprintu", idSprintu);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            zadaniaSprintu = new List<Zadanie>();
+                            while (reader.Read())
+                            {
+                                Zadanie z = new Zadanie();
+
+                                z.ZadanieID = int.Parse(reader["id_zadania"].ToString());
+                                z.ZadanieProjektID = int.Parse(reader["id_projekty"].ToString());
+                                z.ZadanieSprintID = int.Parse(reader["id_sprinty"].ToString());
+                                TypZadania t = TypZadania.ZADANIE;
+                                Enum.TryParse(reader["id_zadania_typy"].ToString(), out t);
+                                z.ZadanieTypZadania = t;
+                                z.ZadanieOpis = reader["opis"].ToString();
+                                z.ZadanieDodajacy = HttpContext.Current.User.Identity.Name;
+                                z.ZadanieDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+                                z.ZadaniePriorytet = int.Parse(reader["priorytet"].ToString());
+                                z.ZadaniePrzypisaneDo = reader["email_przydzielony_uzytkownik"].ToString();
+
+                                z.ZadanieNadrzedneID = int.Parse(reader["zadanie_nadrzedne"].ToString());
+                                z.ZadanieDataUkonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
+                                z.ZadanieDeadline = DateTime.Parse(reader["deadline"].ToString());
+
+                                zadaniaSprintu.Add(z);
+
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1456", ex.StackTrace));
+                }
+            }
             return zadaniaSprintu;
         }
     }
