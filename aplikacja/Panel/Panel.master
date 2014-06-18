@@ -19,8 +19,8 @@
         <div class="container">
             <div class="header row">
                 <div class="logo col-xs-12 col-sm-12 col-md-2">
-                    Scrum4u
-            
+                    <a href="/Panel/">Scrum4u</a>
+
                 </div>
                 <div class="news col-xs-12 col-sm-6 col-md-6">
                     <ul>
@@ -53,9 +53,11 @@
                             <img alt="" src="#">
                         </div>
                         <div class="userinfo">
-                            <h5><asp:Literal runat="server" ID="litImieNazwisko"></asp:Literal>
-                        
-                                <small><asp:Literal runat="server" ID="litEmail"></asp:Literal></small>
+                            <h5>
+                                <asp:Literal runat="server" ID="litImieNazwisko"></asp:Literal>
+
+                                <small>
+                                    <asp:Literal runat="server" ID="litEmail"></asp:Literal></small>
                             </h5>
                             <ul>
 
@@ -74,35 +76,32 @@
                 <div class="leftpanel col-xs-12 col-sm-12 col-md-2">
                     <div class="LeftPanelTitle">Nawigacja</div>
                     <div id="cssmenu">
-                        <ul>
-                            <li class="active"><a href="#"><span>Strona główna</span></a></li>
-                            <li><a href="/Panel/GrupyRobocze.aspx"><span>Grupy robocze</span></a>
+                        <asp:Repeater runat="server" ID="repNawigacja" OnItemDataBound="repNawigacja_ItemDataBound">
+                            <HeaderTemplate>
                                 <ul>
-                                    <li><a href="/Panel/GrupyRobocze.aspx">Lista</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><span>Zadania</span></a>
-                                <ul>
-                                    <li><a href="#">Utwórz</a></li>
-                                    <li><a href="#">Szukaj</a></li>
-                                    <li><a href="#">Lista</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><span>Błędy</span></a>
-                                <ul>
-                                    <li><a href="#">Utwórz</a></li>
-                                    <li><a href="#">Szukaj</a></li>
-                                    <li><a href="#">Lista</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><span>Pomysły</span></a>
-                                <ul>
-                                    <li><a href="#">Utwórz</a></li>
-                                    <li><a href="#">Szukaj</a></li>
-                                    <li><a href="#">Lista</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <li>
+                                    <a href="/Panel/GrupaRobocza.aspx?id=<%#Eval("GrupaRoboczaID") %>">
+                                        <%#Eval("GrupaRoboczaNazwa") %>
+                                    </a>
+                                    <asp:Repeater runat="server" ID="repNawigacja1">
+                                        <HeaderTemplate>
+                                            <ul>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <li>
+                                                <a href="/Panel/Projekt.aspx?id=<%#Eval("ProjektID") %>">
+                                                    <%#Eval("ProjektNazwa") %>
+                                                </a>
+                                            </li>
+                                        </ItemTemplate>
+                                        <FooterTemplate></ul></FooterTemplate>
+                                    </asp:Repeater>
+                                </li>
+                            </ItemTemplate>
+                            <FooterTemplate></ul></FooterTemplate>
+                        </asp:Repeater>
                     </div>
                 </div>
                 <div class="rightpanel col-xs-12 col-sm-12 col-md-10">
@@ -120,7 +119,7 @@
                         </li>
                         <li>Last Level</li>
                     </ul>
-                    
+
 
                     <div class="row pageheader">
 

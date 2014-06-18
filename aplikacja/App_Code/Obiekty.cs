@@ -298,7 +298,7 @@ namespace Scrum4u
 
         public static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
         {
-            return BazaDanych.ProjektProvider.PobierzWszystkie(email, doKtorychNaleze);
+            return BazaDanych.ProjektProvider.PobierzWszystkie(email, doKtorychNaleze,-1);
         }
         /// <summary>
         /// Pobiera dane projektu
@@ -309,6 +309,11 @@ namespace Scrum4u
         public static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
         {
             return BazaDanych.ProjektProvider.Pobierz(idProjektu, tylkoPowiazaneZeMna);
+        }
+
+        public static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze, int idGrupy)
+        {
+            return BazaDanych.ProjektProvider.PobierzWszystkie(email, doKtorychNaleze, idGrupy);
         }
     }
     public class Sprint
@@ -335,6 +340,10 @@ namespace Scrum4u
         public bool Aktualizuj()
         {
             return BazaDanych.SprintProvider.Aktualizuj(this);
+        }
+        public static List<Sprint> PobierzWszystkieDoProjektu(int idProjektu)
+        {
+            return BazaDanych.ProjektProvider.PobierzSprinty(idProjektu);
         }
     }
 

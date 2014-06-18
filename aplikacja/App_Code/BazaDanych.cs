@@ -938,10 +938,37 @@ VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
         }
 
 
-        internal static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze)
+        internal static List<Projekt> PobierzWszystkie(string email, bool doKtorychNaleze, int idGrupy)
         {
             List<Projekt> projekty = null;
             GrupaRobocza g = null;
+            string DoKtorychNalezeBezGrupy = @"SELECT Projekty.id_projekty ,Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM Projekty
+WHERE id_menager_projektu = @email_uzytkownika
+and is_aktywny = 1
+UNION
+SELECT 0 as id_projekty, Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM GrupyRoboczeZaproszenia Zaproszenia
+INNER JOIN GrupyRobocze on Zaproszenia.id_grupy_robocze = GrupyRobocze.id_grupy_robocze
+and GrupyRobocze.is_aktywna = 1
+INNER JOIN Projekty on GrupyRobocze.id_grupy_robocze = Projekty.id_grupy_robocze
+WHERE id_zapraszanego = @email_uzytkownika
+and is_zaproszenie_przyjete = 1";
+            string DoKtorychNalezeGrupa = @"select * from (
+SELECT Projekty.id_projekty ,Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM Projekty
+WHERE id_menager_projektu = @email_uzytkownika 
+and is_aktywny = 1
+UNION
+SELECT 0 as id_projekty, Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+FROM GrupyRoboczeZaproszenia Zaproszenia
+INNER JOIN GrupyRobocze on Zaproszenia.id_grupy_robocze = GrupyRobocze.id_grupy_robocze
+and GrupyRobocze.is_aktywna = 1
+INNER JOIN Projekty on GrupyRobocze.id_grupy_robocze = Projekty.id_grupy_robocze
+WHERE id_zapraszanego = @email_uzytkownika
+and is_zaproszenie_przyjete = 1
+) as wynik
+where id_grupy_robocze=@grupa";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -955,24 +982,26 @@ VALUES( @email_uzytkownika, @idGrupy, @nazwaProjektu, @scrumMaster );", con);
                         cmd = new SqlCommand(@"SELECT id_projekty ,id_grupy_robocze, nazwa
                                                     FROM projekty
                                                     WHERE id_menager_projektu = @email_uzytkownika
-                                                    and is_aktywna = 1;", con);
+                                                    and is_aktywna = 1", con);
+                        if (idGrupy > 0)
+                        {
+                            cmd.CommandText += " and [id_grupy_robocze]=" + idGrupy;
+                        }
                     }
                     else
                     {
-                        cmd = new SqlCommand(@"SELECT Projekty.id_projekty ,Projekty.id_grupy_robocze, Projekty.nazwa_projektu
-FROM Projekty
-WHERE id_menager_projektu = @email_uzytkownika
-and is_aktywny = 1
-UNION
-SELECT Projekty.id_grupy_robocze, Projekty.nazwa_projektu
-FROM GrupyRoboczeZaproszenia Zaproszenia
-INNER JOIN GrupyRobocze on Zaproszenia.id_grupy_robocze = GrupyRobocze.id_grupy_robocze
-and GrupyRobocze.is_aktywna = 1
-INNER JOIN Projekty on GrupyRobocze.id_grupy_robocze = Projekty.id_grupy_robocze
-WHERE id_zapraszanego = @email_uzytkownika
-and is_zaproszenie_przyjete = 1", con);
+                        if (idGrupy > 0)
+                        {
+                            cmd = new SqlCommand(DoKtorychNalezeGrupa, con);
 
+                            cmd.Parameters.AddWithValue("@grupa", idGrupy);
+                        }
+                        else
+                        {
+                            cmd = new SqlCommand(DoKtorychNalezeBezGrupy, con);
+                        }
                     }
+
                     cmd.Parameters.AddWithValue("@email_uzytkownika", email);
                     cmd.Connection.Open();
 
