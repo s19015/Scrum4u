@@ -46,11 +46,13 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
                         }
                         
                     }
-                    lblInfo.Text = @"<script>
-var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname
-
-window.history.pushState({path:newurl},'',newurl);
-</script>";
+                    // nie moze to tak tu dzailac, poniewaz usunie id z query stringa
+//                    lblInfo.Visible = true;
+//                    lblInfo.Text = @"<script>
+//var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname
+//
+//window.history.pushState({path:newurl},'',newurl);
+//</script>";
                 }
             }
             else
