@@ -1069,7 +1069,8 @@ where id_grupy_robocze=@grupa";
                                 p.ProjektID = (int)reader["id_projekty"];
                                 p.ProjektNazwa = reader["nazwa_projektu"].ToString();
                                 p.ProjektGrupaRoboczaID = (int)reader["id_grupy_robocze"];
-                                p.ProjektAktywny = bool.Parse(reader["is_aktywny"].ToString());
+                                //p.ProjektAktywny = bool.Parse(reader["is_aktywny"].ToString());
+                                p.ProjektAktywny = true;
                                 projekty.Add(p);
 
                             }
@@ -1222,7 +1223,7 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
                                 s.SprintDataZakonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 s.SprintTerminWykonania = DateTime.Parse(reader["data_deadline"].ToString());
                                 s.SprintDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
-                                s.SprintIdTworzacego = Int32.Parse(reader["email_dodajacego"].ToString());
+                                s.SprintIdTworzacego = reader["email_dodajacego"].ToString();
                                 s.SprintNazwa = reader["nazwa"].ToString();
                                 s.SprintOpis = reader["opis"].ToString();
 

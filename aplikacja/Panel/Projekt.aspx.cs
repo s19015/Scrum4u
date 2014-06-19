@@ -90,4 +90,45 @@ public partial class Panel_Projekt : System.Web.UI.Page
         }
         
     }
+    protected void btnDodajSprint_ServerClick(object sender, EventArgs e)
+    {
+        int idProjektu = 0;
+        int.TryParse(Request.QueryString["id"],out idProjektu);
+        DateTime deadline = DateTime.Now;
+        DateTime.TryParse(txtDeadLine.Text, out deadline);
+
+        Sprint s = new Sprint() { 
+       SprintProjektID =idProjektu, 
+       SprintNazwa = txtNazwaSprintu.Text,
+       SprintOpis = txtOpisSprintu.Text,
+       SprintTerminWykonania = deadline
+        };
+
+        bool dodano = false;
+        try
+        {
+            dodano = s.Dodaj();
+        }
+        catch (Exception ex)
+        {
+            Zdarzenie.Loguj("ProjektSprint", "Blad", ex);
+        }
+
+        if (dodano)
+        {
+            panelDodajSprint.Visible = false;
+            h4TytulDodajSprint.InnerText = "Sprint dodany poprawnie";
+            h4TytulDodajSprint.Attributes["class"] = "widgettitle title-success";
+        }
+        else
+        {
+            h4TytulDodajSprint.InnerText = "Wystąpił błąd. Spróbuj ponownie później.";
+            h4TytulDodajSprint.Attributes["class"] = "widgettitle title-danger";
+        }
+    }
+    protected void btnPokazDodajSprint_Click(object sender, EventArgs e)
+    {
+        formDodajSprint.Visible = true;
+        btnPokazDodajSprint.Visible = false;
+    }
 }

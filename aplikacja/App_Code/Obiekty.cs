@@ -336,7 +336,7 @@ namespace Scrum4u
         public DateTime SprintTerminWykonania { get; set; }
         public DateTime SprintDataZakonczenia { get; set; }
         public DateTime SprintDataUtworzenia { get; set; }
-        public int SprintIdTworzacego { get; set; }
+        public string SprintIdTworzacego { get; set; }
 
         public bool Dodaj()
         {
