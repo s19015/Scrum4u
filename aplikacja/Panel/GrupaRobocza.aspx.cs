@@ -46,6 +46,8 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
             lblInfo.Visible = true;
             btnPokazDodajGrupe.Visible = false;
         }
+
+
     }
     protected void btnPokazDodajGrupe_Click(object sender, EventArgs e)
     {

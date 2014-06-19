@@ -197,6 +197,11 @@ namespace Scrum4u
         {
             return BazaDanych.GrupaRoboczaProvider.PobierzUzytkownikowGrupy(idGrupy);
         }
+
+        public bool Usun()
+        {
+            return BazaDanych.GrupaRoboczaProvider.UsunGrupe(this);
+        }
     }
 
     public class GrupyRoboczeZaproszenie

@@ -51,5 +51,8 @@ namespace Scrum4u
             return r.IsMatch(email);
         }
 
+        public enum TypStrony {domyslna,  lista, element }
+        public enum RodzajStrony { GrupaRobocza,Projekt}
+
     }
 }

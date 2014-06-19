@@ -490,7 +490,7 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
                     if (doKtorychNaleze == false)
                     {
-                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa
+                        cmd = new SqlCommand(@"SELECT id_grupy_robocze, nazwa, uzytkownicy_email
                                                     FROM GrupyRobocze
                                                     WHERE uzytkownicy_email = @email_uzytkownika
                                                     and is_aktywna = 1;", con);
@@ -499,12 +499,12 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
                     {
 
 
-                        cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa
+                        cmd = new SqlCommand(@"SELECT GrupyRobocze.id_grupy_robocze, nazwa, uzytkownicy_email
 FROM GrupyRobocze
 WHERE uzytkownicy_email = @email_uzytkownika
 and is_aktywna = 1
 UNION
-select Grupy.id_grupy_robocze, Grupy.nazwa 
+select Grupy.id_grupy_robocze, Grupy.nazwa , '' as uzytkownicy_email
 from GrupyRoboczeZaproszenia as Zaproszenia
 inner join GrupyRobocze as Grupy on Zaproszenia.id_grupy_robocze = Grupy.id_grupy_robocze
 where id_zapraszanego = @email_uzytkownika
@@ -524,7 +524,11 @@ and is_zaproszenie_przyjete = 1", con);
                                 g = new GrupaRobocza();
                                 g.GrupaRoboczaID = int.Parse(reader["id_grupy_robocze"].ToString());
                                 g.GrupaRoboczaNazwa = reader["nazwa"].ToString();
-                                g.GrupaRoboczaUzytkownikID = email;
+                                if (!String.IsNullOrEmpty(reader["uzytkownicy_email"].ToString()))
+                                {
+                                    g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
+                                }
+                                
                                 grupyRobocze.Add(g);
                             }
                         }
@@ -673,6 +677,37 @@ where id_grupy_robocze = @idGrupy and is_zaproszenie_przyjete = 1", con);
 
 
             return listaUzytkownikow;
+        }
+
+        internal static bool UsunGrupe(GrupaRobocza grupaRobocza)
+        {
+            bool usunieto = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"  UPDATE GrupyRobocze
+                      SET is_aktywna = 0
+                      WHERE id_grupy_robocze = @id_grupy_robocze and uzytkownicy_email=@email", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@id_grupy_robocze", grupaRobocza.GrupaRoboczaID);
+                    cmd.Parameters.AddWithValue("@email", HttpContext.Current.User.Identity.Name);
+
+                    cmd.Connection.Open();
+                    usunieto = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 705", ex.StackTrace));
+                }
+            }
+
+            return usunieto;
         }
     }
 

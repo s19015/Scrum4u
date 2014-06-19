@@ -6,11 +6,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Panel_Panel : System.Web.UI.MasterPage
+public partial class Panel_Panel : Scrum4uMasterPage
 {
+    public int iloscGrupRoboczych = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 System.Web.Security.FormsAuthentication.RedirectToLoginPage();
@@ -20,7 +21,26 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
 
             if (!IsPostBack)
                 ZaladujMenu();
-        
+
+            ObsluzOkruszki();
+    }
+
+    private void ObsluzOkruszki()
+    {
+        string wynik = "";
+        if (typStrony == Scrum4uHelper.TypStrony.lista)
+        {
+            wynik = @"<span class='separator'></span>
+                        </li>";
+            wynik += "<li>" + this.Page.Title.Substring(0, this.Page.Title.IndexOf('-') - 1) + "</li>";
+        }
+
+        if (String.IsNullOrEmpty(wynik))
+        {
+            wynik = "</li>";
+        }
+
+        litOkruszki.Text = wynik;
     }
 
     private void ZaladujMenu()
@@ -28,8 +48,21 @@ public partial class Panel_Panel : System.Web.UI.MasterPage
         List<GrupaRobocza> listaGrupRoboczych = GrupaRobocza.PobierzWszystkie(HttpContext.Current.User.Identity.Name, true);
         if (listaGrupRoboczych!=null && listaGrupRoboczych.Count>0)
         {
+            iloscGrupRoboczych = listaGrupRoboczych.Count;
+            repNawigacja.Visible = true;
+            litRepNawigacjaPusta.Visible = false;
             repNawigacja.DataSource = listaGrupRoboczych;
             repNawigacja.DataBind();
+        }
+        else
+        {
+            repNawigacja.Visible = false;
+            litRepNawigacjaPusta.Visible = true;
+            litRepNawigacjaPusta.Text = @"<ul>
+                                            <li>
+                                                <a href='/Panel/GrupyRobocze.aspx?dodaj=1'>Dodaj grupę roboczą</a>
+                                            </li>
+                                        </ul>";
         }
     }
     protected void btnWyloguj_Click(object sender, EventArgs e)

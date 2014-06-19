@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="GrupyRobocze.aspx.cs" Inherits="Panel_GrupyRobocze" %>
+﻿<%@ Page Title="Grupy robocze - Scrum4u.pl" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="GrupyRobocze.aspx.cs" Inherits="Panel_GrupyRobocze" %>
 
 <%@ Register src="~/WebParts/GrupyRobocze.ascx" tagname="GrupyRobocze" tagprefix="s4u" %>
 
@@ -9,9 +9,10 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="Server">
 
+    <h4 class="widgettitle" runat="server" id="h4Usunieto" visible="false"></h4>
     <asp:LinkButton runat="server" ID="btnPokazDodajGrupe" Text="Dodaj grupę" OnClick="btnPokazDodajGrupe_Click"></asp:LinkButton>
     <asp:Panel runat="server" ID="formDodajGrupe" Visible="false">
-        <div class="widget">
+        <div class="widget clearfix">
             <h4 class="widgettitle" runat="server" id="h4TytulDodajGrupe">Nowa grupa robocza</h4>
             <div class="widgetcontent form-horizontal" role="form" runat="server" id="panelDodajGrupe">
                 <div class="form-group">
@@ -32,6 +33,9 @@
     </asp:Panel>
 
     
-    <s4u:GrupyRobocze ID="GrupyRobocze1" runat="server" />
+    <s4u:GrupyRobocze ID="GrupyRobocze1" runat="server" PokazUsun="True" />
+
+
+    <asp:Literal runat="server" ID="litInfo"></asp:Literal>
 </asp:Content>
 

@@ -25,10 +25,10 @@
                 <div class="news col-xs-12 col-sm-6 col-md-6">
                     <ul>
                         <li class="odd">
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                <span class="count">4</span>
+                            <a <%--class="dropdown-toggle"--%> href="/Panel/GrupyRobocze.aspx" <%--data-toggle="dropdown"--%>>
+                                <span class="count"><%=iloscGrupRoboczych %></span>
                                 <span class="head-icon"><span class="glyphicon glyphicon-list"></span></span>
-                                <span class="headmenu-label">Zadania</span>
+                                <span class="headmenu-label">Grupy robocze</span>
                             </a>
                         </li>
                         <li>
@@ -76,6 +76,7 @@
                 <div class="leftpanel col-xs-12 col-sm-12 col-md-2">
                     <div class="LeftPanelTitle">Nawigacja</div>
                     <div id="cssmenu">
+                        <asp:Literal runat="server" ID="litRepNawigacjaPusta"></asp:Literal>
                         <asp:Repeater runat="server" ID="repNawigacja" OnItemDataBound="repNawigacja_ItemDataBound">
                             <HeaderTemplate>
                                 <ul>
@@ -108,16 +109,11 @@
 
                     <ul class="breadcrumbs">
                         <li>
-                            <a href="#">
+                            <a href="/Panel/">
                                 <span class="glyphicon glyphicon-home"></span>
                             </a>
-                            <span class="separator"></span>
-                        </li>
-                        <li>
-                            <a href="#">First Level</a>
-                            <span class="separator"></span>
-                        </li>
-                        <li>Last Level</li>
+                            
+                        <asp:Literal ID="litOkruszki" runat="server"></asp:Literal>
                     </ul>
 
 
