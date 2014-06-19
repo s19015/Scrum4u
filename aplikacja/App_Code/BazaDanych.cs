@@ -504,7 +504,7 @@ FROM GrupyRobocze
 WHERE uzytkownicy_email = @email_uzytkownika
 and is_aktywna = 1
 UNION
-select Grupy.id_grupy_robocze, Grupy.nazwa , '' as uzytkownicy_email
+select Grupy.id_grupy_robocze, Grupy.nazwa , Grupy.uzytkownicy_email
 from GrupyRoboczeZaproszenia as Zaproszenia
 inner join GrupyRobocze as Grupy on Zaproszenia.id_grupy_robocze = Grupy.id_grupy_robocze
 where id_zapraszanego = @email_uzytkownika
