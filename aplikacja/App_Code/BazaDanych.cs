@@ -1069,7 +1069,7 @@ where id_grupy_robocze=@grupa";
                                 p.ProjektID = (int)reader["id_projekty"];
                                 p.ProjektNazwa = reader["nazwa_projektu"].ToString();
                                 p.ProjektGrupaRoboczaID = (int)reader["id_grupy_robocze"];
-
+                                p.ProjektAktywny = bool.Parse(reader["is_aktywny"].ToString());
                                 projekty.Add(p);
 
                             }
