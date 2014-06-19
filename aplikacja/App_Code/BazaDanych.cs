@@ -871,9 +871,12 @@ where id_grupy_robocze = @idGrupy and is_zaproszenie_przyjete = 1", con);
                 {
                     SqlCommand cmd = new SqlCommand(@"select id_grupy_robocze, id_zapraszajacego, id_zapraszanego, token, row_date, is_aktywne_zaproszenie
                         from GrupyRoboczeZaproszenia
-                        where id_grupy_robocze = @id_grupy_roboczej
-                        and id_zapraszanego = @id_zapraszanego
-                        and is_zaproszenie_przyjete = 0", con);
+                        where id_grupy_robocze = @id_grupy_roboczej", con);
+                    if (!String.IsNullOrEmpty(email))
+                    {
+                        cmd.CommandText += " and id_zapraszanego = @id_zapraszanego";
+                        cmd.Parameters.AddWithValue("@id_zapraszanego", email);
+                    }
 
                     cmd.Parameters.AddWithValue("@id_grupy_roboczej", idGrupy);
                     cmd.Connection.Open();

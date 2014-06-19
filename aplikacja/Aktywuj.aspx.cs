@@ -78,9 +78,14 @@ public partial class Aktywuj : System.Web.UI.Page
             }
 
             //Rejestruje, jeśli użytkownik jeszcze nie jest zarejestrowany.
-            if (zapisano && !Scrum4u.Uzytkownik.SprawdzCzyIstnieje(new Scrum4u.Uzytkownik(email)))
+            bool istnieje = Scrum4u.Uzytkownik.SprawdzCzyIstnieje(new Scrum4u.Uzytkownik(email));
+            if (zapisano && !istnieje)
             {
-                Response.Redirect("/Rejestracja.aspx?email=" + email);
+                Response.Redirect("/Rejestracja.aspx?email=" + Scrum4u.Uzytkownik.PoprawPlusWMailu(email));
+            }
+            if (istnieje)
+            {
+                Response.Redirect("/Panel/GrupaRobocza.aspx?id=" + idGrupyRoboczej);
             }
         }
         else

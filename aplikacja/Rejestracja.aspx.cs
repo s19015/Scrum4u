@@ -13,7 +13,7 @@ public partial class Rejestracja : System.Web.UI.Page
     {
         if (Request.QueryString["email"]!=null && Scrum4uHelper.CzyJestToEmail(Request.QueryString["email"]))
         {
-            txtEmail.Text = Request.QueryString["email"].Trim();
+            txtEmail.Text = Uzytkownik.PoprawPlusWMailu(Request.QueryString["email"].Trim(),true);
         }
     }
     protected void btnRejestruj_Click(object sender, EventArgs e)

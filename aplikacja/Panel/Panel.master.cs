@@ -34,6 +34,20 @@ public partial class Panel_Panel : Scrum4uMasterPage
                         </li>";
             wynik += "<li>" + this.Page.Title.Substring(0, this.Page.Title.IndexOf('-') - 1) + "</li>";
         }
+        if (typStrony==Scrum4uHelper.TypStrony.element)
+        {
+            if (rodzajStrony== Scrum4uHelper.RodzajStrony.GrupaRobocza)
+            {
+                wynik = @"<span class='separator'></span>
+                        </li>";
+
+                wynik+=@"<li>
+                            <a href='/Panel/GrupyRobocze.aspx'>Grupy robocze</a>
+                            <span class='separator'></span>
+                        </li>
+                        <li>Grupa robocza</li>";
+            }
+        }
 
         if (String.IsNullOrEmpty(wynik))
         {

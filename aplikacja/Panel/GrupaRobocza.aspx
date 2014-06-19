@@ -10,8 +10,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="Server">
 
-
-    <asp:Label runat="server" ID="lblInfo"></asp:Label>
+    <h4 class="widgettitle" runat="server" id="h4Usunieto" visible="false"></h4>
+    <asp:Literal runat="server" ID="lblInfo"></asp:Literal>
    <asp:LinkButton runat="server" ID="btnPokazDodajGrupe" Text="Dodaj użytkownika do grupy" OnClick="btnPokazDodajGrupe_Click"></asp:LinkButton>
     <asp:Panel runat="server" ID="listaOsobWGrupie" Visible="false">
         <div class="widget">
@@ -37,7 +37,7 @@
 
 
     <s4u:GrupyRoboczeZaproszenia runat="server" id="GrupyRoboczeZaproszenia" />
-
+    <br />
     <a href="javascript:window.history.go(-1)">&laquo; Powrót</a>
 </asp:Content>
 

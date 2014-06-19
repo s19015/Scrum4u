@@ -104,6 +104,12 @@
                             <FooterTemplate></ul></FooterTemplate>
                         </asp:Repeater>
                     </div>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            var url = document.location.pathname + document.location.search;
+                            $('#cssmenu a[href="' + url + '"]').parent().addClass('active');
+                        });
+                    </script>
                 </div>
                 <div class="rightpanel col-xs-12 col-sm-12 col-md-10">
 

@@ -24,7 +24,7 @@
             <td><%#Eval("GrupyRoboczeZaproszenieIDZapraszanego") %></td>
             <td><%#DateTime.Parse(Eval("GrupyRoboczeZaproszenieData").ToString()).ToString("dd-MM-yyyy HH:mm:ss") %></td>
             <td><%# bool.Parse(Eval("GrupyRoboczeZaproszenieAktywne").ToString())?"Nie potwierdzono":"Potwierdzony" %></td>
-            <td><a href="/Panel/GrupaRobocza.aspx?id=<%#Eval("GrupyRoboczeGrupaRoboczaID") %>&usunOsobe=<%#Eval("GrupyRoboczeZaproszenieIDZapraszanego") %>" onclick="return confirm('Czy na pewno chcesz usunąć?');">Usuń</a></td>
+            <td><%#WyswietlPokazUsun(Eval("GrupyRoboczeGrupaRoboczaID").ToString(),Eval("GrupyRoboczeZaproszenieIDZapraszanego").ToString(),Eval("GrupyRoboczeZaproszenieIDZapraszajacego").ToString()) %></td>
         </tr>
     </ItemTemplate>
 </asp:ListView>

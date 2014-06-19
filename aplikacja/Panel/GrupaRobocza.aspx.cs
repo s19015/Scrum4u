@@ -12,15 +12,20 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
     public Scrum4u.GrupaRobocza grupa;
     protected void Page_Load(object sender, EventArgs e)
     {
+        Scrum4uMasterPage master = this.Page.Master as Scrum4uMasterPage;
+        master.typStrony = Scrum4uHelper.TypStrony.element;
+        master.rodzajStrony = Scrum4uHelper.RodzajStrony.GrupaRobocza;
+
         int idGrupy = 0;
         lblInfo.Visible = false;
+        h4Usunieto.Visible = false;
         if (Request.QueryString["id"]!=null && int.TryParse(Request.QueryString["id"],out idGrupy))
         {
             grupa = GrupaRobocza.PobierzGrupe(idGrupy,true);
             if (grupa!=null)
             {
                 litTytul.Text = "- " + grupa.GrupaRoboczaNazwa;
-
+                this.Page.Title = grupa.GrupaRoboczaNazwa + " - Grupa robocza - Scrum4u.pl";
                 if (Request.QueryString["usunOsobe"]!=null && Scrum4uHelper.CzyJestToEmail(Request.QueryString["usunOsobe"]))
                 {
                     GrupyRoboczeZaproszenie zapro = GrupyRoboczeZaproszenie.Pobierz(idGrupy, Request.QueryString["usunOsobe"]);
@@ -28,9 +33,24 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
                     {
                         bool usunieto = zapro.Usun();
 
+                        h4Usunieto.Visible = true;
                         if (usunieto)
-                            Server.Transfer("/Panel/GrupaRobocza.aspx?id=" + idGrupy);
+                        {
+                            h4Usunieto.InnerText = "Użytkownik usunięty poprawnie";
+                            h4Usunieto.Attributes["class"] = "widgettitle title-success";
+                        }
+                        else
+                        {
+                            h4Usunieto.InnerText = "Wystąpił błąd. Spróbuj ponownie później.";
+                            h4Usunieto.Attributes["class"] = "widgettitle title-danger";
+                        }
+                        
                     }
+                    lblInfo.Text = @"<script>
+var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname
+
+window.history.pushState({path:newurl},'',newurl);
+</script>";
                 }
             }
             else
@@ -88,6 +108,8 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
             panelDodajGrupe.Visible = false;
             h4TytulDodajGrupe.InnerText = "Zaproszenie zostało wysłane.";
             h4TytulDodajGrupe.Attributes["class"] = "widgettitle title-success";
+
+            GrupyRoboczeZaproszenia.ZaladujDane();
         }
         else
         {

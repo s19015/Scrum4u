@@ -23,7 +23,7 @@
             <td><%#Eval("GrupaRoboczaNazwa") %></td>
             <td><%#Eval("GrupaRoboczaUzytkownikID") %></td>
             <td><a href="/Panel/GrupaRobocza.aspx?id=<%#Eval("GrupaRoboczaID") %>" >Wybierz</a>
-                <%#WyswietlPokazUsun(Eval("GrupaRoboczaID").ToString(), Eval("GrupaRoboczaUzytkownikID").ToString()) %>
+                <%#WyswietlPokazUsun(Eval("GrupaRoboczaID").ToString(), (Eval("GrupaRoboczaUzytkownikID")!=null?Eval("GrupaRoboczaUzytkownikID").ToString():"")) %>
             </td>
         </tr>
     </ItemTemplate>

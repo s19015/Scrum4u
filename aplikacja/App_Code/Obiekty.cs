@@ -94,6 +94,12 @@ namespace Scrum4u
         {
             return e.Replace("+", "%2B");
         }
+        public static string PoprawPlusWMailu(string e, bool odwrotnie)
+        {
+            if (odwrotnie)
+                return e.Replace("%2B", "+");
+            return PoprawPlusWMailu(e);
+        }
 
         public static bool SprawdzCzyIstnieje(Uzytkownik u)
         {

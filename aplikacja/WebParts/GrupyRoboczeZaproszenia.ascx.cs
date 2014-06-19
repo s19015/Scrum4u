@@ -12,17 +12,30 @@ public partial class WebParts_GrupyRobocze : System.Web.UI.UserControl
     {
         if (!IsPostBack)
         {
-            int idGrupy=0;
-            if (Request.QueryString["id"] != null && int.TryParse(Request.QueryString["id"], out idGrupy))
+            ZaladujDane();
+        }
+    }
+    public void ZaladujDane()
+    {
+        int idGrupy = 0;
+        if (Request.QueryString["id"] != null && int.TryParse(Request.QueryString["id"], out idGrupy))
+        {
+            List<GrupyRoboczeZaproszenie> grupy = GrupyRoboczeZaproszenie.PobierzWszystkie(idGrupy);
+            if (grupy != null && grupy.Count() > 0)
             {
-                List<GrupyRoboczeZaproszenie> grupy = GrupyRoboczeZaproszenie.PobierzWszystkie(idGrupy);
-                if (grupy != null && grupy.Count() > 0)
-                {
-                    grupyRobocze.Visible = true;
-                    grupyRobocze.DataSource = grupy;
-                    grupyRobocze.DataBind();
-                }
+                grupyRobocze.Visible = true;
+                grupyRobocze.DataSource = grupy;
+                grupyRobocze.DataBind();
             }
         }
+    }
+    public string WyswietlPokazUsun(string grupaRoboczaID, string usuwanaOsoba, string zapraszajacy)
+    {
+        if (zapraszajacy.Trim().ToLower() == HttpContext.Current.User.Identity.Name.Trim().ToLower())
+        {
+            return "<a href=\"/Panel/GrupaRobocza.aspx?id=" + grupaRoboczaID + "&usunOsobe=" + Uzytkownik.PoprawPlusWMailu(usuwanaOsoba) + "\" onclick=\"return confirm('Czy na pewno chcesz usunąć?');\">Usuń</a>";
+        }
+        else
+            return "";
     }
 }
