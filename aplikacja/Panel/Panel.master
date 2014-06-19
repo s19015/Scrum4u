@@ -97,8 +97,12 @@
                                                 </a>
                                             </li>
                                         </ItemTemplate>
-                                        <FooterTemplate></ul></FooterTemplate>
+                                        <FooterTemplate>
+                                            <%# (((Scrum4u.GrupaRobocza)((RepeaterItem)Container.Parent.Parent).DataItem).GrupaRoboczaUzytkownikID.Trim().ToLower()==HttpContext.Current.User.Identity.Name.Trim().ToLower())?"<li><a href=\"/Panel/Projekty.aspx?dodaj=1&amp;id_gr="+((Scrum4u.GrupaRobocza)((RepeaterItem)Container.Parent.Parent).DataItem).GrupaRoboczaID+"\">Dodaj projekt</a></li>":"" %>
+                                            
+                                            </ul></FooterTemplate>
                                     </asp:Repeater>
+                                   <asp:Literal runat="server" ID="nowyProjekt"></asp:Literal>
                                 </li>
                             </ItemTemplate>
                             <FooterTemplate></ul></FooterTemplate>
