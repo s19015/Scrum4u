@@ -147,14 +147,6 @@ WHERE uzytkownicy_email in
                     cmd.Connection.Open();
                     dodano = cmd.ExecuteNonQuery() > 0;
 
-                    /*using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (!String.IsNullOrEmpty(reader[0].ToString()))
-                                dodano = reader.GetBoolean(0);
-                        }
-                    }*/
                     cmd.Connection.Close();
                 }
                 catch (Exception ex)
@@ -264,10 +256,33 @@ WHERE uzytkownicy_email = @email_uzytkownika;", con);
 
         internal static bool ZmienHaslo(Uzytkownik uzytkownik, string haslo)
         {
-            bool dodano = false;
-            // do zrobienia, nalezy zahashowac haslo jak ponizej przy aktualizacji
-            //cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
-            return dodano;
+            bool zaktualizowano = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Uzytkownicy
+SET haslo = @noweHaslo
+WHERE uzytkownicy_email = @emailUzytkownika);", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("emailUzytkownika", uzytkownik.UzytkownikEmail);
+                    cmd.Parameters.AddWithValue("haslo", HashujHasloSHA256(haslo));
+
+                    cmd.Connection.Open();
+                    zaktualizowano = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 281", ex.StackTrace));
+                }
+            }
+            return zaktualizowano;
+
         }
     }
     public class DziennikProvider
@@ -528,7 +543,7 @@ and is_zaproszenie_przyjete = 1", con);
                                 {
                                     g.GrupaRoboczaUzytkownikID = reader["uzytkownicy_email"].ToString();
                                 }
-                                
+
                                 grupyRobocze.Add(g);
                             }
                         }
@@ -1203,8 +1218,8 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
 
                                 Sprint s = new Sprint();
                                 s.SprintID = Int32.Parse(reader["id_sprinty"].ToString());
-                                s.SprintProjektID = Int32.Parse( reader["id_projekty"].ToString() );
-                                s.SprintDataZakonczenia = DateTime.Parse( reader["data_zakonczenia"].ToString() );
+                                s.SprintProjektID = Int32.Parse(reader["id_projekty"].ToString());
+                                s.SprintDataZakonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 s.SprintTerminWykonania = DateTime.Parse(reader["data_deadline"].ToString());
                                 s.SprintDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
                                 s.SprintIdTworzacego = Int32.Parse(reader["email_dodajacego"].ToString());
@@ -1600,9 +1615,9 @@ VALUES (@idProjektu, @deadline, @emailDodajacego, @nazwa, @opis );", con);
 
         internal static bool Aktualizuj(Sprint sprint)
         {
-            
 
-    bool zaktualizowano = false;
+
+            bool zaktualizowano = false;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
