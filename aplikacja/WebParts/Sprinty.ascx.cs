@@ -118,4 +118,26 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
             }
         }
     }
+
+    public string DodajOpis(object SprintOpis)
+    {
+        string wynik = "";
+        if (SprintOpis!=null)
+        {
+            if (!String.IsNullOrEmpty(SprintOpis.ToString()))
+            {
+                wynik = @"<div class='DaneSprintu'>
+
+                <div class='col-sm-2 ColumnName'>
+                    Opis sprintu:
+                </div>
+                <div class='col-sm-10 ColumnValue'>
+                    <p style='height: 100%;'>"+SprintOpis.ToString()+@"</p>
+                </div>
+            </div>";
+            }
+        }
+
+        return wynik;
+    }
 }
