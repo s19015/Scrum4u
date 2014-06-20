@@ -669,7 +669,7 @@ where id_grupy_robocze = @idGrupy and is_zaproszenie_przyjete = 1", con);
                     {
                         if (reader.HasRows)
                         {
-
+                            listaUzytkownikow = new List<Uzytkownik>();
                             while (reader.Read())
                             {
                                 Uzytkownik u = new Uzytkownik();
@@ -1113,7 +1113,7 @@ where id_grupy_robocze=@grupa";
       ,row_date
   FROM Projekty
   WHERE id_projekty = @idProjektu
-  and id_manager_projektu = @emailUzytkownika
+  and id_menager_projektu = @emailUzytkownika
   and is_aktywny = 1", con);
                     }
                     else
@@ -1158,11 +1158,11 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
                             {
 
                                 projekt.ProjektID = (int)reader["id_grupy_robocze"];
-                                projekt.ProjektNazwa = reader["nazwa"].ToString();
+                                projekt.ProjektNazwa = reader["nazwa_projektu"].ToString();
                                 projekt.ProjektManagerProjektuID = reader["id_menager_projektu"].ToString();
                                 projekt.ProjektGrupaRoboczaID = Int32.Parse(reader["id_grupy_robocze"].ToString());
                                 projekt.ProjektScrumMasterID = reader["id_scrum_master"].ToString();
-                                projekt.ProjektAktywny = bool.Parse(reader["is_aktywny"].ToString());
+                                projekt.ProjektAktywny = (reader["is_aktywny"] != null && reader["is_aktywny"].ToString() == "1") ? true : false;
                                 projekt.ProjektDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
 
                             }
@@ -1220,7 +1220,7 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
                                 Sprint s = new Sprint();
                                 s.SprintID = Int32.Parse(reader["id_sprinty"].ToString());
                                 s.SprintProjektID = Int32.Parse(reader["id_projekty"].ToString());
-                                s.SprintDataZakonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
+                                //s.SprintDataZakonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
                                 s.SprintTerminWykonania = DateTime.Parse(reader["data_deadline"].ToString());
                                 s.SprintDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
                                 s.SprintIdTworzacego = reader["email_dodajacego"].ToString();
@@ -1269,7 +1269,8 @@ id_zadania_typy,
 tytul,
 opis,
 email_dodajacego,
-zadanie_nadrzedne
+zadanie_nadrzedne,
+id_projekty
 )
 VALUES(
 @idSprintu,
@@ -1277,7 +1278,8 @@ VALUES(
 @tytul,
 @opis,
 @emailDodajacego,
-@zadanieNadrzedneId
+@zadanieNadrzedneId,
+@id_projekty
 );", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
@@ -1286,8 +1288,8 @@ VALUES(
                     cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieTypZadania);
                     cmd.Parameters.AddWithValue("@opis", zadanie.ZadanieOpis);
                     cmd.Parameters.AddWithValue("@emailDodajacego", HttpContext.Current.User.Identity.Name);
-                    cmd.Parameters.AddWithValue("@zadanieNadrzedne", zadanie);
-
+                    cmd.Parameters.AddWithValue("@zadanieNadrzedneId", -1);
+                    cmd.Parameters.AddWithValue("@id_projekty", zadanie.ZadanieProjektID);
 
                     cmd.Connection.Open();
                     int ileDodano = cmd.ExecuteNonQuery();
@@ -1724,6 +1726,62 @@ WHERE id_sprinty = @idSprintu", con);
                 }
             }
             return zadaniaSprintu;
+        }
+
+        internal static Sprint PobierzSprint(int idSprintu)
+        {
+            Sprint s = null;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT top 1 [id_sprinty]
+                                  ,[id_projekty]
+                                  ,[data_zakonczenia]
+                                  ,[data_deadline]
+                                  ,[row_date]
+                                  ,[email_dodajacego]
+                                  ,[nazwa]
+                                  ,[opis]
+                              FROM Sprinty
+                              WHERE id_sprinty = @id_sprinty
+                              and is_usuniety = 0
+                            ", con);
+
+                    cmd.Parameters.AddWithValue("@id_sprinty", idSprintu);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            s = new Sprint();
+                            while (reader.Read())
+                            {
+                                s.SprintID = Int32.Parse(reader["id_sprinty"].ToString());
+                                s.SprintProjektID = Int32.Parse(reader["id_projekty"].ToString());
+                                //s.SprintDataZakonczenia = DateTime.Parse(reader["data_zakonczenia"].ToString());
+                                s.SprintTerminWykonania = DateTime.Parse(reader["data_deadline"].ToString());
+                                s.SprintDataUtworzenia = DateTime.Parse(reader["row_date"].ToString());
+                                s.SprintIdTworzacego = reader["email_dodajacego"].ToString();
+                                s.SprintNazwa = reader["nazwa"].ToString();
+                                s.SprintOpis = reader["opis"].ToString();
+
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1778", ex.StackTrace));
+                }
+            }
+
+            return s;
         }
     }
 }

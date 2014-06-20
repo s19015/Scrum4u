@@ -356,6 +356,11 @@ namespace Scrum4u
         {
             return BazaDanych.ProjektProvider.PobierzSprinty(idProjektu);
         }
+
+        public static Sprint Pobierz(int idSprintu)
+        {
+            return BazaDanych.SprintProvider.PobierzSprint(idSprintu);
+        }
     }
 
     public class Zadanie

@@ -1,60 +1,18 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="Projekt.aspx.cs" Inherits="Panel_Projekt" %>
-
-<%@ Register src="/WebParts/Sprinty.ascx" tagname="Sprinty" tagprefix="s4u" %>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainTitle" Runat="Server">
-    Projekt: <asp:Literal runat="server" ID="litProjektNazwa"></asp:Literal>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="MainContent" Runat="Server">
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Sprinty.ascx.cs" Inherits="WebParts_Sprinty" %>
 
 
-        <h3>Sprinty</h3>
-    <asp:LinkButton runat="server" ID="btnPokazDodajSprint" Text="Dodaj sprint" OnClick="btnPokazDodajSprint_Click"></asp:LinkButton>
-    <asp:Panel runat="server" ID="formDodajSprint" Visible="false">
-        <div class="widget">
-            <h4 class="widgettitle" runat="server" id="h4TytulDodajSprint">Nowy sprint</h4>
-            <div class="widgetcontent form-horizontal" role="form" runat="server" id="panelDodajSprint">
-                <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="txtNazwaSprintu" CssClass="col-sm-2 control-label" Text="Nazwa sprintu"></asp:Label>
-                    <div class="col-sm-10">
-                        <asp:TextBox runat="server" ID="txtNazwaSprintu" ValidationGroup="formNowySprint" CssClass="form-control" placeholder="Nazwa sprintu"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="formNowySprint" runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtNazwaZadania" Display="Dynamic" ErrorMessage="Proszę wpisać nazwę."></asp:RequiredFieldValidator>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="txtDeadLine" CssClass="col-sm-2 control-label" Text="Termin zakończenia"></asp:Label>
-                    <div class="col-sm-10">
-                        <asp:TextBox runat="server" ID="txtDeadLine" ValidationGroup="formNowySprint" CssClass="form-control" placeholder="Termin zakończenia" TextMode="DateTime"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="formNowySprint" runat="server" ID="RequiredFieldValidator6" ControlToValidate="txtDeadLine" Display="Dynamic" ErrorMessage="Proszę wpisać termin zakończenia."></asp:RequiredFieldValidator>
-                    </div>
-                </div>
-<div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="txtOpisSprintu" CssClass="col-sm-2 control-label" Text="Opis"></asp:Label>
-                    <div class="col-sm-10">
-                        <asp:TextBox runat="server" ID="txtOpisSprintu" ValidationGroup="formNowySprint" CssClass="form-control" placeholder="Opis" TextMode="MultiLine"></asp:TextBox>
-                        
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" type="submit" runat="server" id="btnDodajSprint" onserverclick="btnDodajSprint_ServerClick">Zapisz</button>
-
-                    </div>
-                </div>
-            </div>
+<asp:ListView runat="server" ID="listaSprintowListView" Visible="false" OnItemCommand="listaSprintowListView_ItemCommand">
+    <LayoutTemplate>
+        <div class="table-responsive tablewidget clearfix" id="itemPlaceholder" runat="server">
         </div>
-    </asp:Panel>
+        
+    </LayoutTemplate>
+    <ItemTemplate>
+        <h4><%#Eval("SprintNazwa") %></h4>
+        <asp:LinkButton runat="server" ID="lnkDodajZadanie" Text="Dodaj zadanie" CssClass="pull-right" CommandArgument='<%#Eval("SprintID") %>' CommandName="PokazDodajZadanie"></asp:LinkButton>
+        <p class="pull-right">Deadline: <strong><%#Eval("SprintTerminWykonania") %></strong></p>
 
-    
-    <s4u:Sprinty ID="Sprinty1" runat="server" />
-
-
-
-   <%-- <h3>Zadania</h3>
-    <asp:LinkButton runat="server" ID="btnDodajPokazZadanie" Text="Dodaj zadanie" OnClick="btnDodajPokazZadanie_Click"></asp:LinkButton>
-    <asp:Panel runat="server" ID="formDodajPokazZadanie" Visible="false">
+        <asp:Panel runat="server" ID="formDodajPokazZadanie" Visible="false">
         <div class="widget">
             <h4 class="widgettitle" runat="server" id="h4TytulDodajZadanie">Nowe zadanie</h4>
             <div class="widgetcontent form-horizontal" role="form" runat="server" id="panelDodajZadanie">
@@ -107,19 +65,20 @@
                     <asp:Label runat="server" AssociatedControlID="ddPrzypisaneDO" CssClass="col-sm-2 control-label" Text="Przypisz do"></asp:Label>
                     <div class="col-sm-10">
                         
-                        <asp:DropDownList runat="server" ID="ddPrzypisaneDO" AppendDataBoundItems="true"></asp:DropDownList>
+                        <asp:DropDownList runat="server" ID="ddPrzypisaneDO"></asp:DropDownList>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" type="submit" runat="server" id="btnZapiszZadanie" onserverclick="btnZapiszZadanie_ServerClick">Zapisz</button>
-
+                        <button class="btn btn-default" type="submit" runat="server" id="btnZapiszZadanie" >Zapisz</button>
+                        <asp:Button runat="server" CommandArgument='<%#Eval("SprintID") %>' CommandName="DodajZadanie" CssClass="btn btn-default" Text="Zapisz" />
                     </div>
                     
                     
                 </div>
             </div>
         </div>
-    </asp:Panel>--%>
-</asp:Content>
+    </asp:Panel>
 
+    </ItemTemplate>
+</asp:ListView>
