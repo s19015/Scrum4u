@@ -552,6 +552,47 @@ and open the template in the editor.
     background-color: #333333 !important;
 }
 
-
-
 /* more responsive layout */
+
+.SprintTitle{
+   color: #ffffff;
+   background: #71b8ee;
+}
+
+.SprintTitle h5{
+   font-size: 14px;
+   font-weight: 700;
+   margin: 0;
+   padding: 12px 15px;
+}
+
+.SprintTitle a{
+   color: #ffffff;
+}
+
+.SprintWidgetcontent {
+   -moz-border-bottom-colors: none;
+   -moz-border-left-colors: none;
+   -moz-border-right-colors: none;
+   -moz-border-top-colors: none;
+   background: none repeat scroll 0 0 #FFFFFF;
+   border-color: -moz-use-text-color #71b8ee #71b8ee;
+   border-image: none;
+   border-right: 2px solid #71b8ee;
+   border-style: none solid solid;
+   border-width: 0 2px 2px;
+   margin-bottom: 20px;
+   padding: 15px 12px;
+}
+
+.Danesprintu .ColumnName{
+   background-color: #f9f9f9;
+}
+
+.Danesprintu .ColumnValue{
+  
+}
+
+.clear{
+   clear: both;
+}
