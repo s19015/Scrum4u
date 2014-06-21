@@ -18,13 +18,8 @@
 
         <div class="container">
             <div class="header row">
-<<<<<<< HEAD
                 <div class="logo col-xs-12 col-sm-12 col-md-2">
                     <a href="/Panel/" ><img alt="Scrum4u" src="/App_themes/scrum4u/images/logo-white-small.png" /></a>
-=======
-                <div class="logo col-xs-12 col-sm-3 col-md-2">
-                    <a href="/Panel/" ><img alt="Scrum4u" src="/App_Themes/scrum4u/images/logo-white-small.png" /></a>
->>>>>>> origin/master
                 </div>
                 <div class="news col-xs-6 col-sm-6 col-md-6">
                     <ul>
@@ -65,8 +60,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="content row">
+        </div>
+        <div class="content row">
                 <div class="leftpanel col-xs-12 col-sm-12 col-md-2">
                     <div class="LeftPanelTitle">Nawigacja</div>
                     <div id="cssmenu">
@@ -177,7 +172,6 @@
                 </div>
             </div>
         </div>
-
     </form>
 </body>
 </html>
