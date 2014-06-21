@@ -18,7 +18,8 @@
     { 
         // Code that runs when an unhandled error occurs
 
-        BazaDanych.DziennikProvider.Loguj(new Scrum4u.Aplikacja.Zdarzenie(Server.GetLastError().Message, "Global.asax", Server.GetLastError().StackTrace));
+        Scrum4u.Aplikacja.Zdarzenie z = new Scrum4u.Aplikacja.Zdarzenie(Server.GetLastError().Message, "Global.asax", Server.GetLastError().StackTrace);
+        z.Loguj();
 
         if (!HttpContext.Current.User.Identity.IsAuthenticated)
         {

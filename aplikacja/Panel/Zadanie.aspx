@@ -53,14 +53,14 @@
                         <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="ddPrzypisaneDO" CssClass="col-sm-2 control-label" Text="Przypisane do"></asp:Label>
                             <div class="col-sm-10">
-                                <asp:DropDownList runat="server" ID="ddPrzypisaneDO"></asp:DropDownList>
+                                <asp:DropDownList runat="server" ID="ddPrzypisaneDO" ValidationGroup="formDodajGrupe"></asp:DropDownList>
                                 
                             </div>
                         </div>
                         <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="ddStatus" CssClass="col-sm-2 control-label" Text="Status zadania"></asp:Label>
                             <div class="col-sm-10">
-                                <asp:DropDownList runat="server" ID="ddStatus"></asp:DropDownList>
+                                <asp:DropDownList runat="server" ID="ddStatus" ValidationGroup="formDodajGrupe"></asp:DropDownList>
                                
                             </div>
                         </div>
@@ -81,11 +81,12 @@
                             <div class="col-sm-offset-2 col-sm-10">
                                
                                 <asp:Button runat="server"  CssClass="btn btn-default" Text="Edytuj" ID="btnEdytuj" OnClick="btnEdytuj_Click" />
-                                <asp:Button runat="server"  CssClass="btn btn-default" Text="Edytuj" ID="btnZapisz" OnClick="btnZapisz_Click" Visible="false" />
+                                <asp:Button runat="server"  CssClass="btn btn-default" Text="Zapisz" ID="btnZapisz" OnClick="btnZapisz_Click" Visible="false"  ValidationGroup="formDodajGrupe" />
                             </div>
 
 
                         </div>
+                        <asp:Label runat="server" ID="lblInfo"></asp:Label>
                     </div>
                 </div>
             </asp:Panel>

@@ -14,52 +14,55 @@ public partial class Panel_Zadanie : System.Web.UI.Page
         master.typStrony = Scrum4u.Scrum4uHelper.TypStrony.element;
         master.rodzajStrony = Scrum4u.Scrum4uHelper.RodzajStrony.Zadanie;
 
-        if (Request.QueryString["id"]!=null)
+        if (Request.QueryString["id"] != null)
         {
-
-            foreach (Scrum4u.Status t in Enum.GetValues(typeof(Scrum4u.Status)))
+            if (!IsPostBack)
             {
-                ListItem item = new ListItem(Scrum4uHelper.PobierzStatus(t), t.ToString());
-                ddStatus.Items.Add(item);
-            }
-
-
-            int idZadania = 0;
-            int.TryParse(Request.QueryString["id"], out idZadania);
-            Zadanie z = Zadanie.Pobierz(idZadania);
-            if (z!=null)
-            {
-                Projekt p = Projekt.Pobierz(z.ZadanieProjektID, false);
-                if (p != null)
+                foreach (Scrum4u.Status t in Enum.GetValues(typeof(Scrum4u.Status)))
                 {
-                    List<Uzytkownik> uzytkownicy = GrupaRobocza.PobierzWszystkichUzytkownikow(p.ProjektGrupaRoboczaID);
-                    if (uzytkownicy != null)
-                    {
-                        ddPrzypisaneDO.DataSource = uzytkownicy;
-                        ddPrzypisaneDO.DataTextField = "UzytkownikEmail";
-                        ddPrzypisaneDO.DataValueField = "UzytkownikEmail";
-                        ddPrzypisaneDO.DataBind();
-                    }
+                    ListItem item = new ListItem(Scrum4uHelper.PobierzStatus(t), t.ToString());
+                    ddStatus.Items.Add(item);
                 }
 
-                litTytulZadania.Text = z.ZadanieNazwa;
 
-                formDodajPokazZadanie.Visible = true;
-                //pola we formularzu
-                txtNazwaZadania.Text = z.ZadanieNazwa;
-                
-                lblTypZadania.Text = Enum.GetName(typeof(TypZadania), z.ZadanieTypZadania);
-                txtOpisZadania.Text = z.ZadanieOpis;
-                ddPriorytet.SelectedValue = z.ZadaniePriorytet.ToString();
-                txtDataZakonczenia.Text = z.ZadanieDeadline.ToShortDateString();
 
-                ddPrzypisaneDO.SelectedValue = z.ZadaniePrzypisaneDo;
-                ddStatus.SelectedValue = z.ZadanieStatus.ToString();
+                int idZadania = 0;
+                int.TryParse(Request.QueryString["id"], out idZadania);
+                Zadanie z = Zadanie.Pobierz(idZadania);
+                if (z != null)
+                {
+                    Projekt p = Projekt.Pobierz(z.ZadanieProjektID, false);
+                    if (p != null)
+                    {
+                        List<Uzytkownik> uzytkownicy = GrupaRobocza.PobierzWszystkichUzytkownikow(p.ProjektGrupaRoboczaID);
+                        if (uzytkownicy != null)
+                        {
+                            ddPrzypisaneDO.DataSource = uzytkownicy;
+                            ddPrzypisaneDO.DataTextField = "UzytkownikEmail";
+                            ddPrzypisaneDO.DataValueField = "UzytkownikEmail";
+                            ddPrzypisaneDO.DataBind();
+                        }
+                    }
 
-                lblPrzypisujacy.Text = z.ZadanieDodajacy;
-                lblDataUtworzenia.Text = z.ZadanieDataUtworzenia.ToShortDateString() + " "+z.ZadanieDataUtworzenia.ToShortTimeString();
+                    litTytulZadania.Text = z.ZadanieNazwa;
 
-                UstawReadOnly(true);
+                    formDodajPokazZadanie.Visible = true;
+                    //pola we formularzu
+                    txtNazwaZadania.Text = z.ZadanieNazwa;
+
+                    lblTypZadania.Text = Enum.GetName(typeof(TypZadania), z.ZadanieTypZadania);
+                    txtOpisZadania.Text = z.ZadanieOpis;
+                    ddPriorytet.SelectedValue = z.ZadaniePriorytet.ToString();
+                    txtDataZakonczenia.Text = z.ZadanieDeadline.ToShortDateString();
+
+                    ddPrzypisaneDO.SelectedValue = z.ZadaniePrzypisaneDo;
+                    ddStatus.SelectedValue = z.ZadanieStatus.ToString();
+
+                    lblPrzypisujacy.Text = z.ZadanieDodajacy;
+                    lblDataUtworzenia.Text = z.ZadanieDataUtworzenia.ToShortDateString() + " " + z.ZadanieDataUtworzenia.ToShortTimeString();
+
+                    UstawReadOnly(true);
+                }
             }
         }
     }
@@ -113,6 +116,11 @@ public partial class Panel_Zadanie : System.Web.UI.Page
         if (dodano)
         {
             Response.Redirect("/Panel/Zadanie.aspx?id=" + Request.QueryString["id"]);
+        }
+        else
+        {
+            lblInfo.ForeColor = System.Drawing.Color.Red;
+            lblInfo.Text = "Wystąpił błąd. Spróbuj ponownie póżniej.";
         }
     }
 }

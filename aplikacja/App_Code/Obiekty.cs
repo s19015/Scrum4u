@@ -573,6 +573,11 @@ namespace Scrum4u
             {
                 return BazaDanych.DziennikProvider.Loguj(new Zdarzenie() { ZdarzenieZrodlo = opis + "|" + zrodlo, ZdarzenieOpis = opis, ZdarzenieStackTrace = wiadomosc });
             }
+
+            public void Loguj()
+            {
+                BazaDanych.DziennikProvider.Loguj(this);
+            }
         }
     }
 }

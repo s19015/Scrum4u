@@ -6,6 +6,10 @@
     Dashboard
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" Runat="Server">
-    <a href="/Panel/GrupyRobocze.aspx">Dodaj grupę roboczą</a> na początek.
+    Witaj,
+    w Scrum4u możesz zarządzać projektami, aby zacząć dodaj grupę roboczą, kolejnie projekt, sprinty oraz zadania :)
+
+    Życzymy miłej pracy,
+    Zespół Scrum4u.pl
 </asp:Content>
 

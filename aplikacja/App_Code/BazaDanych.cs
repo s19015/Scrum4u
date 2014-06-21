@@ -1605,7 +1605,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                                 opis = @opis,
                                 priorytet = @priorytet,
                                 data_zakonczenia = @dataZakonczenia,
-                                deadline = @deadlinem,
+                                deadline = @deadline,
                                 id_zadania_statusy = @status
                                 WHERE id_zadania = @idZadania", con);
 
@@ -1615,9 +1615,9 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
                     cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieNazwa);
                     cmd.Parameters.AddWithValue("@opis", zadanie.ZadanieOpis);
                     cmd.Parameters.AddWithValue("@priorytet", zadanie.ZadaniePriorytet);
-                    cmd.Parameters.AddWithValue("@dataZakoncznia", zadanie.ZadanieDataUkonczenia);
+                    cmd.Parameters.AddWithValue("@dataZakonczenia", zadanie.ZadanieDataUkonczenia);
                     cmd.Parameters.AddWithValue("@deadline", zadanie.ZadanieDeadline);
-                    cmd.Parameters.AddWithValue("@status", zadanie.ZadanieStatus);
+                    cmd.Parameters.AddWithValue("@status", Enum.GetName(typeof(Status), zadanie.ZadanieStatus));
 
                     cmd.Connection.Open();
                     zaktualizowano = cmd.ExecuteNonQuery() > 0;
