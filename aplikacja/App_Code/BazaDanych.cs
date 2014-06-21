@@ -1501,7 +1501,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
             return listaZadan;
         }
 
-        internal static List<Zadanie> PobierzWszystkie(int idProjektu, bool czySprint)
+        internal static List<Zadanie> PobierzWszystkie(int idProjektu, int idSprintu = 0)
         {
             List<Zadanie> listaZadan = null;
 
@@ -1509,12 +1509,28 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
             {
                 try
                 {
+                    SqlCommand cmd ;
+                    if (idSprintu == 0)
+                    {
 
-                    SqlCommand cmd = new SqlCommand(@"SELECT Zadania.id_zadania, Zadania.id_sprinty, Zadania.id_zadania_typy, Zadania.tytul, Zadania.opis, Zadania.email_dodajacego, Zadania.row_date, Zadania.priorytet, Zadania.zadanie_nadrzedne, Zadania.data_zakonczenia, Zadania.deadline, Zadania.id_projekty, Zadania.email_przydzielony_uzytkownik
+                       cmd = new SqlCommand(@"SELECT Zadania.id_zadania, Zadania.id_sprinty, Zadania.id_zadania_typy, Zadania.tytul, Zadania.opis, Zadania.email_dodajacego, Zadania.row_date, Zadania.priorytet, Zadania.zadanie_nadrzedne, Zadania.data_zakonczenia, Zadania.deadline, Zadania.id_projekty, Zadania.email_przydzielony_uzytkownik
 FROM Zadania
 INNER JOIN Projekty on Zadania.id_projekty=Projekty.id_projekty and Projekty.is_aktywny = 1 and Projekty.id_projekty = @idProjektu
 WHERE Zadania.is_usuniety = 0
 order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", con);
+                    }
+                    else {
+
+                        cmd = new SqlCommand(@"SELECT Zadania.id_zadania, Zadania.id_sprinty, Zadania.id_zadania_typy, Zadania.tytul, Zadania.opis, Zadania.email_dodajacego, Zadania.row_date, Zadania.priorytet, Zadania.zadanie_nadrzedne, Zadania.data_zakonczenia, Zadania.deadline, Zadania.id_projekty, Zadania.email_przydzielony_uzytkownik
+FROM Zadania
+INNER JOIN Projekty on Zadania.id_projekty=Projekty.id_projekty and Projekty.is_aktywny = 1 and Projekty.id_projekty = @idProjektu
+WHERE Zadania.is_usuniety = 0
+AND Zadania.id_sprinty = @idSprintu
+order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", con);
+
+                        cmd.Parameters.AddWithValue("@idSprintu", idSprintu);
+
+                    }
 
                     cmd.Parameters.AddWithValue("@idProjektu", idProjektu);
                     cmd.Connection.Open();
