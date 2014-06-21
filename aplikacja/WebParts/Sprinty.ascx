@@ -91,7 +91,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-default" type="submit" runat="server" id="btnZapiszZadanie">Zapisz</button>
+                               
                                 <asp:Button runat="server" CommandArgument='<%#Eval("SprintID") %>' CommandName="DodajZadanie" CssClass="btn btn-default" Text="Zapisz" />
                             </div>
 

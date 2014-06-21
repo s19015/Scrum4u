@@ -1263,33 +1263,50 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
                 try
                 {
 
-                    SqlCommand cmd = new SqlCommand(@"INSERT INTO Zadania(
-id_sprinty,
-id_zadania_typy,
-tytul,
-opis,
-email_dodajacego,
-zadanie_nadrzedne,
-id_projekty
-)
-VALUES(
-@idSprintu,
-@zadanieTyp,
-@tytul,
-@opis,
-@emailDodajacego,
-@zadanieNadrzedneId,
-@id_projekty
-);", con);
+                    SqlCommand cmd = new SqlCommand(@"
+INSERT INTO [Zadania]
+           ([id_sprinty]
+           ,[id_zadania_typy]
+           ,[tytul]
+           ,[opis]
+           ,[is_usuniety]
+           ,[email_dodajacego]
+           ,[row_date]
+           ,[priorytet]
+           ,[email_przydzielony_uzytkownik]
+           ,[data_zakonczenia]
+           ,[deadline]
+           ,[id_projekty])
+     VALUES
+           (@id_sprinty
+           ,@id_zadania_typ
+           ,@tytul
+           ,@opis
+           ,@usuniety
+           ,@email_dod
+           ,@row_date
+           ,@priorytet
+           ,@przydzielone_do
+           ,@data_zak
+           ,@data_dead
+           ,@id_projekty)", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
-                    cmd.Parameters.AddWithValue("@idSprintu", zadanie.ZadanieSprintID);
-                    cmd.Parameters.AddWithValue("@zadanieTyp", zadanie.ZadanieTypZadania);
-                    cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieTypZadania);
+
+                    cmd.Parameters.AddWithValue("@id_sprinty", zadanie.ZadanieSprintID);
+                    cmd.Parameters.AddWithValue("@id_zadania_typ", Enum.GetName(typeof(TypZadania), zadanie.ZadanieTypZadania));
+                    cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieNazwa);
+                    cmd.Parameters.AddWithValue("@usuniety", false);
                     cmd.Parameters.AddWithValue("@opis", zadanie.ZadanieOpis);
-                    cmd.Parameters.AddWithValue("@emailDodajacego", HttpContext.Current.User.Identity.Name);
-                    cmd.Parameters.AddWithValue("@zadanieNadrzedneId", -1);
+                    cmd.Parameters.AddWithValue("@email_dod", HttpContext.Current.User.Identity.Name);
                     cmd.Parameters.AddWithValue("@id_projekty", zadanie.ZadanieProjektID);
+                    cmd.Parameters.AddWithValue("@row_date", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@priorytet", zadanie.ZadaniePriorytet);
+                    cmd.Parameters.AddWithValue("@przydzielone_do", zadanie.ZadaniePrzypisaneDo);
+                   // cmd.Parameters.AddWithValue("@id_zad_nadrzednego", (zadanie.ZadanieNadrzedneID>0?zadanie.ZadanieNadrzedneID.ToString():null));
+                    cmd.Parameters.AddWithValue("@data_zak", zadanie.ZadanieDataUkonczenia);
+                    cmd.Parameters.AddWithValue("@data_dead", zadanie.ZadanieDeadline);
+
 
                     cmd.Connection.Open();
                     int ileDodano = cmd.ExecuteNonQuery();
@@ -1306,7 +1323,7 @@ VALUES(
                 }
                 catch (Exception ex)
                 {
-                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 618", ex.StackTrace));
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1328", ex.StackTrace));
                 }
 
                 return dodano;

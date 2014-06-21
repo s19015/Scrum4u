@@ -84,8 +84,8 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
             ZadanieTypZadania = (TypZadania)Enum.Parse(typeof(TypZadania), ((DropDownList)e.Item.FindControl("ddTypZadania")).SelectedValue),
             ZadanieStatus = Status.do_wykonania,
             ZadanieDataUtworzenia = DateTime.Now,
-            ZadaniePrzypisaneDo = ((DropDownList)e.Item.FindControl("ddPrzypisaneDO")).SelectedValue
-
+            ZadaniePrzypisaneDo = ((DropDownList)e.Item.FindControl("ddPrzypisaneDO")).SelectedValue,
+            ZadanieSprintID = sp.SprintID
         };
 
             DateTime dZak = DateTime.MinValue;
@@ -110,6 +110,7 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
                 ((Panel)e.Item.FindControl("formDodajPokazZadanie")).Visible = false;
                 h4.InnerText = "Zadanie dodane poprawnie";
                 h4.Attributes["class"] = "widgettitle title-success";
+                ZaladujDane(sp.SprintProjektID);
             }
             else
             {

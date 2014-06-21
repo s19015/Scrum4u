@@ -13,8 +13,13 @@ namespace Scrum4u
     public enum Status { do_wykonania=0, w_trakcie=1, wykonane=2, odlozone=3 }
     public enum TypZadania 
     { 
-        ZADANIE, 
-        BLAD, 
+        [System.ComponentModel.Description("ZADANIE")]
+        ZADANIE,
+
+        [System.ComponentModel.Description("BLAD")]
+        BLAD,
+
+        [System.ComponentModel.Description("POMYSL")]
         POMYSL 
     }
 
