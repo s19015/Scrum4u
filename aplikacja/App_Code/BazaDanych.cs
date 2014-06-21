@@ -1595,7 +1595,41 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
 
         internal static bool Aktualizuj(Zadanie zadanie)
         {
-            throw new NotImplementedException();
+            bool zaktualizowano = false;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"UPDATE Zadania
+                                SET tytul = @tytul,
+                                opis = @opis,
+                                priorytet = @priorytet,
+                                data_zakonczenia = @dataZakonczenia,
+                                deadline = @deadlinem,
+                                id_zadania_statusy = @status
+                                WHERE id_zadania = @idZadania", con);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@idZadania", zadanie.ZadanieID);
+                    cmd.Parameters.AddWithValue("@tytul", zadanie.ZadanieNazwa);
+                    cmd.Parameters.AddWithValue("@opis", zadanie.ZadanieOpis);
+                    cmd.Parameters.AddWithValue("@priorytet", zadanie.ZadaniePriorytet);
+                    cmd.Parameters.AddWithValue("@dataZakoncznia", zadanie.ZadanieDataUkonczenia);
+                    cmd.Parameters.AddWithValue("@deadline", zadanie.ZadanieDeadline);
+                    cmd.Parameters.AddWithValue("@status", zadanie.ZadanieStatus);
+
+                    cmd.Connection.Open();
+                    zaktualizowano = cmd.ExecuteNonQuery() > 0;
+
+                    cmd.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1158", ex.StackTrace));
+                }
+            }
+            return zaktualizowano;
         }
     }
 
