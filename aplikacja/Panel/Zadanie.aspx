@@ -19,10 +19,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <asp:Label runat="server" AssociatedControlID="ddTypZadania" CssClass="col-sm-2 control-label" Text="Typ zadania"></asp:Label>
+                            <asp:Label runat="server" AssociatedControlID="lblTypZadania" CssClass="col-sm-2 control-label" Text="Typ zadania"></asp:Label>
                             <div class="col-sm-10">
 
-                                <asp:DropDownList runat="server" ID="ddTypZadania" AppendDataBoundItems="true"></asp:DropDownList>
+                                
+                                <asp:Label runat="server" ID="lblTypZadania"></asp:Label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -50,16 +51,37 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <asp:Label runat="server" AssociatedControlID="txtPrzypisaneDO" CssClass="col-sm-2 control-label" Text="Przypisane do"></asp:Label>
+                            <asp:Label runat="server" AssociatedControlID="ddPrzypisaneDO" CssClass="col-sm-2 control-label" Text="Przypisane do"></asp:Label>
                             <div class="col-sm-10">
                                 <asp:DropDownList runat="server" ID="ddPrzypisaneDO"></asp:DropDownList>
-                                <asp:TextBox runat="server" ID="txtPrzypisaneDO" ValidationGroup="formDodajGrupe" CssClass="form-control" placeholder="Przypisane do" ></asp:TextBox>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <asp:Label runat="server" AssociatedControlID="ddStatus" CssClass="col-sm-2 control-label" Text="Status zadania"></asp:Label>
+                            <div class="col-sm-10">
+                                <asp:DropDownList runat="server" ID="ddStatus"></asp:DropDownList>
+                               
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <asp:Label runat="server" AssociatedControlID="lblPrzypisujacy" CssClass="col-sm-2 control-label" Text="Przypisał"></asp:Label>
+                            <div class="col-sm-10">
+                                <asp:Label runat="server" ID="lblPrzypisujacy"></asp:Label>
+                                
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <asp:Label runat="server" AssociatedControlID="lblDataUtworzenia" CssClass="col-sm-2 control-label" Text="Data utworzenia"></asp:Label>
+                            <div class="col-sm-10">
+                                <asp:Label runat="server" ID="lblDataUtworzenia"></asp:Label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                
-                                <asp:Button runat="server"  CssClass="btn btn-default" Text="Zapisz" />
+                                <asp:Button runat="server"  CssClass="btn btn-default" Text="Edytuj" ID="btnEdytuj" OnClick="btnEdytuj_Click" />
+                                <asp:Button runat="server"  CssClass="btn btn-default" Text="Edytuj" ID="btnZapisz" OnClick="btnZapisz_Click" Visible="false" />
                             </div>
 
 

@@ -1592,6 +1592,11 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
 
             return listaZadan;
         }
+
+        internal static bool Aktualizuj(Zadanie zadanie)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SprintProvider

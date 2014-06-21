@@ -423,6 +423,11 @@ namespace Scrum4u
         {
             return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu,idSprintu);
         }
+
+        public bool Aktualizuj()
+        {
+            return BazaDanych.ZadanieProvider.Aktualizuj(this);
+        }
     }
 
     public class Blad : Zadanie

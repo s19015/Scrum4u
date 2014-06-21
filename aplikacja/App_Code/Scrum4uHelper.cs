@@ -51,8 +51,36 @@ namespace Scrum4u
             return r.IsMatch(email);
         }
 
-        public enum TypStrony {domyslna,  lista, element }
+        public enum TypStrony { domyslna, lista, element }
         public enum RodzajStrony { GrupaRobocza, Projekt, Projekty, Zadanie }
 
+        public static string PobierzStatus(object Status)
+        {
+            string wynik = "";
+            if (Status != null)
+            {
+                string sStatus = Status.ToString();
+
+                Scrum4u.Status s = (Scrum4u.Status)Enum.Parse(typeof(Scrum4u.Status), sStatus, true);
+
+                switch (s)
+                {
+                    case Scrum4u.Status.DOWYKONANIA:
+                        wynik = "Do wykonania";
+                        break;
+                    case Scrum4u.Status.WTRAKCIE:
+                        wynik = "W trakcie";
+                        break;
+                    case Scrum4u.Status.ODLOZONE:
+                        wynik = "Odłożone";
+                        break;
+                    case Scrum4u.Status.WYKONANE:
+                        wynik = "Wykonane";
+                        break;
+                }
+            }
+
+            return wynik;
+        }
     }
 }
