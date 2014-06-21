@@ -366,6 +366,21 @@ namespace Scrum4u
         {
             return BazaDanych.SprintProvider.PobierzSprint(idSprintu);
         }
+
+        public static string ProcentWykonania(object IDSprintu)
+        {
+            string wynik = "";
+
+            if (IDSprintu!=null)
+            {
+                int idSprintu = 0;
+                int.TryParse(IDSprintu.ToString(), out idSprintu);
+
+                decimal procent = BazaDanych.SprintProvider.procentWykonania(idSprintu);
+                wynik = Math.Round(procent * 100,0) + "%";
+            }
+            return wynik;
+        }
     }
 
     public class Zadanie

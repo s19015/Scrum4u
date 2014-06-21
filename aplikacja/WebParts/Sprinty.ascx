@@ -17,6 +17,7 @@
                 <h5><%#Eval("SprintNazwa") %></h5>
             </div>
             <div class="col-sm-4">
+                <h5>Wykonano: <%#Scrum4u.Sprint.ProcentWykonania(Eval("SprintID")) %></h5>
             </div>
             <div class="col-sm-3">
                 <h5>Deadline: <%#Eval("SprintTerminWykonania","{0:yyyy-MM-dd}") %></h5>
