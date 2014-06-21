@@ -18,7 +18,7 @@
        <div class="Front">
          <div class="ImageBox">
             <div class="FrontHeader" id="top">
-               <a href="/">Scrum4u</a>
+               <a href="/" ><img alt="Scrum4u" src="App_Themes/scrum4u/images/logo-blue-small.png" /></a>
             </div>           
             
             <div class="FrontContent">
