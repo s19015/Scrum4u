@@ -92,7 +92,7 @@ public partial class Panel_Zadanie : System.Web.UI.Page
         if (idZadania <= 0) return;
         bool dodano = false;
         Zadanie z = Zadanie.Pobierz(idZadania);
-        if (z!=null)
+        if (z != null)
         {
             z.ZadanieNazwa = txtNazwaZadania.Text;
             z.ZadanieOpis = txtOpisZadania.Text;
@@ -106,7 +106,7 @@ public partial class Panel_Zadanie : System.Web.UI.Page
             z.ZadanieStatus = s;
 
 
-                dodano = z.Aktualizuj();
+            dodano = z.Aktualizuj();
 
         }
 
