@@ -1834,5 +1834,53 @@ WHERE id_sprinty = @idSprintu", con);
 
             return s;
         }
+
+        internal static decimal procentWykonania( int idSprintu ) {
+
+            decimal procentWykonania = 0;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(@"SELECT CAST((SELECT CAST(
+(SELECT COUNT(*) FROM Zadania
+WHERE is_usuniety = 0
+and id_sprinty = @idSprintu
+and id_zadania_statusy = 'WYKONANE') AS DECIMAL(5, 2)))/
+(SELECT CAST((
+SELECT COUNT(*) FROM Zadania
+WHERE is_usuniety = 0
+and id_sprinty = @idSprintu) AS DECIMAL(5,2))) AS DECIMAL (5,2)) as procent_wykonania", con);
+
+                    cmd.Parameters.AddWithValue("@idSprintu", idSprintu);
+                    cmd.Connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            
+                            while (reader.Read())
+                            {
+                                procentWykonania = Decimal.Parse(reader["procent_wykonania"].ToString());
+                            }
+                        }
+
+                    }
+
+                    cmd.Connection.Close();
+
+                }
+                catch (Exception ex)
+                {
+                    BazaDanych.DziennikProvider.Loguj(new Zdarzenie(ex.Message, "BazaDanych line 1888", ex.StackTrace));
+                }
+            }
+
+
+            return procentWykonania;
+
+        }
     }
 }
