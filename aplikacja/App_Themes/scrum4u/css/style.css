@@ -71,6 +71,11 @@ body{
       float: left;
       font-size: 14px;
       position: relative;
+      width: 140px;
+   }
+   
+   .news li:hover{
+      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
    }
 
    .news li a {
@@ -142,7 +147,7 @@ body{
       cursor: pointer;
       display: block;
       min-width: 110px;
-      padding: 9px 17px 4px;
+      padding: 21px 17px 17px;
       position: relative;
       text-decoration: none;
    }
@@ -185,6 +190,12 @@ body{
 }
 
 @media (max-width: 767px){
+   
+   .logo{
+      margin-top: 5px;
+      margin-bottom: 5px;
+   }
+
    .news ul{
       list-style: none outside none;
       padding: 0px;
@@ -195,7 +206,7 @@ body{
    }
 
    .news li {
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      border-right: 0px solid rgba(255, 255, 255, 0.15);
       display: inline-block;
       float: left;
       font-size: 14px;
@@ -207,7 +218,7 @@ body{
       cursor: pointer;
       display: block;
       min-width: 110px;
-      padding: 9px 17px 4px;
+      padding: 0px 0px 0px;
       position: relative;
       text-decoration: none;
    }
@@ -221,11 +232,11 @@ body{
 
    .news li a .head-icon {
       display: block;
-      height: 32px;
+      height: 19px;
       margin: auto;
       opacity: 0.5;
       width: 50px;
-      font-size: 27px;
+      font-size: 16px;
       text-align: center;
    }
 

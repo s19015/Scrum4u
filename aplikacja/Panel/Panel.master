@@ -18,35 +18,28 @@
 
         <div class="container">
             <div class="header row">
-                <div class="logo col-xs-12 col-sm-12 col-md-2">
-                    <a href="/Panel/" ><img alt="Scrum4u" src="images/logo-white-small.png" /></a>
+                <div class="logo col-xs-12 col-sm-3 col-md-2">
+                    <a href="/Panel/" ><img alt="Scrum4u" src="/App_Themes/scrum4u/images/logo-white-small.png" /></a>
                 </div>
-                <div class="news col-xs-12 col-sm-6 col-md-6">
+                <div class="news col-xs-6 col-sm-6 col-md-6">
                     <ul>
-                        <li class="odd">
+                        <li class="">
                             <a <%--class="dropdown-toggle"--%> href="/Panel/GrupyRobocze.aspx" <%--data-toggle="dropdown"--%>>
                                 <span class="count"><%=iloscGrupRoboczych %></span>
                                 <span class="head-icon"><span class="glyphicon glyphicon-list"></span></span>
                                 <span class="headmenu-label">Grupy robocze</span>
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        <li class="">
+                            <a class="dropdown-toggle" href="/Panel/Projekty.aspx" data-toggle="dropdown">
                                 <span class="count">2</span>
                                 <span class="head-icon"><span class="glyphicon glyphicon-briefcase"></span></span>
                                 <span class="headmenu-label">Projekty</span>
                             </a>
                         </li>
-                        <li class="odd">
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                <span class="count">1</span>
-                                <span class="head-icon"><span class="glyphicon glyphicon-comment"></span></span>
-                                <span class="headmenu-label">Wiadomości</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
-                <div class="userinfo col-xs-12 col-sm-6 col-md-4">
+                <div class="userinfo col-xs-6 col-sm-3 col-md-4">
                     <div class="user">
                         <div class="userinfo">
                             <h5>
