@@ -17,7 +17,7 @@ public partial class WebParts_Zadania : System.Web.UI.UserControl
     {
         if (idSprintu>0)
         {
-            List<Zadanie> listaZadan = 
+            List<Zadanie> listaZadan = Zadanie.PobierzWszystkie(idSprintu, true);
         }
     }
     public string PobierzStatus (object Status)

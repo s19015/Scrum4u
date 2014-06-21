@@ -404,19 +404,24 @@ namespace Scrum4u
            return usunieto;
         }
 
-        public Zadanie Pobierz(int idZadania)
+        public static Zadanie Pobierz(int idZadania)
         {
             return BazaDanych.ZadanieProvider.Pobierz(idZadania);
         }
 
-        public List<Zadanie> PobierzWszystkie(string email)
+        public static List<Zadanie> PobierzWszystkie(string email)
         {
             return BazaDanych.ZadanieProvider.PobierzWszystkie(email);
         }
 
-        public List<Zadanie> PobierzWszystkie(int idProjektu)
+        public static List<Zadanie> PobierzWszystkie(int idProjektu)
         {
-            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu);
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu, false);
+        }
+
+        public static List<Zadanie> PobierzWszystkie(int idSprintu, bool czySprint)
+        {
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(idSprintu, czySprint);
         }
     }
 

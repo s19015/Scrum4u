@@ -1501,7 +1501,7 @@ order by Zadania.priorytet desc, Zadania.deadline asc, Zadania.row_date asc", co
             return listaZadan;
         }
 
-        internal static List<Zadanie> PobierzWszystkie(int idProjektu)
+        internal static List<Zadanie> PobierzWszystkie(int idProjektu, bool czySprint)
         {
             List<Zadanie> listaZadan = null;
 
