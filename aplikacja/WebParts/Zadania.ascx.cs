@@ -62,4 +62,32 @@ public partial class WebParts_Zadania : System.Web.UI.UserControl
 
         return wynik;
     }
+    public string PobierzKlase(object Status)
+    {
+        string wynik = "";
+        if (Status != null)
+        {
+            string sStatus = Status.ToString();
+
+            Scrum4u.Status s = (Scrum4u.Status)Enum.Parse(typeof(Scrum4u.Status), sStatus, true);
+
+            switch (s)
+            {
+                //case Scrum4u.Status.DOWYKONANIA:
+                //    wynik = "Do wykonania";
+                //    break;
+                //case Scrum4u.Status.WTRAKCIE:
+                //    wynik = "W trakcie";
+                //    break;
+                case Scrum4u.Status.ODLOZONE:
+                    wynik = "danger";
+                    break;
+                case Scrum4u.Status.WYKONANE:
+                    wynik = "success";
+                    break;
+            }
+        }
+
+        return wynik;
+    }
 }

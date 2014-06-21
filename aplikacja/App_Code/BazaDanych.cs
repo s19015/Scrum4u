@@ -1341,8 +1341,8 @@ INSERT INTO [Zadania]
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(@"  UPDATE Projekty
-                      SET is_usuniete = 1
+                    SqlCommand cmd = new SqlCommand(@"  UPDATE Zadania
+                      SET is_usuniety = 1
                       WHERE id_zadania = @idZadania", con);
 
                     cmd.CommandType = System.Data.CommandType.Text;

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="Ustawienia.aspx.cs" Inherits="Panel_Ustawienia" %>
+﻿<%@ Page Title="Ustawienia - scrum4u.pl" Language="C#" MasterPageFile="~/Panel/Panel.master" AutoEventWireup="true" CodeFile="Ustawienia.aspx.cs" Inherits="Panel_Ustawienia" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>

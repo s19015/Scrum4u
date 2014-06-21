@@ -45,7 +45,7 @@ public partial class Panel_Zadanie : System.Web.UI.Page
                     }
 
                     litTytulZadania.Text = z.ZadanieNazwa;
-
+                    this.Page.Title = "Zadanie: " + z.ZadanieNazwa + " - scrum4u.pl";
                     formDodajPokazZadanie.Visible = true;
                     //pola we formularzu
                     txtNazwaZadania.Text = z.ZadanieNazwa;
@@ -86,6 +86,7 @@ public partial class Panel_Zadanie : System.Web.UI.Page
 
         btnEdytuj.Visible = false;
         btnZapisz.Visible = true;
+        btnUsun.Visible = false;
     }
     protected void btnZapisz_Click(object sender, EventArgs e)
     {
@@ -122,5 +123,26 @@ public partial class Panel_Zadanie : System.Web.UI.Page
             lblInfo.ForeColor = System.Drawing.Color.Red;
             lblInfo.Text = "Wystąpił błąd. Spróbuj ponownie póżniej.";
         }
+    }
+    protected void btnUsun_Click(object sender, EventArgs e)
+    {
+                int idZadania = 0;
+        int.TryParse(Request.QueryString["id"], out idZadania);
+
+        if (idZadania <= 0) return;
+        bool dodano = false;
+        Zadanie z = Zadanie.Pobierz(idZadania);
+        if (z != null)
+        {
+            dodano = z.Usun();
+        }
+        if (dodano)
+            Response.Redirect("/Panel/Projekt.aspx?id=" + z.ZadanieProjektID);
+        else
+        {
+            lblInfo.ForeColor = System.Drawing.Color.Red;
+            lblInfo.Text = "Wystąpił błąd. Spróbuj ponownie póżniej.";
+        }
+
     }
 }

@@ -23,7 +23,7 @@
         </div>
     </LayoutTemplate>
     <ItemTemplate>
-        <tr>
+        <tr class='<%#PobierzKlase(Eval("ZadanieStatus"))%>'>
             <td><%#Container.DataItemIndex+1 %></td>
             <td><%#Eval("ZadanieNazwa") %></td>
 

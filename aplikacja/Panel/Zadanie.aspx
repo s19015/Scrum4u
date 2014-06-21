@@ -82,7 +82,8 @@
                                
                                 <asp:Button runat="server"  CssClass="btn btn-default" Text="Edytuj" ID="btnEdytuj" OnClick="btnEdytuj_Click" />
                                 <asp:Button runat="server"  CssClass="btn btn-default" Text="Zapisz" ID="btnZapisz" OnClick="btnZapisz_Click" Visible="false"  ValidationGroup="formDodajGrupe" />
-                            </div>
+                           <asp:Button runat="server"  CssClass="btn btn-default" Text="Usuń" ID="btnUsun" OnClick="btnUsun_Click" />
+                                 </div>
 
 
                         </div>
