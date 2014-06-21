@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainTitle" runat="Server">
-    Grupa robocza <asp:Literal runat="server" ID="litTytul"></asp:Literal>
+    Grupa robocza: <asp:Literal runat="server" ID="litTytul"></asp:Literal>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="Server">
 

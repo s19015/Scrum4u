@@ -24,7 +24,7 @@ public partial class Panel_GrupaRobocza : System.Web.UI.Page
             grupa = GrupaRobocza.PobierzGrupe(idGrupy,true);
             if (grupa!=null)
             {
-                litTytul.Text = "- " + grupa.GrupaRoboczaNazwa;
+                litTytul.Text =  grupa.GrupaRoboczaNazwa;
                 this.Page.Title = grupa.GrupaRoboczaNazwa + " - Grupa robocza - Scrum4u.pl";
                 if (Request.QueryString["usunOsobe"]!=null && Scrum4uHelper.CzyJestToEmail(Request.QueryString["usunOsobe"]))
                 {

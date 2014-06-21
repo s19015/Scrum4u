@@ -20,7 +20,7 @@
                     <asp:Label runat="server" AssociatedControlID="txtNazwaSprintu" CssClass="col-sm-2 control-label" Text="Nazwa sprintu"></asp:Label>
                     <div class="col-sm-10">
                         <asp:TextBox runat="server" ID="txtNazwaSprintu" ValidationGroup="formNowySprint" CssClass="form-control" placeholder="Nazwa sprintu"></asp:TextBox>
-                        <asp:RequiredFieldValidator ValidationGroup="formNowySprint" runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtNazwaZadania" Display="Dynamic" ErrorMessage="Proszę wpisać nazwę."></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ValidationGroup="formNowySprint" runat="server" ID="RequiredFieldValidator3" ControlToValidate="txtNazwaSprintu" Display="Dynamic" ErrorMessage="Proszę wpisać nazwę."></asp:RequiredFieldValidator>
                     </div>
                 </div>
                 <div class="form-group">

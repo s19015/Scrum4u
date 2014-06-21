@@ -69,13 +69,13 @@
                                 </asp:DropDownList>
                             </div>
                         </div>
-                        <div class="form-group">
+<%--                        <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="txtDataRozpoczecia" CssClass="col-sm-2 control-label" Text="Data rozpoczęcia"></asp:Label>
                             <div class="col-sm-10">
                                 <asp:TextBox runat="server" ID="txtDataRozpoczecia" ValidationGroup="formDodajGrupe" CssClass="form-control" placeholder="Data rozpoczęcia"></asp:TextBox>
                                 <asp:RequiredFieldValidator ValidationGroup="formDodajGrupe" runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtDataRozpoczecia" Display="Dynamic" ErrorMessage="Proszę wybrać datę rozpoczęcia."></asp:RequiredFieldValidator>
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="txtDataZakonczenia" CssClass="col-sm-2 control-label" Text="Data zakończenia"></asp:Label>
                             <div class="col-sm-10">

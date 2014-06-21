@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 public partial class Panel_Panel : Scrum4uMasterPage
 {
     public int iloscGrupRoboczych = 0;
+    public int iloscWszystkichProjektow = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -38,15 +39,18 @@ public partial class Panel_Panel : Scrum4uMasterPage
                 wynik = @"<span class='separator'></span>
                         </li>";
 
+                string projekt = "";
+                if (!String.IsNullOrEmpty(Request.QueryString["id_gr"]))
+                    projekt=@"<li>
+                            <a href='/Panel/GrupaRobocza.aspx?id="+Request.QueryString["id_gr"]+@"'>Grupa robocza</a>
+                            <span class='separator'></span>
+                        </li>";
+
                 wynik += @"<li>
                             <a href='/Panel/GrupyRobocze.aspx'>Grupy robocze</a>
                             <span class='separator'></span>
                         </li>
-                        <li>
-                            <a href='/Panel/GrupaRobocza.aspx?id="+Request.QueryString["id_gr"]+@"'>Grupa robocza</a>
-                            <span class='separator'></span>
-                        </li>
-                        <li>Projekty</li>";
+                        "+projekt+"<li>Projekty</li>";
             }
         }
         if (typStrony == Scrum4uHelper.TypStrony.element)
@@ -97,7 +101,7 @@ public partial class Panel_Panel : Scrum4uMasterPage
                             <span class='separator'></span>
                         </li>
 <li>
-                            <a href='/Panel/Projekt.aspx?id=" + p.ProjektID + @"'>Projekt</a>
+                            <a href='/Panel/Projekt.aspx?id=" + z.ZadanieProjektID + @"'>Projekt</a>
                             <span class='separator'></span>
                         </li>
                         <li>Zadanie</li>";
@@ -150,6 +154,8 @@ public partial class Panel_Panel : Scrum4uMasterPage
             Repeater projekty = (Repeater)item.FindControl("repNawigacja1");
             List<Projekt> listaProjektow = Projekt.PobierzWszystkie(HttpContext.Current.User.Identity.Name, true, ((GrupaRobocza)item.DataItem).GrupaRoboczaID);
 
+            if (listaProjektow != null)
+                iloscWszystkichProjektow += listaProjektow.Count;
             
             Literal nowyProjekt = (Literal)item.FindControl("nowyProjekt");
             string wzor = "<li><a href=\"/Panel/Projekty.aspx?dodaj=1&amp;id_gr=" + ((GrupaRobocza)item.DataItem).GrupaRoboczaID + "\">Dodaj projekt</a></li>";

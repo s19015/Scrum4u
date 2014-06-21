@@ -32,7 +32,7 @@
                         </li>
                         <li class="">
                             <a class="dropdown-toggle" href="/Panel/Projekty.aspx" data-toggle="dropdown">
-                                <span class="count">2</span>
+                                <span class="count"><%=iloscWszystkichProjektow %></span>
                                 <span class="head-icon"><span class="glyphicon glyphicon-briefcase"></span></span>
                                 <span class="headmenu-label">Projekty</span>
                             </a>

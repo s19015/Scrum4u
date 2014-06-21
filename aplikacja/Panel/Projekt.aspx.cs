@@ -22,6 +22,8 @@ public partial class Panel_Projekt : System.Web.UI.Page
                 if (projekt != null)
                 {
                     litProjektNazwa.Text = projekt.ProjektNazwa;
+                    if (projekt.ProjektManagerProjektuID.Trim().ToLower() != HttpContext.Current.User.Identity.Name.Trim().ToLower())
+                        btnDodajSprint.Visible = false;
                 }
             }
 

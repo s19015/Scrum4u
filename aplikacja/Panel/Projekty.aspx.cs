@@ -46,6 +46,12 @@ public partial class Panel_Projekty : System.Web.UI.Page
                     NiepoprawnaGrupa();
                 }
             }
+            else
+            {
+                Projekty1.ZaladujDane(0);
+                btnPokazDodajProjekt.Visible = false;
+
+            }
         }
     }
 
