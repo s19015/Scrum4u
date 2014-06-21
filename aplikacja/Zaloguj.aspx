@@ -22,12 +22,14 @@
         </asp:Panel>
         <asp:LinkButton runat="server" ID="lnkNiePamietamHasla" Font-Underline="True" Text="Nie pamiętam hasła" OnClick="lnkNiePamietamHasla_Click"> </asp:LinkButton>
         <asp:Panel runat="server" ID="panelHasla" DefaultButton="btnWyslijPrzypomnienie" Visible="false">
-            <div class="form-group">
-                <asp:TextBox ValidationGroup="formHaslo" runat="server" ID="txtEmailPrzypomnienie" MaxLength="100" placeholder="Email"></asp:TextBox>
-                <asp:RequiredFieldValidator ValidationGroup="formHaslo" runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtEmailPrzypomnienie" Display="Dynamic" ErrorMessage="Proszę wpisać adres e-mail."></asp:RequiredFieldValidator>
-            </div>
-            <div class="form-group">
-                <asp:Button OnClick="btnWyslijPrzypomnienie_Click" ValidationGroup="formHaslo" runat="server" ID="btnWyslijPrzypomnienie" CssClass="btn btn-default" Text="Wyślij" />
+            <div class="nice-form">
+                <div class="form-group">
+                    <asp:TextBox class="form-control" ValidationGroup="formHaslo" runat="server" ID="txtEmailPrzypomnienie" MaxLength="100" placeholder="Email"></asp:TextBox>
+                    <asp:RequiredFieldValidator ValidationGroup="formHaslo" runat="server" ID="RequiredFieldValidator1" ControlToValidate="txtEmailPrzypomnienie" Display="Dynamic" ErrorMessage="Proszę wpisać adres e-mail."></asp:RequiredFieldValidator>
+                </div>
+                <div class="form-group">
+                    <asp:Button OnClick="btnWyslijPrzypomnienie_Click" ValidationGroup="formHaslo" runat="server" ID="btnWyslijPrzypomnienie" CssClass="btn btn-default" Text="Wyślij" />
+                </div>
             </div>
         </asp:Panel>
         <asp:Label runat="server" ID="lblInfo"></asp:Label>
