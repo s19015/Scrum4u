@@ -12,7 +12,9 @@ public partial class Panel_Projekt : System.Web.UI.Page
     public Projekt projekt;
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        Scrum4uMasterPage master = this.Page.Master as Scrum4uMasterPage;
+        master.typStrony = Scrum4uHelper.TypStrony.element;
+        master.rodzajStrony = Scrum4uHelper.RodzajStrony.Projekt;
             int idProjektu = 0;
             if (Request.QueryString["id"]!=null && int.TryParse(Request.QueryString["id"],out idProjektu))
             {

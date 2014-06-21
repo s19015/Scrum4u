@@ -62,6 +62,46 @@ public partial class Panel_Panel : Scrum4uMasterPage
                         </li>
                         <li>Grupa robocza</li>";
             }
+            if (rodzajStrony == Scrum4uHelper.RodzajStrony.Projekt)
+            {
+                wynik = @"<span class='separator'></span>
+                        </li>";
+
+                Projekt p = Projekt.Pobierz(int.Parse(Request.QueryString["id"]), false);
+
+                wynik += @"<li>
+                            <a href='/Panel/GrupyRobocze.aspx'>Grupy robocze</a>
+                            <span class='separator'></span>
+                        </li>
+                        <li>
+                            <a href='/Panel/GrupaRobocza.aspx?id=" + p.ProjektGrupaRoboczaID + @"'>Grupa robocza</a>
+                            <span class='separator'></span>
+                        </li>
+                        <li>Projekt</li>";
+
+            }
+            if (rodzajStrony == Scrum4uHelper.RodzajStrony.Zadanie)
+            {
+                wynik = @"<span class='separator'></span>
+                        </li>";
+
+                Zadanie z = Zadanie.Pobierz(int.Parse(Request.QueryString["id"]));
+                Projekt p = Projekt.Pobierz(z.ZadanieProjektID, false);
+
+                wynik += @"<li>
+                            <a href='/Panel/GrupyRobocze.aspx'>Grupy robocze</a>
+                            <span class='separator'></span>
+                        </li>
+                        <li>
+                            <a href='/Panel/GrupaRobocza.aspx?id=" + p.ProjektGrupaRoboczaID + @"'>Grupa robocza</a>
+                            <span class='separator'></span>
+                        </li>
+<li>
+                            <a href='/Panel/Projekt.aspx?id=" + p.ProjektID + @"'>Projekt</a>
+                            <span class='separator'></span>
+                        </li>
+                        <li>Zadanie</li>";
+            }
         }
 
         if (String.IsNullOrEmpty(wynik))

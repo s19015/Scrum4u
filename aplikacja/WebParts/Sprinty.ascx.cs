@@ -36,6 +36,7 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
             }
         }
     }
+
     protected void listaSprintowListView_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
         int idSprintu = 0;
@@ -140,5 +141,15 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
         }
 
         return wynik;
+    }
+    protected void listaSprintowListView_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListViewItemType.DataItem)
+        {
+            Sprint s = (Sprint)e.Item.DataItem;
+
+            WebParts_Zadania z = (WebParts_Zadania)e.Item.FindControl("Zadania1");
+            z.ZaladujDane(s.SprintID, s.SprintProjektID);
+        }
     }
 }

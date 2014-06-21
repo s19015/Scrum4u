@@ -416,12 +416,12 @@ namespace Scrum4u
 
         public static List<Zadanie> PobierzWszystkie(int idProjektu)
         {
-            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu, false);
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu, 0);
         }
 
-        public static List<Zadanie> PobierzWszystkie(int idSprintu, bool czySprint)
+        public static List<Zadanie> PobierzWszystkie(int idProjektu, int idSprintu)
         {
-            return BazaDanych.ZadanieProvider.PobierzWszystkie(idSprintu, czySprint);
+            return BazaDanych.ZadanieProvider.PobierzWszystkie(idProjektu,idSprintu);
         }
     }
 

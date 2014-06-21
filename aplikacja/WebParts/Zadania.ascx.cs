@@ -13,11 +13,25 @@ public partial class WebParts_Zadania : System.Web.UI.UserControl
 
     }
 
-    public void ZaladujDane(int idSprintu)
+    public void ZaladujDane(int idSprintu, int idProjektu)
     {
-        if (idSprintu>0)
+        if (idSprintu > 0)
         {
-            List<Zadanie> listaZadan = Zadanie.PobierzWszystkie(idSprintu, true);
+            if (idProjektu <= 0)
+            {
+                Sprint s = Sprint.Pobierz(idSprintu);
+                if (s != null)
+                    idProjektu = s.SprintProjektID;
+            }
+
+            List<Zadanie> listaZadan = Zadanie.PobierzWszystkie(idProjektu, idSprintu);
+            if (listaZadan != null && listaZadan.Count > 0)
+            {
+                ZadaniaListView.Visible = true;
+                ZadaniaListView.DataSource = listaZadan;
+                ZadaniaListView.DataBind();
+            }
+
         }
     }
     public string PobierzStatus (object Status)

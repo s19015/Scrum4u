@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Sprinty.ascx.cs" Inherits="WebParts_Sprinty" %>
 
 
-<asp:ListView runat="server" ID="listaSprintowListView" Visible="false" OnItemCommand="listaSprintowListView_ItemCommand">
+
+<asp:ListView runat="server" ID="listaSprintowListView" Visible="false" OnItemCommand="listaSprintowListView_ItemCommand" OnItemDataBound="listaSprintowListView_ItemDataBound">
     <LayoutTemplate>
         <div class="widget sprint" id="itemPlaceholder" runat="server">
         </div>
@@ -100,6 +101,10 @@
                     </div>
                 </div>
             </asp:Panel>
+
+
+            <%@ Register src="Zadania.ascx" tagname="Zadania" tagprefix="s4u" %>
+            <s4u:Zadania ID="Zadania1" runat="server" />
 
             <div class="clear"></div>
         </div>

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Zadania.ascx.cs" Inherits="WebParts_Zadania" %>
 
 
-<asp:ListView runat="server" ID="projektyListView" Visible="false">
+<asp:ListView runat="server" ID="ZadaniaListView" Visible="false">
     <LayoutTemplate>
         <div class="table-responsive tablewidget">
             <table class="table table-hover table-striped">
@@ -24,7 +24,7 @@
     </LayoutTemplate>
     <ItemTemplate>
         <tr>
-            <td><%#Container.DataItemIndex %></td>
+            <td><%#Container.DataItemIndex+1 %></td>
             <td><%#Eval("ZadanieNazwa") %></td>
 
             <td><%#Eval("ZadanieDeadline", "{0:dd.MM.yyyy}") %></td>

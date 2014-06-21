@@ -52,7 +52,7 @@ namespace Scrum4u
         }
 
         public enum TypStrony {domyslna,  lista, element }
-        public enum RodzajStrony { GrupaRobocza, Projekt, Projekty }
+        public enum RodzajStrony { GrupaRobocza, Projekt, Projekty, Zadanie }
 
     }
 }
