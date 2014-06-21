@@ -82,7 +82,7 @@ public partial class WebParts_Sprinty : System.Web.UI.UserControl
             ZadaniePriorytet = int.Parse(((DropDownList)e.Item.FindControl("ddPriorytet")).SelectedValue),
             ZadanieProjektID = sp.SprintProjektID,
             ZadanieTypZadania = (TypZadania)Enum.Parse(typeof(TypZadania), ((DropDownList)e.Item.FindControl("ddTypZadania")).SelectedValue),
-            ZadanieStatus = Status.do_wykonania,
+            ZadanieStatus = Status.DOWYKONANIA,
             ZadanieDataUtworzenia = DateTime.Now,
             ZadaniePrzypisaneDo = ((DropDownList)e.Item.FindControl("ddPrzypisaneDO")).SelectedValue,
             ZadanieSprintID = sp.SprintID

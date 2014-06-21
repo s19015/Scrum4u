@@ -10,7 +10,7 @@ using System.Web;
 namespace Scrum4u
 {
     //enumeratory
-    public enum Status { do_wykonania=0, w_trakcie=1, wykonane=2, odlozone=3 }
+    public enum Status { DOWYKONANIA, WTRAKCIE, WYKONANE, ODLOZONE }
     public enum TypZadania 
     { 
         [System.ComponentModel.Description("ZADANIE")]

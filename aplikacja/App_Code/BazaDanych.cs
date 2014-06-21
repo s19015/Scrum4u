@@ -1276,7 +1276,8 @@ INSERT INTO [Zadania]
            ,[email_przydzielony_uzytkownik]
            ,[data_zakonczenia]
            ,[deadline]
-           ,[id_projekty])
+           ,[id_projekty]
+           ,[id_zadania_statusy])
      VALUES
            (@id_sprinty
            ,@id_zadania_typ
@@ -1289,7 +1290,8 @@ INSERT INTO [Zadania]
            ,@przydzielone_do
            ,@data_zak
            ,@data_dead
-           ,@id_projekty)", con);
+           ,@id_projekty
+           ,@id_zadania_statusy)", con);
                     cmd.CommandType = System.Data.CommandType.Text;
 
 
@@ -1306,6 +1308,8 @@ INSERT INTO [Zadania]
                    // cmd.Parameters.AddWithValue("@id_zad_nadrzednego", (zadanie.ZadanieNadrzedneID>0?zadanie.ZadanieNadrzedneID.ToString():null));
                     cmd.Parameters.AddWithValue("@data_zak", zadanie.ZadanieDataUkonczenia);
                     cmd.Parameters.AddWithValue("@data_dead", zadanie.ZadanieDeadline);
+
+                    cmd.Parameters.AddWithValue("@id_zadania_statusy", Enum.GetName(typeof(Status), zadanie.ZadanieStatus));
 
 
                     cmd.Connection.Open();
