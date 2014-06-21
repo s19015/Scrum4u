@@ -105,10 +105,14 @@ public partial class Panel_Zadanie : System.Web.UI.Page
             Enum.TryParse<Status>(ddStatus.SelectedValue, out s);
             z.ZadanieStatus = s;
 
-            try
-            {
+
                 dodano = z.Aktualizuj();
-            }
+
+        }
+
+        if (dodano)
+        {
+            Response.Redirect("/Panel/Zadanie.aspx?id=" + Request.QueryString["id"]);
         }
     }
 }
