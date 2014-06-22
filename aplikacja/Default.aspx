@@ -12,6 +12,8 @@
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/bootstrap.min.js"></script>
     <script type="text/javascript" src ="/App_Themes/scrum4u/js/script.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+            <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 </head>
 <body>
     <form id="form1" runat="server">

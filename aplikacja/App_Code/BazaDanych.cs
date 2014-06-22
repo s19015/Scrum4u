@@ -1000,7 +1000,7 @@ FROM Projekty
 WHERE id_menager_projektu = @email_uzytkownika
 and is_aktywny = 1
 UNION
-SELECT 0 as id_projekty, Projekty.id_grupy_robocze, Projekty.nazwa_projektu
+SELECT Projekty.id_projekty, Projekty.id_grupy_robocze, Projekty.nazwa_projektu
 FROM GrupyRoboczeZaproszenia Zaproszenia
 INNER JOIN GrupyRobocze on Zaproszenia.id_grupy_robocze = GrupyRobocze.id_grupy_robocze
 and GrupyRobocze.is_aktywna = 1
