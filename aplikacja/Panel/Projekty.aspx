@@ -12,7 +12,7 @@
         <asp:LinkButton runat="server" ID="btnPokazDodajProjekt" Text="Dodaj projekt" OnClick="btnPokazDodajProjekt_Click"  ></asp:LinkButton>
     <asp:Panel runat="server" ID="formDodaJprojekt" Visible="false">
         <div class="widget">
-            <h4 class="widgettitle" runat="server" id="h4TytulDodajProjekt">Nowa projekt</h4>
+            <h4 class="widgettitle" runat="server" id="h4TytulDodajProjekt">Nowy projekt</h4>
             <div class="widgetcontent form-horizontal" role="form" runat="server" id="panelDodajProjekt">
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="txtNazwaProjektu" CssClass="col-sm-2 control-label" Text="Nazwa projektu"></asp:Label>

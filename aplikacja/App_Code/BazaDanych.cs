@@ -1093,7 +1093,7 @@ where id_grupy_robocze=@grupa";
         internal static Projekt Pobierz(int idProjektu, bool tylkoPowiazaneZeMna)
         {
 
-            Projekt projekt = new Projekt();
+            Projekt projekt = null;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
@@ -1104,7 +1104,7 @@ where id_grupy_robocze=@grupa";
 
                     if (tylkoPowiazaneZeMna == false)
                     {
-                        cmd = new SqlCommand(@"SELECT id_projekty
+                        cmd = new SqlCommand(@"SELECT top 1 id_projekty
       ,id_menager_projektu
       ,id_grupy_robocze
       ,nazwa_projektu
@@ -1113,7 +1113,6 @@ where id_grupy_robocze=@grupa";
       ,row_date
   FROM Projekty
   WHERE id_projekty = @idProjektu
-  and id_menager_projektu = @emailUzytkownika
   and is_aktywny = 1", con);
                     }
                     else
@@ -1153,7 +1152,7 @@ and Zaproszenia.is_zaproszenie_przyjete = 1;", con);
                     {
                         if (reader.HasRows)
                         {
-
+                            projekt = new Projekt();
                             while (reader.Read())
                             {
 

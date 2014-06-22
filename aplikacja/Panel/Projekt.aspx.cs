@@ -18,13 +18,13 @@ public partial class Panel_Projekt : System.Web.UI.Page
             int idProjektu = 0;
             if (Request.QueryString["id"]!=null && int.TryParse(Request.QueryString["id"],out idProjektu))
             {
-                projekt = Projekt.Pobierz(idProjektu, true);
+                projekt = Projekt.Pobierz(idProjektu, false);
                 if (projekt != null)
                 {
                     litProjektNazwa.Text = projekt.ProjektNazwa;
                     this.Page.Title = "Projekt: " + projekt.ProjektNazwa + " - scrum4u.pl";
-                    if (projekt.ProjektManagerProjektuID.Trim().ToLower() != HttpContext.Current.User.Identity.Name.Trim().ToLower())
-                        btnDodajSprint.Visible = false;
+                    if (projekt.ProjektManagerProjektuID.Trim().ToLower() == HttpContext.Current.User.Identity.Name.Trim().ToLower())
+                        btnPokazDodajSprint.Visible = true;
                 }
             }
 
@@ -125,6 +125,8 @@ public partial class Panel_Projekt : System.Web.UI.Page
             panelDodajSprint.Visible = false;
             h4TytulDodajSprint.InnerText = "Sprint dodany poprawnie";
             h4TytulDodajSprint.Attributes["class"] = "widgettitle title-success";
+
+            Sprinty1.ZaladujDane(s.SprintProjektID);
         }
         else
         {

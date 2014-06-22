@@ -1,633 +1,3 @@
-@import url('userinfo.css');
-
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 2013-12-02, 19:35:47
-    Author     : Bart
-*/
-html{
-   min-height: 100%;
-   position:relative
-}
-
-body{
-   height: 100%;
-}
-
-.container{
-   /*position:absolute;
-   top:0;
-   bottom:0;
-   z-index:-1;*/
-   
-   color: #ffffff;
-   background: #232323;
-   width: 100%;
-}
-
-.header{
-   background: #0866C6;
-   /*height: 110px;*/
-}
-
-.logo{
-   /*padding-top: 40px;*/
-   text-align: center;
-   margin-top: 20px;
-   margin-bottom: 20px;
-}
-
-.news{
-   padding-left: 0px;
-}
-
-.leftpanel{
-   /*width: 260px;*/
-   padding: 0;
-}
-
-.rightpanel{
-   background: #F5F5F5;
-   color: #232323;
-   padding: 0;
-}
-
-   .news ul{
-      list-style: none outside none;
-      padding: 0px;
-   }
-
-   .news li:first-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.15);
-   }
-
-   .news li {
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-      display: inline-block;
-      float: left;
-      font-size: 14px;
-      position: relative;
-      width: 140px;
-   }
-   
-   .news li:hover{
-      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
-   }
-
-   .news li a {
-      color: #FFFFFF;
-      cursor: pointer;
-      display: block;
-      min-width: 110px;
-      padding: 25px 20px 9px;
-      position: relative;
-      text-decoration: none;
-   }
-
-   .news li a .count {
-      opacity: 0.5;
-      position: absolute;
-      right: 10px;
-      top: 5px;
-   }
-
-   .news li a .head-icon {
-      display: block;
-      height: 50px;
-      margin: auto;
-      opacity: 0.5;
-      width: 50px;
-      font-size: 36px;
-      text-align: center;
-   }
-
-   .news li a .headmenu-label{
-      display: block;
-      margin: 2px 0 3px;
-      opacity: 0.5;
-      text-align: center;
-   }
-
-   .news li a:hover .count, .news li a:hover .head-icon, .news li a:hover .headmenu-label{
-       opacity: 1;
-   }
-
-   .news li a .count, .news li a .head-icon, .news li a .headmenu-label{
-       transition: all 0.2s ease-out 0s;
-   }
-
-   .news li.odd{
-      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
-   }
-
-@media (max-width: 992px){
-   .news ul{
-      list-style: none outside none;
-      padding: 0px;
-   }
-
-   .news li:first-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.15);
-   }
-
-   .news li {
-      border-right: 1px solid rgba(255, 255, 255, 0.15);
-      display: inline-block;
-      float: left;
-      font-size: 14px;
-      position: relative;
-   }
-
-   .news li a {
-      color: #FFFFFF;
-      cursor: pointer;
-      display: block;
-      min-width: 110px;
-      padding: 21px 17px 17px;
-      position: relative;
-      text-decoration: none;
-   }
-
-   .news li a .count {
-      opacity: 0.5;
-      position: absolute;
-      right: 10px;
-      top: 5px;
-   }
-
-   .news li a .head-icon {
-      display: block;
-      height: 32px;
-      margin: auto;
-      opacity: 0.5;
-      width: 50px;
-      font-size: 27px;
-      text-align: center;
-   }
-
-   .news li a .headmenu-label{
-      display: block;
-      margin: 2px 0 3px;
-      opacity: 0.5;
-      text-align: center;
-   }
-
-   .news li a:hover .count, .news li a:hover .head-icon, .news li a:hover .headmenu-label{
-       opacity: 1;
-   }
-
-   .news li a .count, .news li a .head-icon, .news li a .headmenu-label{
-       transition: all 0.2s ease-out 0s;
-   }
-
-   .news li.odd{
-      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
-   }
-}
-
-@media (max-width: 767px){
-   
-   .logo{
-      margin-top: 5px;
-      margin-bottom: 5px;
-   }
-
-   .news ul{
-      list-style: none outside none;
-      padding: 0px;
-   }
-
-   .news li:first-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.15);
-   }
-
-   .news li {
-      border-right: 0px solid rgba(255, 255, 255, 0.15);
-      display: inline-block;
-      float: left;
-      font-size: 14px;
-      position: relative;
-   }
-
-   .news li a {
-      color: #FFFFFF;
-      cursor: pointer;
-      display: block;
-      min-width: 110px;
-      padding: 0px 0px 0px;
-      position: relative;
-      text-decoration: none;
-   }
-
-   .news li a .count {
-      opacity: 0.5;
-      position: absolute;
-      right: 10px;
-      top: 5px;
-   }
-
-   .news li a .head-icon {
-      display: block;
-      height: 19px;
-      margin: auto;
-      opacity: 0.5;
-      width: 50px;
-      font-size: 16px;
-      text-align: center;
-   }
-
-   .news li a .headmenu-label{
-      display: block;
-      margin: 2px 0 3px;
-      opacity: 0.5;
-      text-align: center;
-   }
-
-   .news li a:hover .count, .news li a:hover .head-icon, .news li a:hover .headmenu-label{
-       opacity: 1;
-   }
-
-   .news li a .count, .news li a .head-icon, .news li a .headmenu-label{
-       transition: all 0.2s ease-out 0s;
-   }
-
-   .news li.odd{
-      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
-   }
-}
-    
-.LeftPanelTitle{
-   background: none repeat scroll 0 0 #232323;
-   border-bottom: 1px solid #222222;
-   font-size: 11px;
-   font-weight: normal;
-   padding: 5px 20px;
-   text-shadow: none;
-   text-transform: uppercase;
-   color: #999999;
-}
-    
-/* ********************************** menu menu */
-
-#cssmenu,
-#cssmenu ul,
-#cssmenu li,
-#cssmenu a {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	list-style: none;
-	text-decoration: none;
-	position: relative;
-}
-
-#cssmenu {
-   background-color: #282828;
-}
-
-#cssmenu > ul > li > a {
-   -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: -moz-use-text-color -moz-use-text-color #232323;
-    border-image: none;
-    border-style: none none solid;
-    border-width: 0 0 1px;
-   
-    color: #999999;
-    font-size: 14px;
-    padding: 10px 20px;
-	display: block;
-   
-   transition: all 0.2s ease-out 0s;
-}
-#cssmenu > ul > li > a > span {
-	display: block;
-}
-#cssmenu > ul > li > a:hover {
-    background-color: #2C2C2C;
-    border-bottom-color: #232323;
-    color: #FFFFFF;
-	text-decoration: none;
-}
-#cssmenu > ul > li.active {
-	border-bottom: none;
-}
-#cssmenu > ul > li.has-sub > a span {
-	background: url(../images/menuarrow.png) 96% center no-repeat;
-}
-#cssmenu > ul > li.has-sub.active > a span {
-	background: url(../images/menuarrowdown.png) 96% center no-repeat;
-}
-
-#cssmenu > ul > li.active > a{
-   background-color: #0866C6;
-   border-bottom-color: rgba(0, 0, 0, 0.2);
-   color: #FFFFFF;
-}
-
-#cssmenu > ul > li.active > a:hover{
-   background-color: #0866C6;
-   color: #FFFFFF;
-}
-
-/* Sub menu */
-#cssmenu ul ul {
-	display: none;
-	background: none repeat scroll 0 0 #EEEEEE;
-}
-#cssmenu ul ul li {
-   border-bottom: 1px solid #DDDDDD;
-   border-right: 1px solid #DDDDDD;
-	padding: 0;
-	border-bottom: 1px solid #DDDDDD;
-}
-#cssmenu ul ul li:last-child {
-	border-bottom: none;
-}
-#cssmenu ul ul a {
-   background-image: url("../images/liarrow.png");
-   background-position: 25px 12px;
-   background-repeat: no-repeat;
-   color: #333333;
-   display: block;
-   font-size: 13px;
-   padding: 7px 10px 7px 50px;
-   transition: all 0.2s ease-out 0s;
-}
-#cssmenu ul ul a:hover {
-   background-color: #FFFFFF;
-   text-decoration: none;
-}
-
-/* ********************** koniec menu menu */
-
-.breadcrumbs {
-   background: none repeat scroll 0 0 #DDDDDD;
-   border-bottom: 1px solid #CCCCCC;
-   height: 25px;
-   list-style: none outside none;
-   padding: 4px 0 4px 10px;
-   position: relative;
-   margin: 0;
-}
-
-.breadcrumbs > li {
-   color: #666666;
-   display: inline-block;
-   float: left;
-   font-size: 11px;
-   margin-right: 5px;
-}
-
-.breadcrumbs > li span.separator {
-    background: url("../images/bcarrow.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-    display: inline-block;
-    height: 9px;
-    margin-left: 2px;
-    vertical-align: middle;
-    width: 5px;
-}
-
-.pageheader {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-bottom: 1px solid #DDDDDD;
-    min-height: 68px;
-    padding: 20px;
-    position: relative;
-    margin: 0px;
-}
-
-.searchbar {
-   margin-top: 25px;
-   /*
-    position: absolute;
-    right: 20px;
-    top: 33%;
-    */
-}
-
-.searchbar input{
-   width: 280px;
-   display: inline;
-}
-
-.searchbar button{
-   
-}
-
-.pageicon {
-    border: 3px solid #0866C6;
-    border-radius: 50px;
-    color: #0866C6;
-    display: inline-block;
-    float: left;
-    font-size: 34px;
-    padding: 8px;
-    text-align: center;
-    width: 71px;
-}
-
-.pagetitle {
-   margin-left: 90px;
-   padding-top: 18px;
-   height: 78px;
-}
-
-.pagetitle h5 {
-    color: #999999;
-    font-size: 11px;
-    text-transform: uppercase;
-}
-
-.pagetitle h1 {
-    color: #0866C6;
-    font-size: 32px;
-    margin-left: -2px;
-   margin: 0;
-}
-
-.maincontent {
-    float: left;
-    width: 100%;
-}
-
-.maincontentinner {
-    padding: 20px;
-    min-height: 400px;
-}
-
-.footer {
-    border-top: 1px solid #DDDDDD;
-    clear: both;
-    color: #666666;
-    font-size: 11px;
-    margin-top: 40px;
-    overflow: hidden;
-    padding-top: 15px;
-}
-
-.footer .footer-left {
-    float: left;
-}
-
-.footer .footer-right {
-    float: right;
-}
-
-.subtitle {
-    color: #999999;
-    font-size: 11px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.table {
-    margin-bottom: 0px;
-}
-
-.row-fluid .tablewidget{
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-color: -moz-use-text-color #0866C6 #0866C6;
-    border-image: none;
-    border-right: 2px solid #0866C6;
-    border-style: none solid solid;
-    border-width: 0 2px;
-    border-bottom: 2px solid #0866C6;
-      margin-bottom: 20px;
-      margin-top: 20px;
-}
-
-.row-fluid table thead{
-   background: #0866C6;
-   color: #ffffff;
-}
-
-.widget {
-   box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
-   margin-bottom: 20px;
-}
-
-
-.widgettitle {
-   background: none repeat scroll 0 0 #0866C6;
-   color: #FFFFFF;
-   font-size: 14px;
-   padding: 12px 15px;
-   margin: 0;
-}
-
-.widgetcontent {
-   -moz-border-bottom-colors: none;
-   -moz-border-left-colors: none;
-   -moz-border-right-colors: none;
-   -moz-border-top-colors: none;
-   background: none repeat scroll 0 0 #FFFFFF;
-   border-color: -moz-use-text-color #0866C6 #0866C6;
-   border-image: none;
-   border-right: 2px solid #0866C6;
-   border-style: none solid solid;
-   border-width: 0 2px 2px;
-   margin-bottom: 20px;
-   padding: 15px 12px;
-}
-
-.btn-primary, .btn-primary:link, .btn-default, .btn-default:link {
-   background: none repeat scroll 0 0 #0866C6;
-   border-color: #0A6BCE;
-   color: #FFFFFF;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled],
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .btn-default.disabled, .btn-default[disabled]{
-   background-color: #0044CC;
-   color: #FFFFFF;     
-}
-
-.btn{
-   border-color: #BBBBBB;
-}
-
-.title-danger {
-    background-color: #DD0000 !important;
-}
-
-.title-warning {
-    background-color: #FCB904 !important;
-}
-
-.title-success {
-    background-color: #86D628 !important;
-}
-
-.title-info {
-    background-color: #71B8EE !important;
-}
-
-.title-inverse {
-    background-color: #333333 !important;
-}
-
-/* more responsive layout */
-
-.SprintTitle{
-   color: #ffffff;
-   background: #71b8ee;
-}
-
-.SprintTitle h5{
-   font-size: 14px;
-   font-weight: 700;
-   margin: 0;
-   padding: 12px 15px;
-}
-
-.SprintTitle a{
-   color: #ffffff;
-}
-
-.SprintWidgetcontent {
-   -moz-border-bottom-colors: none;
-   -moz-border-left-colors: none;
-   -moz-border-right-colors: none;
-   -moz-border-top-colors: none;
-   background: none repeat scroll 0 0 #FFFFFF;
-   border-color: -moz-use-text-color #71b8ee #71b8ee;
-   border-image: none;
-   border-right: 2px solid #71b8ee;
-   border-style: none solid solid;
-   border-width: 0 2px 2px;
-   margin-bottom: 20px;
-   padding: 15px 12px;
-}
-
-.Danesprintu .ColumnName{
-   background-color: #f9f9f9;
-}
-
-.Danesprintu .ColumnValue{
-  
-}
-
-.clear{
-   clear: both;
-}
-
-.nice-form{
-   width: 300px;
-}
-
-
-
 /*! jQuery UI - v1.10.4 - 2014-06-21
 * http://jqueryui.com
 * Includes: jquery.ui.core.css, jquery.ui.datepicker.css, jquery.ui.theme.css
@@ -900,7 +270,7 @@ body{
 }
 .ui-widget-content {
 	border: 1px solid #dddddd;
-	background: #eeeeee url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
+	background: #eeeeee url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
 	color: #333333;
 }
 .ui-widget-content a {
@@ -908,7 +278,7 @@ body{
 }
 .ui-widget-header {
 	border: 1px solid #e78f08;
-	background: #f6a828 url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png") 50% 50% repeat-x;
+	background: #f6a828 url("images/ui-bg_gloss-wave_35_f6a828_500x100.png") 50% 50% repeat-x;
 	color: #ffffff;
 	font-weight: bold;
 }
@@ -922,7 +292,7 @@ body{
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
 	border: 1px solid #cccccc;
-	background: #f6f6f6 url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
+	background: #f6f6f6 url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
 	font-weight: bold;
 	color: #1c94c4;
 }
@@ -939,7 +309,7 @@ body{
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus {
 	border: 1px solid #fbcb09;
-	background: #fdf5ce url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x;
+	background: #fdf5ce url("images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x;
 	font-weight: bold;
 	color: #c77405;
 }
@@ -958,7 +328,7 @@ body{
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
 	border: 1px solid #fbd850;
-	background: #ffffff url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x;
+	background: #ffffff url("images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x;
 	font-weight: bold;
 	color: #eb8f00;
 }
@@ -975,7 +345,7 @@ body{
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
 	border: 1px solid #fed22f;
-	background: #ffe45c url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_highlight-soft_75_ffe45c_1x100.png") 50% top repeat-x;
+	background: #ffe45c url("images/ui-bg_highlight-soft_75_ffe45c_1x100.png") 50% top repeat-x;
 	color: #363636;
 }
 .ui-state-highlight a,
@@ -987,7 +357,7 @@ body{
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
 	border: 1px solid #cd0a0a;
-	background: #b81900 url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_diagonals-thick_18_b81900_40x40.png") 50% 50% repeat;
+	background: #b81900 url("images/ui-bg_diagonals-thick_18_b81900_40x40.png") 50% 50% repeat;
 	color: #ffffff;
 }
 .ui-state-error a,
@@ -1033,27 +403,27 @@ body{
 }
 .ui-icon,
 .ui-widget-content .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_222222_256x240.png");
+	background-image: url("images/ui-icons_222222_256x240.png");
 }
 .ui-widget-header .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_ffffff_256x240.png");
+	background-image: url("images/ui-icons_ffffff_256x240.png");
 }
 .ui-state-default .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_ef8c08_256x240.png");
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
 }
 .ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_ef8c08_256x240.png");
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
 }
 .ui-state-active .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_ef8c08_256x240.png");
+	background-image: url("images/ui-icons_ef8c08_256x240.png");
 }
 .ui-state-highlight .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_228ef1_256x240.png");
+	background-image: url("images/ui-icons_228ef1_256x240.png");
 }
 .ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon {
-	background-image: url("/App_Themes/scrum4u/ui-lightness/images/ui-icons_ffd27a_256x240.png");
+	background-image: url("images/ui-icons_ffd27a_256x240.png");
 }
 
 /* positioning */
@@ -1266,14 +636,14 @@ body{
 
 /* Overlays */
 .ui-widget-overlay {
-	background: #666666 url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_diagonals-thick_20_666666_40x40.png") 50% 50% repeat;
+	background: #666666 url("images/ui-bg_diagonals-thick_20_666666_40x40.png") 50% 50% repeat;
 	opacity: .5;
 	filter: Alpha(Opacity=50);
 }
 .ui-widget-shadow {
 	margin: -5px 0 0 -5px;
 	padding: 5px;
-	background: #000000 url("/App_Themes/scrum4u/ui-lightness/images/ui-bg_flat_10_000000_40x100.png") 50% 50% repeat-x;
+	background: #000000 url("images/ui-bg_flat_10_000000_40x100.png") 50% 50% repeat-x;
 	opacity: .2;
 	filter: Alpha(Opacity=20);
 	border-radius: 5px;

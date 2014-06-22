@@ -11,7 +11,7 @@
 
 
         <h3>Sprinty</h3>
-    <asp:LinkButton runat="server" ID="btnPokazDodajSprint" Text="Dodaj sprint" OnClick="btnPokazDodajSprint_Click"></asp:LinkButton>
+    <asp:LinkButton runat="server" ID="btnPokazDodajSprint" Text="Dodaj sprint" OnClick="btnPokazDodajSprint_Click" Visible="false"></asp:LinkButton>
     <asp:Panel runat="server" ID="formDodajSprint" Visible="false">
         <div class="widget">
             <h4 class="widgettitle" runat="server" id="h4TytulDodajSprint">Nowy sprint</h4>
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="txtDeadLine" CssClass="col-sm-2 control-label" Text="Termin zakończenia"></asp:Label>
                     <div class="col-sm-10">
-                        <asp:TextBox runat="server" ID="txtDeadLine" ValidationGroup="formNowySprint" CssClass="form-control" placeholder="Termin zakończenia" TextMode="DateTime"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="txtDeadLine" ValidationGroup="formNowySprint" CssClass="form-control datepicker" placeholder="Termin zakończenia" TextMode="DateTime"></asp:TextBox>
                         <asp:RequiredFieldValidator ValidationGroup="formNowySprint" runat="server" ID="RequiredFieldValidator6" ControlToValidate="txtDeadLine" Display="Dynamic" ErrorMessage="Proszę wpisać termin zakończenia."></asp:RequiredFieldValidator>
                     </div>
                 </div>
